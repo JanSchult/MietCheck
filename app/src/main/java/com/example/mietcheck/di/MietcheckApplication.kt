@@ -11,9 +11,9 @@ class MietcheckApplication : Application() {
         startKoin {
             androidContext(this@MietcheckApplication)
             modules(
-                dataModule,         // KMP Common Core
-                useCaseModule, // KMP Android-Spezifisches (DB, Billing, DataStore)
-                presentationModule             // Android ViewModels & App-UI-Services
+                appModules      // KMP Common Core
+                 // KMP Android-Spezifisches (DB, Billing, DataStore)
+                             // Android ViewModels & App-UI-Services
             )
         }
     }

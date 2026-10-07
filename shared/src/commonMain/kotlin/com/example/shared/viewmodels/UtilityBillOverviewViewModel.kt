@@ -3,6 +3,7 @@ package com.example.shared.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.ids.UtilityBillId
+import com.example.shared.domain.usecase.GetUtilityBillUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.validation.UtilityBillOverviewEffect
 import com.example.shared.validation.UtilityBillOverviewIntent

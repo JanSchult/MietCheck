@@ -1,8 +1,9 @@
-package com.example.shared.domain.repository
+package com.example.shared.data.repositorys
 
 import com.example.shared.domain.model.Reminder
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.ReminderId
+import com.example.shared.domain.repository.ReminderRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
