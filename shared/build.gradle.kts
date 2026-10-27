@@ -67,7 +67,10 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.8.0")
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.serialization.json)
-                implementation("io.insert-koin:koin-core:3.5.6")
+// Core Koin & Compose Integration
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
                 implementation(libs.sqldelight.coroutines)
                 implementation(libs.lifecycle.viewmodel.core)
                 // Add KMP dependencies here
@@ -83,8 +86,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.sqldelight.android)
-                implementation("io.insert-koin:koin-android:3.5.6")
-                // Add Android-specific dependencies here. Note that this source set depends on
+                implementation(libs.koin.android)                // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
             }
