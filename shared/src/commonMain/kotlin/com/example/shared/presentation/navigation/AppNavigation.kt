@@ -26,6 +26,7 @@ import com.example.shared.domain.model.QuickAction
 import com.example.shared.presentation.screens.ApartmentFormScreen
 import com.example.shared.presentation.screens.DashboardScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
+import com.example.shared.presentation.screens.UtilityBillFormScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -110,6 +111,18 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 ReminderListScreen(
                     apartmentId = route.apartmentId,
                     onNavigateToAddReminder = { /* TODO: AddReminderRoute */ },
+                    onShowError = showError
+                )
+            }
+            composable<UtilityBillFormRoute> { entry ->
+                val route = entry.toRoute<UtilityBillFormRoute>()
+                UtilityBillFormScreen(
+                    apartmentId = route.apartmentId,
+                    onSaved = { billId ->
+                        navController.navigate(BillRoute(billId)) {
+                            popUpTo<UtilityBillFormRoute> { inclusive = true }
+                        }
+                    },
                     onShowError = showError
                 )
             }

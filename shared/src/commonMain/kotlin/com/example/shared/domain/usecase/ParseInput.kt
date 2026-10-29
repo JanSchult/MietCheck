@@ -30,3 +30,15 @@ fun parseEuroToCents(input: String): Long? {
 
 fun parseSqm(input: String): Double? =
     input.trim().replace(',', '.').toDoubleOrNull()?.takeIf { it > 0.0 }
+
+fun centsToInput(cents: Long): String {
+    val c = (cents % 100).toString().padStart(2, '0')
+    return "${cents / 100},$c"
+}
+
+fun formatEuro(cents: Long): String {
+    val abs = kotlin.math.abs(cents)
+    val euros = (abs / 100).toString().reversed().chunked(3).joinToString(".").reversed()
+    val c = (abs % 100).toString().padStart(2, '0')
+    return (if (cents < 0) "-" else "") + "$euros,$c €"
+}

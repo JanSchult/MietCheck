@@ -21,6 +21,7 @@ import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
+import com.example.shared.domain.usecase.SaveUtilityBillUseCase
 import com.example.shared.viewmodels.ApartmentFormViewModel
 import com.example.shared.viewmodels.DashboardViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
@@ -54,6 +55,8 @@ val useCaseModule = module {
     factory { BuildLetterContextUseCase(get(), get()) }
     factory { ObserveRecentDocumentsUseCase(get()) }
     factory { GetOpenChecksUseCase(get(), get()) }
+    factory { SaveUtilityBillUseCase(get()) }
+
 
 }
 
@@ -63,6 +66,7 @@ val presentationModule = module {
     viewModel { LetterEditorViewModel(get(), get()) }
     viewModel { ApartmentFormViewModel(get(),get()) }
     viewModel { DashboardViewModel(get(), get(), get(), get(),get()) }
+    viewModel { ReminderListViewModel(get(), get(), get()) }
 }
 
 val appModules = listOf(dataModule, useCaseModule, presentationModule)

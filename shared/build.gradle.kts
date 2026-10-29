@@ -91,6 +91,9 @@ kotlin {
 
         androidMain {
             dependencies {
+                implementation(libs.androidx.biometric.ktx)
+                implementation(libs.play.services.mlkit.text.recognition)
+                implementation(libs.play.services.mlkit.text.recognition.common)
                 implementation(libs.sqldelight.android)
                 implementation(libs.koin.android)                // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP

@@ -12,3 +12,9 @@ import kotlin.time.Instant
     val d = toLocalDateTime(TimeZone.currentSystemDefault()).date
     return "${d.day.toString().padStart(2, '0')}.${d.month.number.toString().padStart(2, '0')}.${d.year}"
 }
+
+ fun parseDate(value: String): LocalDate? =
+    runCatching { LocalDate.parse(value.trim()) }.getOrNull()
+
+ fun formatSqm(sqm: Double): String =
+    if (sqm % 1.0 == 0.0) sqm.toInt().toString() else sqm.toString().replace('.', ',')
