@@ -26,6 +26,8 @@ import com.example.shared.domain.model.QuickAction
 import com.example.shared.presentation.screens.ApartmentFormScreen
 import com.example.shared.presentation.screens.DashboardScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
+import com.example.shared.presentation.screens.ReminderFormScreen
+import com.example.shared.presentation.screens.ReminderListScreen
 import com.example.shared.presentation.screens.UtilityBillFormScreen
 import kotlinx.coroutines.launch
 
@@ -80,8 +82,11 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                         }
                     },
                     onAddApartment = { navController.navigate(AddApartmentRoute) },
-                    onOpenBill = { billId -> navController.navigate(BillRoute(billId)) }
-                )
+                    onOpenBill = { billId -> navController.navigate(BillRoute(billId)) },
+                    onOpenReminders = { apartmentId -> navController.navigate(RemindersRoute(apartmentId)) },
+
+
+                    )
             }
 
             composable<DocumentsRoute> { PlaceholderScreen("Dokumente") }
@@ -110,10 +115,11 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 val route = entry.toRoute<RemindersRoute>()
                 ReminderListScreen(
                     apartmentId = route.apartmentId,
-                    onNavigateToAddReminder = { /* TODO: AddReminderRoute */ },
+                    onNavigateToAddReminder = { navController.navigate(AddReminderRoute(route.apartmentId)) },
                     onShowError = showError
                 )
             }
+
             composable<UtilityBillFormRoute> { entry ->
                 val route = entry.toRoute<UtilityBillFormRoute>()
                 UtilityBillFormScreen(
@@ -123,6 +129,14 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                             popUpTo<UtilityBillFormRoute> { inclusive = true }
                         }
                     },
+                    onShowError = showError
+                )
+            }
+            composable<AddReminderRoute> { entry ->
+                val route = entry.toRoute<AddReminderRoute>()
+                ReminderFormScreen(
+                    apartmentId = route.apartmentId,
+                    onSaved = { navController.popBackStack() },
                     onShowError = showError
                 )
             }

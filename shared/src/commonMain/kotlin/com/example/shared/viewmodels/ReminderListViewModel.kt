@@ -10,6 +10,7 @@ import com.example.shared.domain.usecase.DeleteReminderUseCase
 import com.example.shared.domain.usecase.MarkReminderCompletedUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
 import com.example.shared.viewmodels.state.ReminderListState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +33,7 @@ class ReminderListViewModel(
 
     private val _state = MutableStateFlow(ReminderListState())
     val state: StateFlow<ReminderListState> = _state.asStateFlow()
+    private var loadJob: Job? = null
 
     private val _effects = Channel<ReminderListEffect>(Channel.BUFFERED)
     val effects = _effects.receiveAsFlow()
@@ -48,12 +50,12 @@ class ReminderListViewModel(
     }
 
     private fun loadReminders(apartmentIdRaw: String) {
+        loadJob?.cancel()
         _state.update { it.copy(isLoading = true, error = null) }
-        viewModelScope.launch {
-            observeReminders(ApartmentId(apartmentIdRaw))
-                .collect { reminders ->
-                    _state.update { it.copy(reminders = reminders, isLoading = false) }
-                }
+        loadJob = viewModelScope.launch {
+            observeReminders(ApartmentId(apartmentIdRaw)).collect { reminders ->
+                _state.update { it.copy(reminders = reminders, isLoading = false) }
+            }
         }
     }
 

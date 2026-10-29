@@ -7,4 +7,6 @@ sealed interface DashboardIntent {
     data class QuickActionClicked(val action: QuickAction) : DashboardIntent
     data object AddApartmentClicked : DashboardIntent
     data class OpenCheckClicked(val billId: String) : DashboardIntent
+    data object OpenRemindersClicked : DashboardIntent
+
 }

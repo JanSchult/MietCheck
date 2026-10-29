@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +18,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Composable
- fun RemindersSection(reminders: List<Reminder>) {
+ fun RemindersSection(reminders: List<Reminder>, onShowAll: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         SectionTitle("Anstehende Fristen")
         if (reminders.isEmpty()) {
@@ -39,5 +40,9 @@ import kotlin.time.ExperimentalTime
                 style = MaterialTheme.typography.bodyMedium
             )
         }
+        OutlinedButton(
+            onClick = onShowAll,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+        ) { Text("Alle Fristen anzeigen") }
     }
 }

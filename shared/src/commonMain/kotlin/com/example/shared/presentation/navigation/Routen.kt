@@ -14,3 +14,4 @@ import kotlinx.serialization.Serializable
 @Serializable data class LetterEditorRoute(val billId: String, val templateType: String)
 @Serializable data class RemindersRoute(val apartmentId: String)
 @Serializable data class UtilityBillFormRoute(val apartmentId: String)
+@Serializable data class AddReminderRoute(val apartmentId: String)

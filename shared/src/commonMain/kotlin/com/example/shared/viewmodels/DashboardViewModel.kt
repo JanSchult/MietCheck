@@ -94,6 +94,9 @@ class DashboardViewModel(
             is DashboardIntent.OpenCheckClicked -> viewModelScope.launch {
                 _effects.send(DashboardEffect.NavigateToBill(intent.billId))
             }
+            is DashboardIntent.OpenRemindersClicked -> _state.value.selectedApartmentId?.let { id ->
+                viewModelScope.launch { _effects.send(DashboardEffect.NavigateToReminders(id)) }
+            }
         }
     }
 

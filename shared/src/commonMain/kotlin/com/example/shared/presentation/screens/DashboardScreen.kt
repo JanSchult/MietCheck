@@ -33,6 +33,7 @@ fun DashboardScreen(
     onQuickAction: (QuickAction, String?) -> Unit,
     onAddApartment: () -> Unit,
     onOpenBill: (String) -> Unit,
+    onOpenReminders: (String) -> Unit,
     viewModel: DashboardViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
@@ -43,6 +44,8 @@ fun DashboardScreen(
                 is DashboardEffect.StartQuickAction -> onQuickAction(effect.action, effect.apartmentId)
                 DashboardEffect.NavigateToAddApartment -> onAddApartment()
                 is DashboardEffect.NavigateToBill -> onOpenBill(effect.billId)
+                is DashboardEffect.NavigateToReminders -> onOpenReminders(effect.apartmentId)
+
             }
         }
     }
@@ -80,7 +83,7 @@ fun DashboardScreen(
                         viewModel.onIntent(DashboardIntent.OpenCheckClicked(it))
                     }
                 }
-                item { RemindersSection(state.upcomingReminders) }
+                item { RemindersSection(state.upcomingReminders) { viewModel.onIntent(DashboardIntent.OpenRemindersClicked) }}
                 item { DocumentsSection(state.recentDocuments) }
             }
 

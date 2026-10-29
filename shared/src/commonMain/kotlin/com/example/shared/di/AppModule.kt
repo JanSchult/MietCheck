@@ -25,6 +25,7 @@ import com.example.shared.domain.usecase.SaveUtilityBillUseCase
 import com.example.shared.viewmodels.ApartmentFormViewModel
 import com.example.shared.viewmodels.DashboardViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
+import com.example.shared.viewmodels.ReminderFormViewModel
 import com.example.shared.viewmodels.ReminderListViewModel
 import com.example.shared.viewmodels.UtilityBillOverviewViewModel
 import org.koin.core.module.dsl.viewModel
@@ -67,6 +68,7 @@ val presentationModule = module {
     viewModel { ApartmentFormViewModel(get(),get()) }
     viewModel { DashboardViewModel(get(), get(), get(), get(),get()) }
     viewModel { ReminderListViewModel(get(), get(), get()) }
+    viewModel { ReminderFormViewModel(get()) }
 }
 
 val appModules = listOf(dataModule, useCaseModule, presentationModule)
