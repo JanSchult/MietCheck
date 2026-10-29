@@ -15,6 +15,7 @@ import com.example.shared.presentation.apartment.ApartmentFormEffect
 import com.example.shared.presentation.apartment.ApartmentFormIntent
 import com.example.shared.viewmodels.state.ApartmentFormState
 import com.example.shared.domain.model.ApartmentField
+import com.example.shared.domain.repository.SelectedApartmentRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +28,8 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 class ApartmentFormViewModel(
-    private val saveApartment: SaveApartmentUseCase
+    private val saveApartment: SaveApartmentUseCase,
+    private val selectedApartment: SelectedApartmentRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ApartmentFormState())
@@ -124,7 +126,7 @@ class ApartmentFormViewModel(
             runCatching { saveApartment(apartment, landlord) }
                 .onSuccess {
                     _state.update { it.copy(isSaving = false) }
-                    _effects.send(ApartmentFormEffect.Saved(apartment.id))
+                    _effects.send(ApartmentFormEffect.Saved(apartment.id.value))
                 }
                 .onFailure { e ->
                     _state.update { it.copy(isSaving = false) }

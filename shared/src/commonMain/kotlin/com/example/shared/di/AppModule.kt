@@ -34,7 +34,7 @@ val dataModule = module {
     single<UtilityBillRepository> { InMemoryUtilityBillRepository() }
     single<ApartmentRepository> { InMemoryApartmentRepository() }
     single<DocumentRepository> { InMemoryDocumentRepository() }
-
+    single<ApartmentRepository> { InMemoryApartmentRepository() }
     // TODO: weitere Repositories hier registrieren (ApartmentRepository,
     // DocumentRepository, UtilityBillRepository, DefectRepository, ...)
     // sobald ihre SQLDelight-Queries stehen.
@@ -61,8 +61,8 @@ val presentationModule = module {
     viewModel { ReminderListViewModel(get(), get(), get()) }
     viewModel { UtilityBillOverviewViewModel(get(), get()) }
     viewModel { LetterEditorViewModel(get(), get()) }
-    viewModel { ApartmentFormViewModel(get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get()) }
+    viewModel { ApartmentFormViewModel(get(),get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(),get()) }
 }
 
 val appModules = listOf(dataModule, useCaseModule, presentationModule)

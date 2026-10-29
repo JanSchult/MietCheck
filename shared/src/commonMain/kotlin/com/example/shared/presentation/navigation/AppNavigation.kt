@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.shared.domain.model.QuickAction
+import com.example.shared.presentation.screens.ApartmentFormScreen
 import com.example.shared.presentation.screens.DashboardScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
 import kotlinx.coroutines.launch
@@ -86,8 +87,12 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             composable<ChecksRoute> { PlaceholderScreen("Prüfungen") }
             composable<DefectsRoute> { PlaceholderScreen("Mängel") }
 
-            composable<AddApartmentRoute> { PlaceholderScreen("Wohnung anlegen") }
-
+            composable<AddApartmentRoute> {
+                ApartmentFormScreen(
+                    onSaved = { navController.popBackStack() },
+                    onShowError = showError
+                )
+            }
             composable<BillRoute> { entry ->
                 val route = entry.toRoute<BillRoute>()
                 // TODO: UtilityBillOverviewScreen(billId = route.billId, ...)

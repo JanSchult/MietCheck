@@ -3,6 +3,7 @@ package com.example.shared.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.ids.ApartmentId
+import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.usecase.GetOpenChecksUseCase
 import com.example.shared.domain.usecase.ObserveApartmentsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
@@ -28,7 +29,8 @@ class DashboardViewModel(
     private val observeApartments: ObserveApartmentsUseCase,
     private val observeRecentDocuments: ObserveRecentDocumentsUseCase,
     private val observeReminders: ObserveRemindersUseCase,
-    private val getOpenChecks: GetOpenChecksUseCase
+    private val getOpenChecks: GetOpenChecksUseCase,
+    private val selectedApartment: SelectedApartmentRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DashboardState())
@@ -37,14 +39,14 @@ class DashboardViewModel(
     private val _effects = Channel<DashboardEffect>(Channel.BUFFERED)
     val effects = _effects.receiveAsFlow()
 
-    private val selectedId = MutableStateFlow<ApartmentId?>(null)
+    private val selectedId = selectedApartment.selectedId
 
     init {
         // Wohnungen beobachten; erste Wohnung automatisch wählen
         viewModelScope.launch {
             observeApartments().collect { apartments ->
                 if (selectedId.value == null || apartments.none { it.id == selectedId.value }) {
-                    selectedId.value = apartments.firstOrNull()?.id
+                    selectedApartment.select(apartments.firstOrNull()?.id)
                 }
                 _state.update {
                     it.copy(apartments = apartments, isLoading = false)
@@ -80,7 +82,9 @@ class DashboardViewModel(
 
     fun onIntent(intent: DashboardIntent) {
         when (intent) {
-            is DashboardIntent.SelectApartment -> selectedId.value = ApartmentId(intent.apartmentId)
+            is DashboardIntent.SelectApartment ->
+                selectedApartment.select(ApartmentId(intent.apartmentId))
+
             is DashboardIntent.QuickActionClicked -> viewModelScope.launch {
                 _effects.send(DashboardEffect.StartQuickAction(intent.action, _state.value.selectedApartmentId))
             }
