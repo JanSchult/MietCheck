@@ -1,6 +1,6 @@
 package com.example.shared.domain.model
 
-import com.example.shared.model.ids.LandlordContactId
+import com.example.shared.domain.model.ids.LandlordContactId
 
 data class LandlordContact(
     val id: LandlordContactId,

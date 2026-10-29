@@ -73,6 +73,12 @@ kotlin {
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.sqldelight.coroutines)
                 implementation(libs.lifecycle.viewmodel.core)
+                // Jetpack Compose Multiplatform UI-Abhängigkeiten
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(libs.navigation.compose)
                 // Add KMP dependencies here
             }
         }

@@ -2,11 +2,10 @@ package com.example.shared.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shared.domain.model.LetterContext
 import com.example.shared.domain.model.LetterTemplateType
 import com.example.shared.domain.model.ids.UtilityBillId
+import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
-import com.example.shared.domain.usecase.GetUtilityBillUseCase
 import com.example.shared.presentation.letter.LetterEditorEffect
 import com.example.shared.presentation.letter.LetterEditorIntent
 import com.example.shared.viewmodels.state.LetterEditorState
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LetterEditorViewModel(
-    private val getBill: GetUtilityBillUseCase,
+    private val buildContext: BuildLetterContextUseCase,
     private val buildDraft: BuildLetterDraftUseCase
 ) : ViewModel() {
 
@@ -43,24 +42,15 @@ class LetterEditorViewModel(
     private fun load(billIdRaw: String, templateTypeName: String) {
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
-            val bill = getBill(UtilityBillId(billIdRaw))
-            if (bill == null) {
+            val context = buildContext(UtilityBillId(billIdRaw))
+            if (context == null) {
                 _state.update { it.copy(isLoading = false) }
                 _effects.send(LetterEditorEffect.ShowError("Abrechnung nicht gefunden."))
                 return@launch
             }
-            // TODO: Absender/Empfänger/Adresse aus Apartment + LandlordContact laden
-            // (ApartmentRepository, sobald vorhanden). Bis dahin Platzhalter.
-            val context = LetterContext(
-                senderName = "[Dein Name]",
-                senderAddress = "[Deine Adresse]",
-                recipientName = "[Vermieter / Hausverwaltung]",
-                recipientAddress = "[Adresse Vermieter]",
-                apartmentAddress = "[Adresse der Wohnung]",
-                billingPeriod = "${bill.billingPeriodStart} – ${bill.billingPeriodEnd}",
-                concreteQuestion = ""
-            )
-            val draft = buildDraft(LetterTemplateType.valueOf(templateTypeName), context)
+            val type = runCatching { LetterTemplateType.valueOf(templateTypeName) }
+                .getOrDefault(LetterTemplateType.GENERAL_INQUIRY)
+            val draft = buildDraft(type, context)
             _state.update {
                 it.copy(
                     subject = draft.subject,
@@ -71,6 +61,7 @@ class LetterEditorViewModel(
             }
         }
     }
+
 
     private fun export() {
         val s = _state.value

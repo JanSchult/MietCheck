@@ -1,6 +1,6 @@
 package com.example.shared.domain.model
 
-import com.example.shared.model.ids.CostItemId
+import com.example.shared.domain.model.ids.CostItemId
 
 data class UtilityCostItem(
     val id: CostItemId,

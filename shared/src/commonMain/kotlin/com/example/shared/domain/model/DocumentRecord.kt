@@ -1,7 +1,7 @@
 package com.example.shared.domain.model
 
-import com.example.shared.model.ids.ApartmentId
-import com.example.shared.model.ids.DocumentId
+import com.example.shared.domain.model.ids.ApartmentId
+import com.example.shared.domain.model.ids.DocumentId
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
