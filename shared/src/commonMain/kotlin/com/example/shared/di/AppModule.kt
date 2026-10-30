@@ -8,6 +8,7 @@ import com.example.shared.domain.repository.ApartmentRepository
 import com.example.shared.domain.repository.DocumentRepository
 import com.example.shared.domain.repository.ReminderRepository
 import com.example.shared.domain.repository.UtilityBillRepository
+import com.example.shared.domain.usecase.BuildBillOverviewUseCase
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
 import com.example.shared.domain.usecase.DeleteApartmentUseCase
@@ -57,6 +58,7 @@ val useCaseModule = module {
     factory { ObserveRecentDocumentsUseCase(get()) }
     factory { GetOpenChecksUseCase(get(), get()) }
     factory { SaveUtilityBillUseCase(get()) }
+    factory { BuildBillOverviewUseCase(get(), get()) }
 
 
 }
@@ -69,6 +71,7 @@ val presentationModule = module {
     viewModel { DashboardViewModel(get(), get(), get(), get(),get()) }
     viewModel { ReminderListViewModel(get(), get(), get()) }
     viewModel { ReminderFormViewModel(get()) }
+
 }
 
 val appModules = listOf(dataModule, useCaseModule, presentationModule)

@@ -1,11 +1,13 @@
 package com.example.shared.viewmodels.state
 
+import com.example.shared.domain.model.BillOverview
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
 
 data class UtilityBillOverviewState(
-    val bill: UtilityBill? = null,
+    val overview: BillOverview? = null,
     val validationResults: List<ValidationResult> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val isValidating: Boolean = false,
+    val hasValidated: Boolean = false
 )

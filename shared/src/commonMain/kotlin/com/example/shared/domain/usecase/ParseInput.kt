@@ -42,3 +42,13 @@ fun formatEuro(cents: Long): String {
     val c = (abs % 100).toString().padStart(2, '0')
     return (if (cents < 0) "-" else "") + "$euros,$c €"
 }
+
+fun formatSignedTenthPercent(tenths: Long): String {
+    val sign = when {
+        tenths > 0 -> "+"
+        tenths < 0 -> "−"
+        else -> ""
+    }
+    val abs = kotlin.math.abs(tenths)
+    return "$sign${abs / 10},${abs % 10} %"
+}

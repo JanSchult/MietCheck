@@ -12,7 +12,8 @@ import kotlin.time.Instant
     val d = toLocalDateTime(TimeZone.currentSystemDefault()).date
     return "${d.day.toString().padStart(2, '0')}.${d.month.number.toString().padStart(2, '0')}.${d.year}"
 }
-
+fun LocalDate.toDisplayDate(): String =
+    "${day.toString().padStart(2, '0')}.${month.number.toString().padStart(2, '0')}.$year"
  fun parseDate(value: String): LocalDate? =
     runCatching { LocalDate.parse(value.trim()) }.getOrNull()
 

@@ -29,6 +29,7 @@ import com.example.shared.presentation.screens.PlaceholderScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
 import com.example.shared.presentation.screens.ReminderListScreen
 import com.example.shared.presentation.screens.UtilityBillFormScreen
+import com.example.shared.presentation.screens.UtilityBillOverviewScreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -44,6 +45,8 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
     val showBottomBar = topLevelTabs.any { tab ->
         currentDestination?.hierarchy?.any { it.hasRoute(tab.routeClass) } == true
     }
+    val showTopBar = currentDestination != null && !showBottomBar
+
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -101,8 +104,13 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             }
             composable<BillRoute> { entry ->
                 val route = entry.toRoute<BillRoute>()
-                // TODO: UtilityBillOverviewScreen(billId = route.billId, ...)
-                PlaceholderScreen("Abrechnung ${route.billId.take(8)}")
+                UtilityBillOverviewScreen(
+                    billId = route.billId,
+                    onWriteLetter = { billId, type ->
+                        navController.navigate(LetterEditorRoute(billId, type.name))
+                    },
+                    onShowError = showError
+                )
             }
 
             composable<LetterEditorRoute> { entry ->
