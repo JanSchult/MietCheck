@@ -2,11 +2,14 @@ package com.example.shared.domain.platform
 
 import android.content.Context
 import android.hardware.biometrics.BiometricPrompt
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 actual class BiometricAuthenticator(private val context: Context) {
+    @RequiresApi(Build.VERSION_CODES.P)
     actual suspend fun authenticate(): Boolean = suspendCancellableCoroutine { continuation ->
         // Hinweis: BiometricPrompt benötigt typischerweise eine FragmentActivity.
         // In KMP wird dies meist über einen Callback oder eine Callback-Registrierung gelöst.

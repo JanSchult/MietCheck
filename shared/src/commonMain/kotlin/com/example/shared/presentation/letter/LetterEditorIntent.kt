@@ -5,4 +5,5 @@ sealed interface LetterEditorIntent {
     data class SubjectChanged(val value: String) : LetterEditorIntent
     data class BodyChanged(val value: String) : LetterEditorIntent
     data object ConfirmAndExport : LetterEditorIntent
+    data class ConfirmedChanged(val value: Boolean) : LetterEditorIntent
 }

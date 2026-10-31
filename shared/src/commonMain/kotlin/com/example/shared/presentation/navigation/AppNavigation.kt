@@ -1,18 +1,24 @@
 package com.example.shared.presentation.navigation
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,7 +30,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.shared.domain.model.QuickAction
 import com.example.shared.presentation.screens.ApartmentFormScreen
+import com.example.shared.presentation.screens.ChecksScreen
 import com.example.shared.presentation.screens.DashboardScreen
+import com.example.shared.presentation.screens.LetterEditorScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
 import com.example.shared.presentation.screens.ReminderListScreen
@@ -32,6 +40,7 @@ import com.example.shared.presentation.screens.UtilityBillFormScreen
 import com.example.shared.presentation.screens.UtilityBillOverviewScreen
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation(navController: NavHostController = rememberNavController()) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -50,6 +59,18 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            if (showTopBar) {
+                TopAppBar(
+                    title = { Text(titleFor(currentDestination)) },
+                    navigationIcon = {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Zurück")
+                        }
+                    }
+                )
+            }
+        },
         bottomBar = {
             if (showBottomBar) {
                 NavigationBar {
@@ -93,7 +114,12 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             }
 
             composable<DocumentsRoute> { PlaceholderScreen("Dokumente") }
-            composable<ChecksRoute> { PlaceholderScreen("Prüfungen") }
+            composable<ChecksRoute> {
+                ChecksScreen(
+                    onAddBill = { apartmentId -> navController.navigate(UtilityBillFormRoute(apartmentId)) },
+                    onOpenBill = { billId -> navController.navigate(BillRoute(billId)) }
+                )
+            }
             composable<DefectsRoute> { PlaceholderScreen("Mängel") }
 
             composable<AddApartmentRoute> {
@@ -115,8 +141,11 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
 
             composable<LetterEditorRoute> { entry ->
                 val route = entry.toRoute<LetterEditorRoute>()
-                // TODO: LetterEditorScreen(route.billId, route.templateType, ...)
-                PlaceholderScreen("Schreiben: ${route.templateType}")
+                LetterEditorScreen(
+                    billId = route.billId,
+                    templateType = route.templateType,
+                    onShowError = showError
+                )
             }
 
             composable<RemindersRoute> { entry ->
@@ -148,6 +177,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onShowError = showError
                 )
             }
+
         }
     }
 }
@@ -161,3 +191,13 @@ private fun NavHostController.navigateToTab(tab: TopLevelTab) {
     }
 }
 
+private fun titleFor(destination: NavDestination?): String = when {
+    destination == null -> ""
+    destination.hasRoute<BillRoute>() -> "Abrechnung"
+    destination.hasRoute<UtilityBillFormRoute>() -> "Abrechnung erfassen"
+    destination.hasRoute<LetterEditorRoute>() -> "Schreiben an den Vermieter"
+    destination.hasRoute<AddApartmentRoute>() -> "Wohnung anlegen"
+    destination.hasRoute<RemindersRoute>() -> "Fristen"
+    destination.hasRoute<AddReminderRoute>() -> "Frist hinzufügen"
+    else -> ""
+}

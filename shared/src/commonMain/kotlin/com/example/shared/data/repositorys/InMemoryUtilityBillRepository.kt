@@ -4,7 +4,9 @@ import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.repository.UtilityBillRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 
 class InMemoryUtilityBillRepository : UtilityBillRepository {
@@ -22,6 +24,11 @@ class InMemoryUtilityBillRepository : UtilityBillRepository {
         state.value
             .filter { it.apartmentId == apartmentId }
             .sortedByDescending { it.billingPeriodEnd }
+
+    override fun observeForApartment(apartmentId: ApartmentId): Flow<List<UtilityBill>> =
+        state.map { list ->
+            list.filter { it.apartmentId == apartmentId }.sortedByDescending { it.billingPeriodEnd }
+        }
 
     override suspend fun getPreviousYear(
         apartmentId: ApartmentId,

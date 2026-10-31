@@ -24,6 +24,7 @@ class LetterEditorViewModel(
 
     private val _state = MutableStateFlow(LetterEditorState())
     val state: StateFlow<LetterEditorState> = _state.asStateFlow()
+    private var loadedKey: String? = null
 
     private val _effects = Channel<LetterEditorEffect>(Channel.BUFFERED)
     val effects = _effects.receiveAsFlow()
@@ -35,11 +36,16 @@ class LetterEditorViewModel(
             is LetterEditorIntent.BodyChanged -> _state.update {
                 it.copy(body = intent.value, hasOpenPlaceholders = hasPlaceholders(intent.value))
             }
+            is LetterEditorIntent.ConfirmedChanged -> _state.update { it.copy(isConfirmed = intent.value) }
             LetterEditorIntent.ConfirmAndExport -> export()
         }
     }
 
     private fun load(billIdRaw: String, templateTypeName: String) {
+        val key = "$billIdRaw/$templateTypeName"
+        if (loadedKey == key) return          // Screen-Neuaufbau: Bearbeitung nicht überschreiben
+        loadedKey = key
+
         _state.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             val context = buildContext(UtilityBillId(billIdRaw))
@@ -65,8 +71,8 @@ class LetterEditorViewModel(
 
     private fun export() {
         val s = _state.value
+        if (!s.isConfirmed) return            // ohne Bestätigung kein Export
         viewModelScope.launch {
-            _state.update { it.copy(isConfirmed = true) }
             _effects.send(LetterEditorEffect.Export(s.subject, s.body))
         }
     }

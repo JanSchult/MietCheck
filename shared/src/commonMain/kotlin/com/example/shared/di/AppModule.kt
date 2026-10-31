@@ -18,12 +18,14 @@ import com.example.shared.domain.usecase.GetOpenChecksUseCase
 import com.example.shared.domain.usecase.GetUtilityBillUseCase
 import com.example.shared.domain.usecase.MarkReminderCompletedUseCase
 import com.example.shared.domain.usecase.ObserveApartmentsUseCase
+import com.example.shared.domain.usecase.ObserveBillsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
 import com.example.shared.domain.usecase.SaveUtilityBillUseCase
 import com.example.shared.viewmodels.ApartmentFormViewModel
+import com.example.shared.viewmodels.ChecksViewModel
 import com.example.shared.viewmodels.DashboardViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
 import com.example.shared.viewmodels.ReminderFormViewModel
@@ -59,6 +61,7 @@ val useCaseModule = module {
     factory { GetOpenChecksUseCase(get(), get()) }
     factory { SaveUtilityBillUseCase(get()) }
     factory { BuildBillOverviewUseCase(get(), get()) }
+    factory { ObserveBillsUseCase(get()) }
 
 
 }
@@ -71,7 +74,7 @@ val presentationModule = module {
     viewModel { DashboardViewModel(get(), get(), get(), get(),get()) }
     viewModel { ReminderListViewModel(get(), get(), get()) }
     viewModel { ReminderFormViewModel(get()) }
-
+    viewModel { ChecksViewModel(get(), get(), get()) }
 }
 
-val appModules = listOf(dataModule, useCaseModule, presentationModule)
+val appModules = listOf(dataModule, useCaseModule, presentationModule,platformModule)
