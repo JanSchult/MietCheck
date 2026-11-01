@@ -1,0 +1,33 @@
+import kotlin.Boolean;
+
+
+-- Reminder.sq
+CREATE TABLE ReminderEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    apartmentId TEXT NOT NULL,
+    type TEXT NOT NULL,
+    title TEXT NOT NULL,
+    dueAt INTEGER NOT NULL,
+    recurrence TEXT NOT NULL,
+    isCompleted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    linkedEntityId TEXT
+);
+CREATE INDEX reminder_apartment_idx ON ReminderEntity(apartmentId);
+
+selectRemindersForApartment:
+SELECT * FROM ReminderEntity WHERE apartmentId = ? ORDER BY dueAt;
+
+selectReminderById:
+SELECT * FROM ReminderEntity WHERE id = ?;
+
+upsertReminder:
+INSERT OR REPLACE INTO ReminderEntity VALUES ?;
+
+setReminderCompleted:
+UPDATE ReminderEntity SET isCompleted = ? WHERE id = ?;
+
+deleteReminder:
+DELETE FROM ReminderEntity WHERE id = ?;
+
+deleteRemindersForApartment:
+DELETE FROM ReminderEntity WHERE apartmentId = ?;

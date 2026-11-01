@@ -1,14 +1,31 @@
+// androidMain: di/PlatformModule.android.kt (ersetzt die bisherige Datei)
 package com.example.shared.di
 
 import android.content.Context
 import android.content.Intent
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.android.AndroidSqliteDriver
+import com.example.shared.data.local.DatabaseKeyProvider
+import com.example.shared.data.local.MietCheckDatabase
 import com.example.shared.domain.platform.TextSharer
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.Module
 import org.koin.dsl.module
 
 actual val platformModule = module {
+    single<SqlDriver> { createEncryptedDriver(androidContext()) }
     single<TextSharer> { AndroidTextSharer(androidContext()) }
+}
+
+private fun createEncryptedDriver(context: Context): SqlDriver {
+    System.loadLibrary("sqlcipher")
+    val passphrase = DatabaseKeyProvider(context).getOrCreatePassphrase()
+    return AndroidSqliteDriver(
+        schema = MietCheckDatabase.Schema,
+        context = context,
+        name = "mietcheck.db",
+        factory = SupportOpenHelperFactory(passphrase)   // überschreibt das Passwort nach Gebrauch im Speicher
+    )
 }
 
 private class AndroidTextSharer(private val context: Context) : TextSharer {
@@ -18,7 +35,6 @@ private class AndroidTextSharer(private val context: Context) : TextSharer {
             putExtra(Intent.EXTRA_SUBJECT, subject)
             putExtra(Intent.EXTRA_TEXT, text)
         }
-        val chooser = Intent.createChooser(send, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(chooser)
+        context.startActivity(Intent.createChooser(send, null).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }

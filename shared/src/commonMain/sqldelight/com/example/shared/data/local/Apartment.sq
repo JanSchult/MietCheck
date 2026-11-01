@@ -1,0 +1,50 @@
+-- Apartment.sq
+CREATE TABLE ApartmentEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    label TEXT NOT NULL,
+    street TEXT NOT NULL,
+    houseNumber TEXT NOT NULL,
+    postalCode TEXT NOT NULL,
+    city TEXT NOT NULL,
+    livingSpaceSqm REAL NOT NULL,
+    occupants INTEGER NOT NULL,
+    tenancyStart TEXT NOT NULL,
+    monthlyUtilityAdvanceCents INTEGER NOT NULL,
+    monthlyHeatingAdvanceCents INTEGER NOT NULL,
+    landlordContactId TEXT,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL
+);
+
+CREATE TABLE LandlordEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    company TEXT,
+    email TEXT,
+    phone TEXT,
+    street TEXT,
+    houseNumber TEXT,
+    postalCode TEXT,
+    city TEXT
+);
+
+selectAllApartments:
+SELECT * FROM ApartmentEntity ORDER BY createdAt;
+
+selectApartmentById:
+SELECT * FROM ApartmentEntity WHERE id = ?;
+
+upsertApartment:
+INSERT OR REPLACE INTO ApartmentEntity VALUES ?;
+
+deleteApartment:
+DELETE FROM ApartmentEntity WHERE id = ?;
+
+selectLandlordById:
+SELECT * FROM LandlordEntity WHERE id = ?;
+
+upsertLandlord:
+INSERT OR REPLACE INTO LandlordEntity VALUES ?;
+
+deleteLandlord:
+DELETE FROM LandlordEntity WHERE id = ?;

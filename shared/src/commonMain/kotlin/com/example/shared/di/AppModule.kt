@@ -1,12 +1,16 @@
 package com.example.shared.di
 
-import com.example.shared.data.repositorys.InMemoryApartmentRepository
-import com.example.shared.data.repositorys.InMemoryDocumentRepository
-import com.example.shared.data.repositorys.InMemoryReminderRepository
-import com.example.shared.data.repositorys.InMemoryUtilityBillRepository
+import app.cash.sqldelight.db.SqlDriver
+import com.example.shared.data.local.MietCheckDatabase
+import com.example.shared.data.repositorys.SqlDelightApartmentRepository
+import com.example.shared.data.repositorys.SqlDelightDocumentRepository
+import com.example.shared.data.repositorys.SqlDelightReminderRepository
+import com.example.shared.data.repositorys.SqlDelightSelectedApartmentRepository
+import com.example.shared.data.repositorys.SqlDelightUtilityBillRepository
 import com.example.shared.domain.repository.ApartmentRepository
 import com.example.shared.domain.repository.DocumentRepository
 import com.example.shared.domain.repository.ReminderRepository
+import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.repository.UtilityBillRepository
 import com.example.shared.domain.usecase.BuildBillOverviewUseCase
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
@@ -35,14 +39,12 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<ReminderRepository> { InMemoryReminderRepository() }
-    single<UtilityBillRepository> { InMemoryUtilityBillRepository() }
-    single<ApartmentRepository> { InMemoryApartmentRepository() }
-    single<DocumentRepository> { InMemoryDocumentRepository() }
-    single<ApartmentRepository> { InMemoryApartmentRepository() }
-    // TODO: weitere Repositories hier registrieren (ApartmentRepository,
-    // DocumentRepository, UtilityBillRepository, DefectRepository, ...)
-    // sobald ihre SQLDelight-Queries stehen.
+    single { MietCheckDatabase(get<SqlDriver>()) }
+    single<ApartmentRepository> { SqlDelightApartmentRepository(get()) }
+    single<UtilityBillRepository> { SqlDelightUtilityBillRepository(get()) }
+    single<ReminderRepository> { SqlDelightReminderRepository(get()) }
+    single<DocumentRepository> { SqlDelightDocumentRepository(get()) }
+    single<SelectedApartmentRepository> { SqlDelightSelectedApartmentRepository(get()) }
 }
 
 val useCaseModule = module {

@@ -1,0 +1,27 @@
+-- Document.sq
+CREATE TABLE DocumentEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    apartmentId TEXT NOT NULL,
+    type TEXT NOT NULL,
+    displayName TEXT NOT NULL,
+    filePathLocal TEXT NOT NULL,
+    pageCount INTEGER NOT NULL,
+    importedAt INTEGER NOT NULL,
+    sourceHash TEXT NOT NULL
+);
+CREATE INDEX document_apartment_idx ON DocumentEntity(apartmentId);
+
+selectDocumentsForApartment:
+SELECT * FROM DocumentEntity WHERE apartmentId = ? ORDER BY importedAt DESC;
+
+selectDocumentById:
+SELECT * FROM DocumentEntity WHERE id = ?;
+
+upsertDocument:
+INSERT OR REPLACE INTO DocumentEntity VALUES ?;
+
+deleteDocument:
+DELETE FROM DocumentEntity WHERE id = ?;
+
+deleteDocumentsForApartment:
+DELETE FROM DocumentEntity WHERE apartmentId = ?;

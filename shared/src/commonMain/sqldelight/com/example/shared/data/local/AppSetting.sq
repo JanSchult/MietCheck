@@ -1,0 +1,14 @@
+-- AppSetting.sq
+CREATE TABLE AppSetting (
+    settingKey TEXT NOT NULL PRIMARY KEY,
+    settingValue TEXT NOT NULL
+);
+
+selectSetting:
+SELECT settingValue FROM AppSetting WHERE settingKey = ?;
+
+upsertSetting:
+INSERT OR REPLACE INTO AppSetting VALUES ?;
+
+deleteSetting:
+DELETE FROM AppSetting WHERE settingKey = ?;

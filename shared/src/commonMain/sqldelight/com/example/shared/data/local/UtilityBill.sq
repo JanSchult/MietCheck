@@ -1,0 +1,71 @@
+import kotlin.Boolean;
+
+
+-- UtilityBill.sq
+CREATE TABLE UtilityBillEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    apartmentId TEXT NOT NULL,
+    documentId TEXT,
+    periodStart TEXT NOT NULL,
+    periodEnd TEXT NOT NULL,
+    issueDate TEXT,
+    livingSpaceSqm REAL,
+    occupants INTEGER,
+    advancePaymentsCents INTEGER NOT NULL,
+    totalCostsCents INTEGER NOT NULL,
+    distributionKeyNoted INTEGER AS Boolean NOT NULL DEFAULT 0,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER NOT NULL
+);
+CREATE INDEX bill_apartment_idx ON UtilityBillEntity(apartmentId);
+
+CREATE TABLE CostItemEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    billId TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    category TEXT NOT NULL,
+    label TEXT NOT NULL,
+    amountCents INTEGER NOT NULL,
+    distributionKey TEXT,
+    note TEXT
+);
+CREATE INDEX item_bill_idx ON CostItemEntity(billId);
+
+selectBillsForApartment:
+SELECT * FROM UtilityBillEntity WHERE apartmentId = ? ORDER BY periodEnd DESC;
+
+selectBillById:
+SELECT * FROM UtilityBillEntity WHERE id = ?;
+
+selectPreviousBill:
+SELECT * FROM UtilityBillEntity
+WHERE apartmentId = ? AND periodEnd < ?
+ORDER BY periodEnd DESC
+LIMIT 1;
+
+selectItemsForBill:
+SELECT * FROM CostItemEntity WHERE billId = ? ORDER BY position;
+
+selectItemsForApartment:
+SELECT * FROM CostItemEntity
+WHERE billId IN (SELECT id FROM UtilityBillEntity WHERE apartmentId = ?)
+ORDER BY position;
+
+upsertBill:
+INSERT OR REPLACE INTO UtilityBillEntity VALUES ?;
+
+insertItem:
+INSERT OR REPLACE INTO CostItemEntity VALUES ?;
+
+deleteItemsForBill:
+DELETE FROM CostItemEntity WHERE billId = ?;
+
+deleteBill:
+DELETE FROM UtilityBillEntity WHERE id = ?;
+
+deleteItemsForApartment:
+DELETE FROM CostItemEntity
+WHERE billId IN (SELECT id FROM UtilityBillEntity WHERE apartmentId = ?);
+
+deleteBillsForApartment:
+DELETE FROM UtilityBillEntity WHERE apartmentId = ?;
