@@ -1,45 +1,54 @@
+// androidMain/kotlin/com/example/shared/domain/platform/BiometricAuthenticator.android.kt
 package com.example.shared.domain.platform
 
-import android.content.Context
-import android.hardware.biometrics.BiometricPrompt
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.resume
 
-actual class BiometricAuthenticator(private val context: Context) {
-    @RequiresApi(Build.VERSION_CODES.P)
-    actual suspend fun authenticate(): Boolean = suspendCancellableCoroutine { continuation ->
-        // Hinweis: BiometricPrompt benötigt typischerweise eine FragmentActivity.
-        // In KMP wird dies meist über einen Callback oder eine Callback-Registrierung gelöst.
-        // Beispiel-Skizze:
+actual class BiometricAuthenticator(
+    private val activityProvider: CurrentActivityProvider
+) {
+    /** true nur bei erfolgreicher Biometrie. Abbruch, Fehler oder fehlende Biometrie ergeben false. */
+    actual suspend fun authenticate(): Boolean {
+        val activity = activityProvider.current ?: return false
 
-        val executor = androidx.core.content.ContextCompat.getMainExecutor(context)
-        val biometricPrompt = BiometricPrompt(
-            activity as FragmentActivity,
-            executor,
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationSucceeded(result: androidx.biometric.BiometricPrompt.AuthenticationResult) {
-                    continuation.resume(true)
+        val availability = BiometricManager.from(activity).canAuthenticate(BIOMETRIC_WEAK)
+        if (availability != BiometricManager.BIOMETRIC_SUCCESS) return false
+
+        return suspendCancellableCoroutine { continuation ->
+            val promptRef = AtomicReference<BiometricPrompt?>(null)
+
+            activity.runOnUiThread {   // BiometricPrompt muss auf dem Main-Thread erstellt werden
+                val callback = object : BiometricPrompt.AuthenticationCallback() {
+                    override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                        if (continuation.isActive) continuation.resume(true)
+                    }
+
+                    override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                        if (continuation.isActive) continuation.resume(false)
+                    }
+                    // onAuthenticationFailed: z. B. falscher Finger, der Dialog bleibt offen
                 }
 
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
-                    continuation.resume(false)
-                }
+                val prompt = BiometricPrompt(activity, ContextCompat.getMainExecutor(activity), callback)
+                promptRef.set(prompt)
 
-                override fun onAuthenticationFailed() {
-                    // Optional: Bei Fehlschlag nicht direkt abbrechen
-                }
+                val info = BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("MietCheck entsperren")
+                    .setNegativeButtonText("PIN verwenden")
+                    .setAllowedAuthenticators(BIOMETRIC_WEAK)
+                    .setConfirmationRequired(false)
+                    .build()
+                prompt.authenticate(info)
             }
-        )
-        val promptInfo = androidx.biometric.BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometrische Authentifizierung")
-            .setSubtitle("Identität bestätigen")
-            .setNegativeButtonText("Abbrechen")
-            .build()
-        biometricPrompt.authenticate(promptInfo)
 
-        continuation.resume(false) // Platzhalter bis zur Activity-Bindung
+            continuation.invokeOnCancellation {
+                activity.runOnUiThread { promptRef.get()?.cancelAuthentication() }
+            }
+        }
     }
 }

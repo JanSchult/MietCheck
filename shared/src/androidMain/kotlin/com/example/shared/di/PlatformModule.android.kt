@@ -7,14 +7,19 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.example.shared.data.local.DatabaseKeyProvider
 import com.example.shared.data.local.MietCheckDatabase
+import com.example.shared.domain.platform.BiometricAuthenticator
+import com.example.shared.domain.platform.CurrentActivityProvider
 import com.example.shared.domain.platform.TextSharer
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 actual val platformModule = module {
     single<SqlDriver> { createEncryptedDriver(androidContext()) }
     single<TextSharer> { AndroidTextSharer(androidContext()) }
+    single(createdAtStart = true) { CurrentActivityProvider(androidApplication()) }
+    single { BiometricAuthenticator(get()) }
 }
 
 private fun createEncryptedDriver(context: Context): SqlDriver {

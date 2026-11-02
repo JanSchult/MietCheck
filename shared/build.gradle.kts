@@ -81,7 +81,7 @@ kotlin {
 
         androidMain {
             dependencies {
-                implementation(libs.androidx.biometric.ktx)
+                implementation(libs.androidx.biometric)
                 implementation(libs.play.services.mlkit.text.recognition)
                 implementation(libs.play.services.mlkit.text.recognition.common)
                 implementation(libs.koin.android)
