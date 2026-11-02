@@ -7,3 +7,4 @@ interface ValidationRule {
     val id: String
     fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult
 }
+

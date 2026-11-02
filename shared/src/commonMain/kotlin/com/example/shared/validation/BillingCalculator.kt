@@ -1,6 +1,7 @@
-package com.example.shared.validation
+package com.example.shared.domain.usecase
 
 import com.example.shared.domain.model.UtilityBill
+import kotlin.math.round
 
 object BillingCalculator {
 
@@ -15,9 +16,9 @@ object BillingCalculator {
     fun calculate(bill: UtilityBill): BillingResult {
         val balance = bill.totalCostsCents - bill.advancePaymentsMadeCents
         val costPerSqm = bill.livingSpaceSqmAtBilling
-            ?.takeIf { it > BigDecimal.ZERO }
+            ?.takeIf { it > 0.0 }
             ?.let { sqm ->
-                (BigDecimal(bill.totalCostsCents).divide(sqm, 0, RoundingMode.HALF_UP)).toLong()
+                (bill.totalCostsCents / sqm).toLong()
             }
         return BillingResult(
             totalCostsCents = bill.totalCostsCents,
@@ -28,17 +29,17 @@ object BillingCalculator {
         )
     }
 
-    fun yearOverYearDeviationPercent(current: UtilityBill, previous: UtilityBill?): BigDecimal? {
+    fun yearOverYearDeviationPercent(current: UtilityBill, previous: UtilityBill?): Double? {
         if (previous == null || previous.totalCostsCents == 0L) return null
         val diff = current.totalCostsCents - previous.totalCostsCents
-        return BigDecimal(diff)
-            .divide(BigDecimal(previous.totalCostsCents), 4, RoundingMode.HALF_UP)
-            .multiply(BigDecimal(100))
-            .setScale(1, RoundingMode.HALF_UP)
+        val percent = (diff.toDouble() * 100.0) / previous.totalCostsCents.toDouble()
+        // Auf 1 Nachkommastelle runden (analog zu vorher mit BigDecimal)
+        return round(percent * 10.0) / 10.0
     }
 
     fun sumOfItemsCents(bill: UtilityBill): Long = bill.items.sumOf { it.amountCents }
 
     fun itemsVsTotalDifferenceCents(bill: UtilityBill): Long =
         bill.totalCostsCents - sumOfItemsCents(bill)
+
 }

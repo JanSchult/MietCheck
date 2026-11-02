@@ -3,7 +3,8 @@ package com.example.shared.validation
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
 import com.example.shared.domain.model.ValidationSeverity
-
+import com.example.shared.domain.usecase.BillingCalculator
+/*
 object ItemsSumMatchesTotalRule : ValidationRule {
     override val id = "items_sum_matches_total"
     override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
@@ -21,3 +22,5 @@ object ItemsSumMatchesTotalRule : ValidationRule {
         )
     }
 }
+
+ */

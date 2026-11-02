@@ -1,8 +1,9 @@
 package com.example.shared.domain.platform
 
 import android.content.Context
-import java.io.File
+import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
+import java.io.File
 
 actual class SecureFileStorage(private val context: Context) {
     private val masterKey = MasterKey.Builder(context)

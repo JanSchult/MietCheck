@@ -7,3 +7,4 @@ class ValidationEngine(private val rules: List<ValidationRule>) {
     fun runAll(current: UtilityBill, previous: UtilityBill?): List<ValidationResult> =
         rules.map { it.evaluate(current, previous) }
 }
+

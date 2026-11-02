@@ -4,6 +4,7 @@ import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
 import com.example.shared.domain.model.ValidationSeverity
 
+/*
 object LivingSpacePresentRule : ValidationRule {
     override val id = "living_space_present"
     override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
@@ -20,3 +21,5 @@ object LivingSpacePresentRule : ValidationRule {
         )
     }
 }
+
+ */

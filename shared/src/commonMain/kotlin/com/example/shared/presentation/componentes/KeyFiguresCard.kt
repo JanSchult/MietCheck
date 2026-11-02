@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.BillOverview
 import com.example.shared.domain.usecase.formatEuro
 import com.example.shared.domain.usecase.formatSignedTenthPercent
-import com.example.shared.presentation.screens.FigureRow
 
 @Composable
  fun KeyFiguresCard(overview: BillOverview) {

@@ -3,7 +3,7 @@ package com.example.shared.validation
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
 import com.example.shared.domain.model.ValidationSeverity
-
+/*
 object BillingPeriodLengthRule : ValidationRule {
     override val id = "billing_period_length"
     override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
@@ -20,3 +20,5 @@ object BillingPeriodLengthRule : ValidationRule {
         )
     }
 }
+
+ */

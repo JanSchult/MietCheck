@@ -3,7 +3,7 @@ package com.example.shared.validation
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
 import com.example.shared.domain.model.ValidationSeverity
-
+/*
 object DuplicateCostItemsRule : ValidationRule {
     override val id = "duplicate_cost_items"
     override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
@@ -23,3 +23,5 @@ object DuplicateCostItemsRule : ValidationRule {
         )
     }
 }
+
+ */

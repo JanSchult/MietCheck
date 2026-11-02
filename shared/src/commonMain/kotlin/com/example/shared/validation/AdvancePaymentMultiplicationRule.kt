@@ -4,7 +4,7 @@ import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
 import com.example.shared.domain.model.ValidationSeverity
 
-
+/*
 object AdvancePaymentMultiplicationRule : ValidationRule {
     override val id = "advance_payment_multiplication"
     override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
@@ -30,3 +30,5 @@ object AdvancePaymentMultiplicationRule : ValidationRule {
 }
 
 fun Long.toEuroString(): String = "%,.2f €".format(this / 100.0)
+
+ */

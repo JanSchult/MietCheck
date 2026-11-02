@@ -25,9 +25,11 @@ import com.example.shared.domain.usecase.ObserveApartmentsUseCase
 import com.example.shared.domain.usecase.ObserveBillsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
+import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
 import com.example.shared.domain.usecase.SaveUtilityBillUseCase
+import com.example.shared.validation.ValidationEngine
 import com.example.shared.viewmodels.ApartmentFormViewModel
 import com.example.shared.viewmodels.ChecksViewModel
 import com.example.shared.viewmodels.DashboardViewModel
@@ -67,7 +69,23 @@ val useCaseModule = module {
 
 
 }
-
+val validationModule = module {
+    single {
+        ValidationEngine(
+            listOf(
+                BillingPeriodLengthRule,
+                IssueDateAfterPeriodEndRule,
+                AdvancePaymentMultiplicationRule,
+                ItemsSumMatchesTotalRule,
+                LivingSpacePresentRule,
+                DuplicateCostItemsRule,
+                YearOverYearDeviationRule,
+                BalanceCalculationRule
+            )
+        )
+    }
+    factory { RunValidationUseCase(get(), get()) }
+}
 val presentationModule = module {
     viewModel { ReminderListViewModel(get(), get(), get()) }
     viewModel { UtilityBillOverviewViewModel(get(), get()) }
@@ -79,4 +97,4 @@ val presentationModule = module {
     viewModel { ChecksViewModel(get(), get(), get()) }
 }
 
-val appModules = listOf(dataModule, useCaseModule, presentationModule,platformModule)
+val appModules = listOf(dataModule, useCaseModule, validationModule, presentationModule,platformModule)

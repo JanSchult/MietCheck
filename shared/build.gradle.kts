@@ -13,7 +13,7 @@ kotlin {
 
     androidLibrary {
         namespace = "com.example.shared"
-        compileSdk = 36
+        compileSdk = 37
         minSdk = 26
 
         withHostTestBuilder {
@@ -90,6 +90,7 @@ kotlin {
                 implementation(libs.sqldelight.android)
                 implementation("net.zetetic:sqlcipher-android:4.5.6@aar")   // Version auf aktuelle 4.x prüfen
                 implementation(libs.androidx.sqlite)                        // androidx.sqlite:sqlite, nicht "bundled"
+                implementation(libs.security.crypto)
             }
         }
 
