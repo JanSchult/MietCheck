@@ -43,3 +43,4 @@ object BillingCalculator {
         bill.totalCostsCents - sumOfItemsCents(bill)
 
 }
+

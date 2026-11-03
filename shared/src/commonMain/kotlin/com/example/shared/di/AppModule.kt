@@ -29,6 +29,11 @@ import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
 import com.example.shared.domain.usecase.SaveUtilityBillUseCase
+import com.example.shared.validation.AdvancePaymentMultiplicationRule
+import com.example.shared.validation.BillingPeriodLengthRule
+import com.example.shared.validation.DuplicateCostItemsRule
+import com.example.shared.validation.IssueDateAfterPeriodEndRule
+import com.example.shared.validation.LivingSpacePresentRule
 import com.example.shared.validation.ValidationEngine
 import com.example.shared.viewmodels.ApartmentFormViewModel
 import com.example.shared.viewmodels.ChecksViewModel
@@ -36,6 +41,7 @@ import com.example.shared.viewmodels.DashboardViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
 import com.example.shared.viewmodels.ReminderFormViewModel
 import com.example.shared.viewmodels.ReminderListViewModel
+import com.example.shared.viewmodels.UtilityBillFormViewModel
 import com.example.shared.viewmodels.UtilityBillOverviewViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -49,41 +55,60 @@ val dataModule = module {
     single<SelectedApartmentRepository> { SqlDelightSelectedApartmentRepository(get()) }
 }
 
+val validationModule = module {
+    single {
+        ValidationEngine(
+            listOf(
+                BillingPeriodLengthRule,
+                IssueDateAfterPeriodEndRule,
+                AdvancePaymentMultiplicationRule,
+                LivingSpacePresentRule,
+                DuplicateCostItemsRule,
+            )
+        )
+    }
+    factory { RunValidationUseCase(get(), get()) }
+}
+
 val useCaseModule = module {
-    factory { ObserveRemindersUseCase(get()) }
-    factory { SaveReminderUseCase(get()) }
-    factory { MarkReminderCompletedUseCase(get()) }
-    factory { DeleteReminderUseCase(get()) }
-    factory { GetUtilityBillUseCase(get()) }
-    factory { BuildLetterDraftUseCase() }
+    // Wohnung
     factory { ObserveApartmentsUseCase(get()) }
     factory { GetApartmentUseCase(get()) }
     factory { SaveApartmentUseCase(get()) }
     factory { DeleteApartmentUseCase(get()) }
-    factory { BuildLetterContextUseCase(get(), get()) }
-    factory { ObserveRecentDocumentsUseCase(get()) }
-    factory { GetOpenChecksUseCase(get(), get()) }
+    // Abrechnung
+    factory { GetUtilityBillUseCase(get()) }
     factory { SaveUtilityBillUseCase(get()) }
-    factory { BuildBillOverviewUseCase(get(), get()) }
     factory { ObserveBillsUseCase(get()) }
-
-
+    factory { BuildBillOverviewUseCase(get(), get()) }
+    factory { GetOpenChecksUseCase(get(), get()) }
+    // Fristen
+    factory { ObserveRemindersUseCase(get()) }
+    factory { SaveReminderUseCase(get()) }
+    factory { MarkReminderCompletedUseCase(get()) }
+    factory { DeleteReminderUseCase(get()) }
+    // Dokumente
+    factory { ObserveRecentDocumentsUseCase(get()) }
+    // Schreiben
+    factory { BuildLetterContextUseCase(get(), get()) }
+    factory { BuildLetterDraftUseCase() }
 }
-val validationModule = module {
-    single {
-        ValidationEngine(get())
-    }
-    factory { RunValidationUseCase(get(), get()) }
-}
+
 val presentationModule = module {
-    viewModel { ReminderListViewModel(get(), get(), get()) }
+    viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
+    viewModel { ApartmentFormViewModel(get(), get()) }
+    viewModel { UtilityBillFormViewModel(get(), get()) }
     viewModel { UtilityBillOverviewViewModel(get(), get()) }
+    viewModel { ChecksViewModel(get(), get(), get()) }
     viewModel { LetterEditorViewModel(get(), get()) }
-    viewModel { ApartmentFormViewModel(get(),get()) }
-    viewModel { DashboardViewModel(get(), get(), get(), get(),get()) }
     viewModel { ReminderListViewModel(get(), get(), get()) }
     viewModel { ReminderFormViewModel(get()) }
-    viewModel { ChecksViewModel(get(), get(), get()) }
 }
 
-val appModules = listOf(dataModule, useCaseModule, validationModule, presentationModule,platformModule)
+val appModules = listOf(
+    dataModule,
+    useCaseModule,
+    validationModule,
+    presentationModule,
+    platformModule
+)
