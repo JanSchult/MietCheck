@@ -71,18 +71,7 @@ val useCaseModule = module {
 }
 val validationModule = module {
     single {
-        ValidationEngine(
-            listOf(
-                BillingPeriodLengthRule,
-                IssueDateAfterPeriodEndRule,
-                AdvancePaymentMultiplicationRule,
-                ItemsSumMatchesTotalRule,
-                LivingSpacePresentRule,
-                DuplicateCostItemsRule,
-                YearOverYearDeviationRule,
-                BalanceCalculationRule
-            )
-        )
+        ValidationEngine(get())
     }
     factory { RunValidationUseCase(get(), get()) }
 }
