@@ -32,6 +32,9 @@ import com.example.shared.domain.model.QuickAction
 import com.example.shared.presentation.screens.ApartmentFormScreen
 import com.example.shared.presentation.screens.ChecksScreen
 import com.example.shared.presentation.screens.DashboardScreen
+import com.example.shared.presentation.screens.DefectDetailScreen
+import com.example.shared.presentation.screens.DefectFormScreen
+import com.example.shared.presentation.screens.DefectsScreen
 import com.example.shared.presentation.screens.LetterEditorScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
@@ -98,6 +101,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onQuickAction = { action, _ ->
                         // apartmentId wird später über einen geteilten "ausgewählte Wohnung"-State gelöst
                         when (action) {
+
                             QuickAction.CHECK_BILL -> navController.navigateToTab(topLevelTabs[2])
                             QuickAction.ADD_DOCUMENT -> navController.navigateToTab(topLevelTabs[1])
                             QuickAction.DOCUMENT_DEFECT -> navController.navigateToTab(topLevelTabs[3])
@@ -120,8 +124,23 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onOpenBill = { billId -> navController.navigate(BillRoute(billId)) }
                 )
             }
-            composable<DefectsRoute> { PlaceholderScreen("Mängel") }
-
+            composable<DefectsRoute> {
+                DefectsScreen(
+                    onAddDefect = { navController.navigate(AddDefectRoute) },
+                    onOpenDefect = { id -> navController.navigate(DefectDetailRoute(id)) }
+                )
+            }
+            composable<AddDefectRoute> {
+                DefectFormScreen(onSaved = { navController.popBackStack() }, onShowError = showError)
+            }
+            composable<DefectDetailRoute> { entry ->
+                val route = entry.toRoute<DefectDetailRoute>()
+                DefectDetailScreen(
+                    defectId = route.defectId,
+                    onDeleted = { navController.popBackStack() },
+                    onShowError = showError
+                )
+            }
             composable<AddApartmentRoute> {
                 ApartmentFormScreen(
                     onSaved = { navController.popBackStack() },
@@ -199,5 +218,7 @@ private fun titleFor(destination: NavDestination?): String = when {
     destination.hasRoute<AddApartmentRoute>() -> "Wohnung anlegen"
     destination.hasRoute<RemindersRoute>() -> "Fristen"
     destination.hasRoute<AddReminderRoute>() -> "Frist hinzufügen"
+    destination.hasRoute<AddDefectRoute>() -> "Mangel erfassen"
+    destination.hasRoute<DefectDetailRoute>() -> "Mangel"
     else -> ""
 }

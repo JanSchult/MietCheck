@@ -43,6 +43,9 @@ class SqlDelightApartmentRepository(
             db.utilityBillQueries.deleteBillsForApartment(id.value)
             db.reminderQueries.deleteRemindersForApartment(id.value)
             db.documentQueries.deleteDocumentsForApartment(id.value)
+            db.defectQueries.deleteCommunicationsForApartment(id.value)   // vor den Mängeln löschen
+            db.defectQueries.deleteMediaForApartment(id.value)
+            db.defectQueries.deleteDefectsForApartment(id.value)
             q.deleteApartment(id.value)
             // Jede Wohnung legt ihren eigenen Vermieter an, deshalb kann er mit gelöscht werden.
             landlordId?.let { q.deleteLandlord(it) }

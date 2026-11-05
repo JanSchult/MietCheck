@@ -2,14 +2,22 @@ package com.example.shared.data.mapper
 
 
 import com.example.shared.data.local.ApartmentEntity
+import com.example.shared.data.local.CommunicationEntity
 import com.example.shared.data.local.CostItemEntity
+import com.example.shared.data.local.DefectEntity
+import com.example.shared.data.local.DefectMediaEntity
 import com.example.shared.data.local.DocumentEntity
 import com.example.shared.data.local.LandlordEntity
 import com.example.shared.data.local.ReminderEntity
 import com.example.shared.data.local.UtilityBillEntity
 import com.example.shared.domain.model.Address
 import com.example.shared.domain.model.Apartment
+import com.example.shared.domain.model.Communication
+import com.example.shared.domain.model.CommunicationDirection
 import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.Defect
+import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.model.DefectUrgency
 import com.example.shared.domain.model.DocumentRecord
 import com.example.shared.domain.model.DocumentType
 import com.example.shared.domain.model.LandlordContact
@@ -19,7 +27,9 @@ import com.example.shared.domain.model.ReminderType
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.UtilityCostItem
 import com.example.shared.domain.model.ids.ApartmentId
+import com.example.shared.domain.model.ids.CommunicationId
 import com.example.shared.domain.model.ids.CostItemId
+import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.model.ids.DocumentId
 import com.example.shared.domain.model.ids.LandlordContactId
 import com.example.shared.domain.model.ids.ReminderId
@@ -200,4 +210,55 @@ internal fun DocumentRecord.toEntity() = DocumentEntity(
     pageCount = pageCount.toLong(),
     importedAt = importedAt.toEpochMilliseconds(),
     sourceHash = sourceHash
+)
+
+// ---------- Defect / Communication ----------
+
+@OptIn(ExperimentalTime::class)
+internal fun DefectEntity.toDomain(
+    media: List<DefectMediaEntity>,
+    communications: List<CommunicationEntity>
+) = Defect(
+    id = DefectId(id),
+    apartmentId = ApartmentId(apartmentId),
+    room = room,
+    description = description,
+    urgency = enumOrDefault(urgency, DefectUrgency.MEDIUM),
+    status = enumOrDefault(status, DefectStatus.NEW),
+    mediaFilePaths = media.sortedBy { it.position }.map { it.filePath },
+    reportedAt = reportedAt?.let { Instant.fromEpochMilliseconds(it) },
+    createdAt = Instant.fromEpochMilliseconds(createdAt),
+    communications = communications.sortedByDescending { it.occurredAt }.map { it.toDomain() }
+)
+
+@OptIn(ExperimentalTime::class)
+internal fun Defect.toEntity() = DefectEntity(
+    id = id.value,
+    apartmentId = apartmentId.value,
+    room = room,
+    description = description,
+    urgency = urgency.name,
+    status = status.name,
+    reportedAt = reportedAt?.toEpochMilliseconds(),
+    createdAt = createdAt.toEpochMilliseconds()
+)
+
+@OptIn(ExperimentalTime::class)
+internal fun CommunicationEntity.toDomain() = Communication(
+    id = CommunicationId(id),
+    defectId = defectId?.let { DefectId(it) },
+    direction = enumOrDefault(direction, CommunicationDirection.OUTGOING),
+    summary = summary,
+    documentId = documentId?.let { DocumentId(it) },
+    occurredAt = Instant.fromEpochMilliseconds(occurredAt)
+)
+
+@OptIn(ExperimentalTime::class)
+internal fun Communication.toEntity() = CommunicationEntity(
+    id = id.value,
+    defectId = defectId?.value,
+    direction = direction.name,
+    summary = summary,
+    documentId = documentId?.value,
+    occurredAt = occurredAt.toEpochMilliseconds()
 )

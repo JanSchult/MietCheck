@@ -3,19 +3,23 @@ package com.example.shared.di
 import app.cash.sqldelight.db.SqlDriver
 import com.example.shared.data.local.MietCheckDatabase
 import com.example.shared.data.repositorys.SqlDelightApartmentRepository
+import com.example.shared.data.repositorys.SqlDelightDefectRepository
 import com.example.shared.data.repositorys.SqlDelightDocumentRepository
 import com.example.shared.data.repositorys.SqlDelightReminderRepository
 import com.example.shared.data.repositorys.SqlDelightSelectedApartmentRepository
 import com.example.shared.data.repositorys.SqlDelightUtilityBillRepository
 import com.example.shared.domain.repository.ApartmentRepository
+import com.example.shared.domain.repository.DefectRepository
 import com.example.shared.domain.repository.DocumentRepository
 import com.example.shared.domain.repository.ReminderRepository
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.repository.UtilityBillRepository
+import com.example.shared.domain.usecase.AddCommunicationUseCase
 import com.example.shared.domain.usecase.BuildBillOverviewUseCase
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
 import com.example.shared.domain.usecase.DeleteApartmentUseCase
+import com.example.shared.domain.usecase.DeleteDefectUseCase
 import com.example.shared.domain.usecase.DeleteReminderUseCase
 import com.example.shared.domain.usecase.GetApartmentUseCase
 import com.example.shared.domain.usecase.GetOpenChecksUseCase
@@ -23,12 +27,16 @@ import com.example.shared.domain.usecase.GetUtilityBillUseCase
 import com.example.shared.domain.usecase.MarkReminderCompletedUseCase
 import com.example.shared.domain.usecase.ObserveApartmentsUseCase
 import com.example.shared.domain.usecase.ObserveBillsUseCase
+import com.example.shared.domain.usecase.ObserveDefectUseCase
+import com.example.shared.domain.usecase.ObserveDefectsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
+import com.example.shared.domain.usecase.SaveDefectUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
 import com.example.shared.domain.usecase.SaveUtilityBillUseCase
+import com.example.shared.domain.usecase.UpdateDefectStatusUseCase
 import com.example.shared.validation.AdvancePaymentMultiplicationRule
 import com.example.shared.validation.BillingPeriodLengthRule
 import com.example.shared.validation.DuplicateCostItemsRule
@@ -38,6 +46,9 @@ import com.example.shared.validation.ValidationEngine
 import com.example.shared.viewmodels.ApartmentFormViewModel
 import com.example.shared.viewmodels.ChecksViewModel
 import com.example.shared.viewmodels.DashboardViewModel
+import com.example.shared.viewmodels.DefectDetailViewModel
+import com.example.shared.viewmodels.DefectFormViewModel
+import com.example.shared.viewmodels.DefectsViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
 import com.example.shared.viewmodels.ReminderFormViewModel
 import com.example.shared.viewmodels.ReminderListViewModel
@@ -53,6 +64,8 @@ val dataModule = module {
     single<ReminderRepository> { SqlDelightReminderRepository(get()) }
     single<DocumentRepository> { SqlDelightDocumentRepository(get()) }
     single<SelectedApartmentRepository> { SqlDelightSelectedApartmentRepository(get()) }
+    single<DefectRepository> { SqlDelightDefectRepository(get()) }
+
 }
 
 val validationModule = module {
@@ -92,6 +105,13 @@ val useCaseModule = module {
     // Schreiben
     factory { BuildLetterContextUseCase(get(), get()) }
     factory { BuildLetterDraftUseCase() }
+    // Mängel
+    factory { ObserveDefectsUseCase(get()) }
+    factory { ObserveDefectUseCase(get()) }
+    factory { SaveDefectUseCase(get()) }
+    factory { UpdateDefectStatusUseCase(get()) }
+    factory { AddCommunicationUseCase(get()) }
+    factory { DeleteDefectUseCase(get()) }
 }
 
 val presentationModule = module {
@@ -103,6 +123,9 @@ val presentationModule = module {
     viewModel { LetterEditorViewModel(get(), get()) }
     viewModel { ReminderListViewModel(get(), get(), get()) }
     viewModel { ReminderFormViewModel(get()) }
+    viewModel { DefectsViewModel(get(), get()) }
+    viewModel { DefectFormViewModel(get(), get()) }
+    viewModel { DefectDetailViewModel(get(), get(), get(), get()) }
 }
 
 val appModules = listOf(

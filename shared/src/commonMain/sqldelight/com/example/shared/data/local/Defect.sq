@@ -1,0 +1,83 @@
+-- Defect.sq (neben Apartment.sq)
+CREATE TABLE DefectEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    apartmentId TEXT NOT NULL,
+    room TEXT NOT NULL,
+    description TEXT NOT NULL,
+    urgency TEXT NOT NULL,
+    status TEXT NOT NULL,
+    reportedAt INTEGER,
+    createdAt INTEGER NOT NULL
+);
+CREATE INDEX defect_apartment_idx ON DefectEntity(apartmentId);
+
+CREATE TABLE DefectMediaEntity (
+    defectId TEXT NOT NULL,
+    position INTEGER NOT NULL,
+    filePath TEXT NOT NULL,
+    PRIMARY KEY (defectId, position)
+);
+
+CREATE TABLE CommunicationEntity (
+    id TEXT NOT NULL PRIMARY KEY,
+    defectId TEXT,
+    direction TEXT NOT NULL,
+    summary TEXT NOT NULL,
+    documentId TEXT,
+    occurredAt INTEGER NOT NULL
+);
+CREATE INDEX communication_defect_idx ON CommunicationEntity(defectId);
+
+selectDefectsForApartment:
+SELECT * FROM DefectEntity WHERE apartmentId = ? ORDER BY createdAt DESC;
+
+selectDefectById:
+SELECT * FROM DefectEntity WHERE id = ?;
+
+upsertDefect:
+INSERT OR REPLACE INTO DefectEntity VALUES ?;
+
+setDefectStatus:
+UPDATE DefectEntity SET status = ?, reportedAt = ? WHERE id = ?;
+
+deleteDefect:
+DELETE FROM DefectEntity WHERE id = ?;
+
+selectMediaForDefect:
+SELECT * FROM DefectMediaEntity WHERE defectId = ? ORDER BY position;
+
+selectMediaForApartment:
+SELECT * FROM DefectMediaEntity
+WHERE defectId IN (SELECT id FROM DefectEntity WHERE apartmentId = ?)
+ORDER BY position;
+
+insertMedia:
+INSERT OR REPLACE INTO DefectMediaEntity VALUES ?;
+
+deleteMediaForDefect:
+DELETE FROM DefectMediaEntity WHERE defectId = ?;
+
+selectCommunicationsForDefect:
+SELECT * FROM CommunicationEntity WHERE defectId = ? ORDER BY occurredAt DESC;
+
+selectCommunicationsForApartment:
+SELECT * FROM CommunicationEntity
+WHERE defectId IN (SELECT id FROM DefectEntity WHERE apartmentId = ?)
+ORDER BY occurredAt DESC;
+
+upsertCommunication:
+INSERT OR REPLACE INTO CommunicationEntity VALUES ?;
+
+deleteCommunicationsForDefect:
+DELETE FROM CommunicationEntity WHERE defectId = ?;
+
+deleteDefectsForApartment:
+DELETE FROM DefectEntity WHERE apartmentId = ?;
+
+deleteMediaForApartment:
+DELETE FROM DefectMediaEntity
+WHERE defectId IN (SELECT id FROM DefectEntity WHERE apartmentId = ?);
+
+deleteCommunicationsForApartment:
+DELETE FROM CommunicationEntity
+WHERE defectId IN (SELECT id FROM DefectEntity WHERE apartmentId = ?);
