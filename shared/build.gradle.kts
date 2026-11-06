@@ -91,6 +91,8 @@ kotlin {
                 implementation("net.zetetic:sqlcipher-android:4.5.6@aar")   // Version auf aktuelle 4.x prüfen
                 implementation(libs.androidx.sqlite)                        // androidx.sqlite:sqlite, nicht "bundled"
                 implementation(libs.security.crypto)
+                implementation(libs.play.services.mlkit.document.scanner)
+                implementation(libs.androidx.activity.compose)
             }
         }
 
