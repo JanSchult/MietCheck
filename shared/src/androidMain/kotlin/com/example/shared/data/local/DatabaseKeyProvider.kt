@@ -16,15 +16,17 @@ internal class DatabaseKeyProvider(context: Context) {
 
     private val prefs = context.getSharedPreferences("mietcheck_secure", Context.MODE_PRIVATE)
 
-    fun getOrCreatePassphrase(): ByteArray {
-        prefs.getString(PREF_KEY, null)?.let { stored ->
+    fun getOrCreatePassphrase(): ByteArray = getOrCreateSecret(PREF_DB)
+    fun getOrCreateFileKey(): ByteArray = getOrCreateSecret(PREF_FILE)
+
+    private fun getOrCreateSecret(prefKey: String): ByteArray {
+        prefs.getString(prefKey, null)?.let { stored ->
             return decrypt(Base64.decode(stored, Base64.NO_WRAP))
         }
-        val passphrase = ByteArray(32).also { SecureRandom().nextBytes(it) }
-        val encoded = Base64.encodeToString(encrypt(passphrase), Base64.NO_WRAP)
-        // commit() statt apply(): Das Passwort muss gesichert sein, bevor die Datenbank damit angelegt wird.
-        check(prefs.edit().putString(PREF_KEY, encoded).commit()) { "Schlüssel konnte nicht gespeichert werden" }
-        return passphrase
+        val secret = ByteArray(32).also { SecureRandom().nextBytes(it) }
+        val encoded = Base64.encodeToString(encrypt(secret), Base64.NO_WRAP)
+        check(prefs.edit().putString(prefKey, encoded).commit()) { "Schlüssel konnte nicht gespeichert werden" }
+        return secret
     }
 
     private fun secretKey(): SecretKey {
@@ -60,7 +62,8 @@ internal class DatabaseKeyProvider(context: Context) {
     private companion object {
         const val ANDROID_KEYSTORE = "AndroidKeyStore"
         const val KEY_ALIAS = "mietcheck_db_key"
-        const val PREF_KEY = "db_passphrase"
+        const val PREF_DB = "db_passphrase"      // gleicher Wert wie bisher, bestehende Installationen laufen weiter
+        const val PREF_FILE = "file_key"
         const val TRANSFORMATION = "AES/GCM/NoPadding"
         const val IV_SIZE = 12
     }
