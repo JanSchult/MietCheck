@@ -17,3 +17,4 @@ import kotlinx.serialization.Serializable
 @Serializable data class AddReminderRoute(val apartmentId: String)
 @Serializable data object AddDefectRoute
 @Serializable data class DefectDetailRoute(val defectId: String)
+@Serializable data class DocumentDetailRoute(val documentId: String)

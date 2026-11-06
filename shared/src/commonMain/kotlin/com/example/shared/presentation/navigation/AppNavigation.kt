@@ -35,6 +35,8 @@ import com.example.shared.presentation.screens.DashboardScreen
 import com.example.shared.presentation.screens.DefectDetailScreen
 import com.example.shared.presentation.screens.DefectFormScreen
 import com.example.shared.presentation.screens.DefectsScreen
+import com.example.shared.presentation.screens.DocumentDetailScreen
+import com.example.shared.presentation.screens.DocumentsScreen
 import com.example.shared.presentation.screens.LetterEditorScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
@@ -117,7 +119,20 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     )
             }
 
-            composable<DocumentsRoute> { PlaceholderScreen("Dokumente") }
+            composable<DocumentsRoute> {
+                DocumentsScreen(
+                    onOpenDocument = { id -> navController.navigate(DocumentDetailRoute(id)) },
+                    onShowMessage = showError
+                )
+            }
+            composable<DocumentDetailRoute> { entry ->
+                val route = entry.toRoute<DocumentDetailRoute>()
+                DocumentDetailScreen(
+                    documentId = route.documentId,
+                    onDeleted = { navController.popBackStack() },
+                    onShowMessage = showError
+                )
+            }
             composable<ChecksRoute> {
                 ChecksScreen(
                     onAddBill = { apartmentId -> navController.navigate(UtilityBillFormRoute(apartmentId)) },
@@ -220,5 +235,6 @@ private fun titleFor(destination: NavDestination?): String = when {
     destination.hasRoute<AddReminderRoute>() -> "Frist hinzufügen"
     destination.hasRoute<AddDefectRoute>() -> "Mangel erfassen"
     destination.hasRoute<DefectDetailRoute>() -> "Mangel"
+    destination.hasRoute<DocumentDetailRoute>() -> "Dokument"
     else -> ""
 }

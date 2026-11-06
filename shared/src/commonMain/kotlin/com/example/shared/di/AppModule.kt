@@ -20,15 +20,19 @@ import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
 import com.example.shared.domain.usecase.DeleteApartmentUseCase
 import com.example.shared.domain.usecase.DeleteDefectUseCase
+import com.example.shared.domain.usecase.DeleteDocumentUseCase
 import com.example.shared.domain.usecase.DeleteReminderUseCase
 import com.example.shared.domain.usecase.GetApartmentUseCase
+import com.example.shared.domain.usecase.GetDocumentUseCase
 import com.example.shared.domain.usecase.GetOpenChecksUseCase
 import com.example.shared.domain.usecase.GetUtilityBillUseCase
+import com.example.shared.domain.usecase.ImportDocumentUseCase
 import com.example.shared.domain.usecase.MarkReminderCompletedUseCase
 import com.example.shared.domain.usecase.ObserveApartmentsUseCase
 import com.example.shared.domain.usecase.ObserveBillsUseCase
 import com.example.shared.domain.usecase.ObserveDefectUseCase
 import com.example.shared.domain.usecase.ObserveDefectsUseCase
+import com.example.shared.domain.usecase.ObserveDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
@@ -36,7 +40,9 @@ import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveDefectUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
 import com.example.shared.domain.usecase.SaveUtilityBillUseCase
+import com.example.shared.domain.usecase.ShareDocumentUseCase
 import com.example.shared.domain.usecase.UpdateDefectStatusUseCase
+import com.example.shared.domain.usecase.UpdateDocumentUseCase
 import com.example.shared.validation.AdvancePaymentMultiplicationRule
 import com.example.shared.validation.BillingPeriodLengthRule
 import com.example.shared.validation.DuplicateCostItemsRule
@@ -49,6 +55,8 @@ import com.example.shared.viewmodels.DashboardViewModel
 import com.example.shared.viewmodels.DefectDetailViewModel
 import com.example.shared.viewmodels.DefectFormViewModel
 import com.example.shared.viewmodels.DefectsViewModel
+import com.example.shared.viewmodels.DocumentDetailViewModel
+import com.example.shared.viewmodels.DocumentsViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
 import com.example.shared.viewmodels.ReminderFormViewModel
 import com.example.shared.viewmodels.ReminderListViewModel
@@ -112,6 +120,13 @@ val useCaseModule = module {
     factory { UpdateDefectStatusUseCase(get()) }
     factory { AddCommunicationUseCase(get()) }
     factory { DeleteDefectUseCase(get()) }
+    factory { ObserveDocumentsUseCase(get()) }
+    factory { GetDocumentUseCase(get()) }
+    factory { ImportDocumentUseCase(get(), get()) }
+    factory { UpdateDocumentUseCase(get()) }
+    factory { DeleteDocumentUseCase(get(), get()) }
+    factory { ShareDocumentUseCase(get(), get(), get()) }
+
 }
 
 val presentationModule = module {
@@ -126,6 +141,8 @@ val presentationModule = module {
     viewModel { DefectsViewModel(get(), get()) }
     viewModel { DefectFormViewModel(get(), get()) }
     viewModel { DefectDetailViewModel(get(), get(), get(), get()) }
+    viewModel { DocumentsViewModel(get(), get(), get()) }
+    viewModel { DocumentDetailViewModel(get(), get(), get(), get(), get()) }
 }
 
 val appModules = listOf(
