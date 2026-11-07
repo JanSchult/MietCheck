@@ -1,9 +1,17 @@
 package com.example.shared.domain.lock
 
+import com.example.shared.domain.platform.PinHasher
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
 const val PIN_LENGTH = 6
 const val DEFAULT_TIMEOUT_SECONDS = 60
@@ -126,7 +134,7 @@ class AppLockManager(
             val seconds = lockoutRemainingSeconds()
             emit(seconds)
             if (seconds <= 0) break
-            delay(1000)
+            delay(1000.milliseconds)
         }
     }
 
@@ -161,6 +169,7 @@ class AppLockManager(
         else LOCKOUT_SCHEDULE_SECONDS[(attempts - FREE_ATTEMPTS).coerceAtMost(LOCKOUT_SCHEDULE_SECONDS.lastIndex)]
 
     private fun secondsUntil(millis: Long): Long = (millis + 999) / 1000
+    @OptIn(ExperimentalTime::class)
     private fun nowMillis(): Long = Clock.System.now().toEpochMilliseconds()
 }
 
