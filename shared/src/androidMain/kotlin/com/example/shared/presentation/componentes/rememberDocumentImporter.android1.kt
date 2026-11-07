@@ -1,5 +1,4 @@
-// androidMain: presentation/platform/DocumentImporter.android.kt
-package com.example.shared.presentation.platform
+package com.example.shared.presentation.componentes
 
 import android.app.Activity
 import android.content.ContentResolver
@@ -17,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
+import com.example.shared.domain.lock.AppLockManager
 import com.example.shared.domain.model.ImportedFile
 import com.example.shared.domain.model.MAX_IMPORT_BYTES
 import com.example.shared.domain.model.detectMimeType
@@ -27,6 +27,7 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.compose.koinInject
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
@@ -38,13 +39,13 @@ import java.util.Locale
 @Composable
 actual fun rememberDocumentImporter(
     onImported: (ImportedFile) -> Unit,
-    onError: (String) -> Unit
+    onError: (String) -> Unit,
 ): DocumentImporter {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val latestImported by rememberUpdatedState(onImported)
     val latestError by rememberUpdatedState(onError)
-
+    val lockManager = koinInject<AppLockManager>()
     fun deliver(uri: Uri, pageCount: Int?, fallbackName: String?, deleteAfter: Boolean) {
         scope.launch {
             readImport(context, uri, pageCount, fallbackName)
@@ -72,10 +73,12 @@ actual fun rememberDocumentImporter(
             override val canScan = true
 
             override fun pickFile() {
+                lockManager.beginExternalFlow()
                 pickLauncher.launch(arrayOf("application/pdf", "image/jpeg", "image/png"))
             }
 
             override fun scan() {
+                lockManager.beginExternalFlow()
                 val activity = context.findActivity()
                 if (activity == null) {
                     latestError("Der Scanner konnte nicht gestartet werden.")

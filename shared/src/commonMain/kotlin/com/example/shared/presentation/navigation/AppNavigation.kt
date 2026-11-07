@@ -28,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.shared.domain.lock.PinMode
 import com.example.shared.domain.model.QuickAction
 import com.example.shared.presentation.screens.ApartmentFormScreen
 import com.example.shared.presentation.screens.ChecksScreen
@@ -38,9 +39,11 @@ import com.example.shared.presentation.screens.DefectsScreen
 import com.example.shared.presentation.screens.DocumentDetailScreen
 import com.example.shared.presentation.screens.DocumentsScreen
 import com.example.shared.presentation.screens.LetterEditorScreen
+import com.example.shared.presentation.screens.PinSetupScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
 import com.example.shared.presentation.screens.ReminderListScreen
+import com.example.shared.presentation.screens.SettingsScreen
 import com.example.shared.presentation.screens.UtilityBillFormScreen
 import com.example.shared.presentation.screens.UtilityBillOverviewScreen
 import kotlinx.coroutines.launch
@@ -114,6 +117,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onAddApartment = { navController.navigate(AddApartmentRoute) },
                     onOpenBill = { billId -> navController.navigate(BillRoute(billId)) },
                     onOpenReminders = { apartmentId -> navController.navigate(RemindersRoute(apartmentId)) },
+                    onOpenSettings = { navController.navigate(SettingsRoute) },
 
 
                     )
@@ -211,7 +215,23 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onShowError = showError
                 )
             }
-
+            composable<SettingsRoute> {
+                SettingsScreen(
+                    onSetupPin = { navController.navigate(PinSetupRoute(PinMode.SETUP.name)) },
+                    onChangePin = { navController.navigate(PinSetupRoute(PinMode.CHANGE.name)) },
+                    onRemovePin = { navController.navigate(PinSetupRoute(PinMode.REMOVE.name)) },
+                    onShowMessage = showError
+                )
+            }
+            composable<PinSetupRoute> { entry ->
+                val route = entry.toRoute<PinSetupRoute>()
+                val mode = PinMode.valueOf(route.mode)
+                PinSetupScreen(
+                    mode = mode,
+                    offerBiometric = mode == PinMode.SETUP,
+                    onDone = { navController.popBackStack() }
+                )
+            }
         }
     }
 }
@@ -236,5 +256,7 @@ private fun titleFor(destination: NavDestination?): String = when {
     destination.hasRoute<AddDefectRoute>() -> "Mangel erfassen"
     destination.hasRoute<DefectDetailRoute>() -> "Mangel"
     destination.hasRoute<DocumentDetailRoute>() -> "Dokument"
+    destination.hasRoute<SettingsRoute>() -> "Einstellungen"
+    destination.hasRoute<PinSetupRoute>() -> "PIN"
     else -> ""
 }

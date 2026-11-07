@@ -18,3 +18,5 @@ import kotlinx.serialization.Serializable
 @Serializable data object AddDefectRoute
 @Serializable data class DefectDetailRoute(val defectId: String)
 @Serializable data class DocumentDetailRoute(val documentId: String)
+@Serializable data object SettingsRoute
+@Serializable data class PinSetupRoute(val mode: String)

@@ -3,11 +3,14 @@ package com.example.shared.di
 import app.cash.sqldelight.db.SqlDriver
 import com.example.shared.data.local.MietCheckDatabase
 import com.example.shared.data.repositorys.SqlDelightApartmentRepository
+import com.example.shared.data.repositorys.SqlDelightAppLockRepository
 import com.example.shared.data.repositorys.SqlDelightDefectRepository
 import com.example.shared.data.repositorys.SqlDelightDocumentRepository
 import com.example.shared.data.repositorys.SqlDelightReminderRepository
 import com.example.shared.data.repositorys.SqlDelightSelectedApartmentRepository
 import com.example.shared.data.repositorys.SqlDelightUtilityBillRepository
+import com.example.shared.domain.lock.AppLockManager
+import com.example.shared.domain.lock.AppLockRepository
 import com.example.shared.domain.repository.ApartmentRepository
 import com.example.shared.domain.repository.DefectRepository
 import com.example.shared.domain.repository.DocumentRepository
@@ -58,8 +61,12 @@ import com.example.shared.viewmodels.DefectsViewModel
 import com.example.shared.viewmodels.DocumentDetailViewModel
 import com.example.shared.viewmodels.DocumentsViewModel
 import com.example.shared.viewmodels.LetterEditorViewModel
+import com.example.shared.viewmodels.LockViewModel
+import com.example.shared.viewmodels.OnboardingViewModel
+import com.example.shared.viewmodels.PinSetupViewModel
 import com.example.shared.viewmodels.ReminderFormViewModel
 import com.example.shared.viewmodels.ReminderListViewModel
+import com.example.shared.viewmodels.SettingsViewModel
 import com.example.shared.viewmodels.UtilityBillFormViewModel
 import com.example.shared.viewmodels.UtilityBillOverviewViewModel
 import org.koin.core.module.dsl.viewModel
@@ -73,6 +80,8 @@ val dataModule = module {
     single<DocumentRepository> { SqlDelightDocumentRepository(get()) }
     single<SelectedApartmentRepository> { SqlDelightSelectedApartmentRepository(get()) }
     single<DefectRepository> { SqlDelightDefectRepository(get()) }
+    single<AppLockRepository> { SqlDelightAppLockRepository(get()) }
+    single { AppLockManager(get(), get()) }
 
 }
 
@@ -143,6 +152,10 @@ val presentationModule = module {
     viewModel { DefectDetailViewModel(get(), get(), get(), get()) }
     viewModel { DocumentsViewModel(get(), get(), get()) }
     viewModel { DocumentDetailViewModel(get(), get(), get(), get(), get()) }
+    viewModel { LockViewModel(get(), get(), get()) }
+    viewModel { PinSetupViewModel(get(), get()) }
+    viewModel { OnboardingViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get(), get()) }
 }
 
 val appModules = listOf(

@@ -5,11 +5,12 @@ import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
+import com.example.shared.domain.lock.AppLockManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class AndroidFileSharer(private val context: Context) : FileSharer {
+class AndroidFileSharer(private val context: Context, private val lockManager: AppLockManager) : FileSharer {
 
     private val dir = File(context.cacheDir, "shared")
 
@@ -18,6 +19,8 @@ class AndroidFileSharer(private val context: Context) : FileSharer {
     private fun clear() { dir.listFiles()?.forEach { it.delete() } }
 
     override suspend fun shareFile(bytes: ByteArray, fileName: String, mimeType: String) {
+        lockManager.beginExternalFlow()
+
         val file = withContext(Dispatchers.IO) {
             dir.mkdirs()
             clear()                                  // immer nur eine temporäre Datei
