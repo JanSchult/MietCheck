@@ -27,12 +27,14 @@ kotlin {
     }
 
     val xcfName = "sharedKit"
-
+/*
     iosX64 {
         binaries.framework {
             baseName = xcfName
         }
     }
+
+ */
 
     iosArm64 {
         binaries.framework {
@@ -70,6 +72,7 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
                 implementation(libs.navigation.compose)
+                implementation(libs.androidx.lifecycle.process)
             }
         }
 

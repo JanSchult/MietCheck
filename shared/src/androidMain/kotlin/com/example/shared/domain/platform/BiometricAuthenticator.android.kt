@@ -12,6 +12,10 @@ import kotlin.coroutines.resume
 actual class BiometricAuthenticator(
     private val activityProvider: CurrentActivityProvider
 ) {
+    actual fun isAvailable(): Boolean {
+        val activity = activityProvider.current ?: return false
+        return BiometricManager.from(activity).canAuthenticate(BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
+    }
     /** true nur bei erfolgreicher Biometrie. Abbruch, Fehler oder fehlende Biometrie ergeben false. */
     actual suspend fun authenticate(): Boolean {
         val activity = activityProvider.current ?: return false
