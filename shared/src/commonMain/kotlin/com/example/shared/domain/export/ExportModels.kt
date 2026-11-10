@@ -118,7 +118,7 @@ internal fun UtilityBill.toExport() = ExportBill(
 
 @OptIn(ExperimentalTime::class)
 internal fun Reminder.toExport() =
-    ExportReminder(type.name, title, dueAt.toString(), recurrenceRule?.name ?:, isCompleted)
+    ExportReminder(type.name, title, dueAt.toString(), recurrenceRule?.name ?:"", isCompleted)
 
 @OptIn(ExperimentalTime::class)
 internal fun Defect.toExport() = ExportDefect(
