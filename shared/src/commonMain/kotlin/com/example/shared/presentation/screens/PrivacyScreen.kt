@@ -25,8 +25,9 @@ private val PRIVACY_SECTIONS = listOf(
 
     "Welche Daten die App verarbeitet" to
             "Nur Angaben, die du selbst eingibst oder importierst: Wohnung (Adresse, Fläche, Bewohner, Mietbeginn, " +
-            "Vorauszahlungen), Kontaktdaten des Vermieters, Nebenkostenabrechnungen, Mängel samt Verlauf, Fristen " +
-            "sowie importierte oder gescannte Dokumente.",
+            "Vorauszahlungen), Kontaktdaten des Vermieters, Nebenkostenabrechnungen, Mängel samt Verlauf, Fristen, " +
+            "importierte oder gescannte Dokumente sowie Fotos und Videos zu Mängeln.",
+
 
     "Wie die Daten geschützt werden" to
             "Die Datenbank ist verschlüsselt, Dokumente werden einzeln mit AES-256 verschlüsselt abgelegt. " +
@@ -45,9 +46,14 @@ private val PRIVACY_SECTIONS = listOf(
             "werden die Bilder auf dem Gerät verarbeitet. Google kann dabei technische Nutzungsdaten nach den " +
             "eigenen Datenschutzbestimmungen verarbeiten. [Aktuelle Angaben von Google prüfen und hier ergänzen]",
 
+    "Kamera, Fotos und Videos" to
+            "Fotos und Videos nimmt die Kamera-App deines Geräts auf, die Auswahl aus der Galerie läuft über den " +
+            "Foto-Dialog des Systems. Die Aufnahme liegt dabei kurz unverschlüsselt im Zwischenspeicher der App und " +
+            "wird nach dem Speichern sofort gelöscht. Danach ist sie verschlüsselt abgelegt.",
+
     "Berechtigungen" to
-            "Die App benötigt keine besonderen Berechtigungen. Dateien wählst du selbst aus, Scans laufen über " +
-            "den Google-Scanner.",
+            "Die App benötigt keine besonderen Berechtigungen. Dateien, Fotos und Videos wählst du selbst aus oder " +
+            "nimmst sie über die Kamera-App deines Geräts auf.",
 
     "Deine Kontrolle" to
             "In den Einstellungen kannst du alle Daten exportieren und alle Daten unwiderruflich löschen. " +

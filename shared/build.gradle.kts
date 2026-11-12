@@ -73,6 +73,8 @@ kotlin {
                 implementation(compose.ui)
                 implementation(libs.navigation.compose)
                 implementation(libs.androidx.lifecycle.process)
+                implementation(libs.tink.android)
+                implementation(libs.androidx.exifinterface)
             }
         }
 

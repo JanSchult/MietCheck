@@ -32,7 +32,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DefectFormScreen(
-    onSaved: () -> Unit,
+    onSaved: (String) -> Unit,
     onShowError: (String) -> Unit,
     viewModel: DefectFormViewModel = koinViewModel()
 ) {
@@ -41,7 +41,7 @@ fun DefectFormScreen(
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
             when (effect) {
-                DefectFormEffect.Saved -> onSaved()
+                is DefectFormEffect.Saved -> onSaved(effect.defectId)
                 is DefectFormEffect.ShowError -> onShowError(effect.message)
             }
         }
@@ -52,7 +52,7 @@ fun DefectFormScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            "Das Datum wird automatisch gespeichert. Fotos und Videos kannst du später ergänzen.",
+            "Das Datum wird automatisch gespeichert. Fotos und Videos ergänzt du gleich nach dem Speichern.",
             style = MaterialTheme.typography.bodyLarge
         )
 

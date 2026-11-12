@@ -151,7 +151,14 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 )
             }
             composable<AddDefectRoute> {
-                DefectFormScreen(onSaved = { navController.popBackStack() }, onShowError = showError)
+                DefectFormScreen(
+                    onSaved = { id ->
+                        navController.navigate(DefectDetailRoute(id)) {
+                            popUpTo<AddDefectRoute> { inclusive = true }
+                        }
+                    },
+                    onShowError = showError
+                )
             }
             composable<DefectDetailRoute> { entry ->
                 val route = entry.toRoute<DefectDetailRoute>()

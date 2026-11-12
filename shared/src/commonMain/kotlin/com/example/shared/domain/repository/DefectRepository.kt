@@ -19,4 +19,6 @@ interface DefectRepository {
     suspend fun updateStatus(id: DefectId, status: DefectStatus, reportedAt: Instant?)
     suspend fun addCommunication(communication: Communication)
     suspend fun delete(id: DefectId)
+    suspend fun addMedia(defectId: DefectId, storedName: String)
+    suspend fun removeMedia(defectId: DefectId, storedName: String)
 }

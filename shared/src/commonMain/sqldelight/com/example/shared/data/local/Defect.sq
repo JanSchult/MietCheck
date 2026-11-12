@@ -56,6 +56,8 @@ INSERT OR REPLACE INTO DefectMediaEntity VALUES ?;
 
 deleteMediaForDefect:
 DELETE FROM DefectMediaEntity WHERE defectId = ?;
+deleteMediaByPath:
+DELETE FROM DefectMediaEntity WHERE defectId = ? AND filePath = ?;
 
 selectCommunicationsForDefect:
 SELECT * FROM CommunicationEntity WHERE defectId = ? ORDER BY occurredAt DESC;

@@ -82,4 +82,12 @@ class SqlDelightDefectRepository(
             q.deleteDefect(id.value)
         }
     }
+    override suspend fun addMedia(defectId: DefectId, storedName: String) = withContext(dispatcher) {
+        val next = (q.selectMediaForDefect(defectId.value).executeAsList().maxOfOrNull { it.position } ?: -1L) + 1
+        q.insertMedia(DefectMediaEntity(defectId.value, next, storedName))
+    }
+
+    override suspend fun removeMedia(defectId: DefectId, storedName: String) = withContext(dispatcher) {
+        q.deleteMediaByPath(defectId.value, storedName)
+    }
 }

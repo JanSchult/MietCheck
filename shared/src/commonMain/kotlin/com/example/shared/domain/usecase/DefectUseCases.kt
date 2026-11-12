@@ -9,6 +9,7 @@ import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.CommunicationId
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.repository.DefectRepository
+import com.example.shared.domain.repository.MediaVault
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -56,6 +57,13 @@ class AddCommunicationUseCase(private val repository: DefectRepository) {
     }
 }
 
-class DeleteDefectUseCase(private val repository: DefectRepository) {
-    suspend operator fun invoke(id: DefectId) = repository.delete(id)
+class DeleteDefectUseCase(
+    private val repository: DefectRepository,
+    private val vault: MediaVault
+) {
+    suspend operator fun invoke(id: DefectId) {
+        val media = repository.getById(id)?.mediaFilePaths.orEmpty()
+        repository.delete(id)
+        media.forEach { runCatching { vault.delete(it) } }
+    }
 }

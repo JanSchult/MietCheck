@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.usecase.AddCommunicationUseCase
+import com.example.shared.domain.usecase.AddDefectMediaUseCase
 import com.example.shared.domain.usecase.DeleteDefectUseCase
 import com.example.shared.domain.usecase.ObserveDefectUseCase
+import com.example.shared.domain.usecase.OpenDefectMediaUseCase
+import com.example.shared.domain.usecase.RemoveDefectMediaUseCase
 import com.example.shared.domain.usecase.UpdateDefectStatusUseCase
 import com.example.shared.presentation.defect.DefectDetailEffect
 import com.example.shared.presentation.defect.DefectDetailIntent
@@ -23,7 +26,10 @@ class DefectDetailViewModel(
     private val observeDefect: ObserveDefectUseCase,
     private val updateStatus: UpdateDefectStatusUseCase,
     private val addCommunication: AddCommunicationUseCase,
-    private val deleteDefect: DeleteDefectUseCase
+    private val deleteDefect: DeleteDefectUseCase,
+    private val addMedia: AddDefectMediaUseCase,
+    private val removeMedia: RemoveDefectMediaUseCase,
+    private val openMedia: OpenDefectMediaUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DefectDetailState())
@@ -46,6 +52,9 @@ class DefectDetailViewModel(
                     .onSuccess { _effects.send(DefectDetailEffect.Deleted) }
                     .onFailure { e -> _effects.send(DefectDetailEffect.ShowError(e.message ?: "Löschen fehlgeschlagen")) }
             }
+            is DefectDetailIntent.MediaStored -> run { addMedia(it, intent.media) }
+            is DefectDetailIntent.RemoveMedia -> run { removeMedia(it, intent.storedName) }
+            is DefectDetailIntent.OpenMedia -> run { openMedia(intent.storedName, intent.share) }
         }
     }
 

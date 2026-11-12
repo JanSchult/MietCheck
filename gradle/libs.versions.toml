@@ -27,6 +27,8 @@ securityCrypto = "1.1.0-alpha06"
 
 
 [libraries]
+tink-android = { module = "com.google.crypto.tink:tink-android", version = "1.13.0" }
+androidx-exifinterface = { module = "androidx.exifinterface:exifinterface", version = "1.3.7" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

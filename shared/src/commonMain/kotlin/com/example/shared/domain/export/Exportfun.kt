@@ -28,16 +28,11 @@ internal fun Reminder.toExport() =
     ExportReminder(type.name, title, dueAt.toString(), recurrenceRule?.name ?:"", isCompleted)
 
 @OptIn(ExperimentalTime::class)
-internal fun Defect.toExport() = ExportDefect(
-    room = room,
-    description = description,
-    urgency = urgency.name,
-    status = status.name,
-    createdAt = createdAt.toString(),
-    reportedAt = reportedAt?.toString(),
-    communications = communications.map {
-        ExportCommunication(it.direction.name, it.summary, it.occurredAt.toString())
-    }
+internal fun Defect.toExport(media: List<String>) = ExportDefect(
+    room = room, description = description, urgency = urgency.name, status = status.name,
+    createdAt = createdAt.toString(), reportedAt = reportedAt?.toString(),
+    communications = communications.map { ExportCommunication(it.direction.name, it.summary, it.occurredAt.toString()) },
+    media = media
 )
 
 @OptIn(ExperimentalTime::class)
@@ -56,7 +51,7 @@ internal fun Apartment.toExport(
     landlord: LandlordContact?,
     bills: List<UtilityBill>,
     reminders: List<Reminder>,
-    defects: List<Defect>,
+    defects: List<ExportDefect>,
     documents: List<ExportDocument>
 ) = ExportApartment(
     id = id.value,
@@ -73,6 +68,6 @@ internal fun Apartment.toExport(
     landlord = landlord?.toExport(),
     bills = bills.map { it.toExport() },
     reminders = reminders.map { it.toExport() },
-    defects = defects.map { it.toExport() },
+    defects = defects,
     documents = documents
 )

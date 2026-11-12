@@ -18,6 +18,7 @@ import com.example.shared.domain.repository.ReminderRepository
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.repository.UtilityBillRepository
 import com.example.shared.domain.usecase.AddCommunicationUseCase
+import com.example.shared.domain.usecase.AddDefectMediaUseCase
 import com.example.shared.domain.usecase.BuildBillOverviewUseCase
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
@@ -39,6 +40,8 @@ import com.example.shared.domain.usecase.ObserveDefectsUseCase
 import com.example.shared.domain.usecase.ObserveDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
+import com.example.shared.domain.usecase.OpenDefectMediaUseCase
+import com.example.shared.domain.usecase.RemoveDefectMediaUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveDefectUseCase
@@ -129,14 +132,17 @@ val useCaseModule = module {
     factory { SaveDefectUseCase(get()) }
     factory { UpdateDefectStatusUseCase(get()) }
     factory { AddCommunicationUseCase(get()) }
-    factory { DeleteDefectUseCase(get()) }
+    factory { DeleteDefectUseCase(get(),get()) }
     factory { ObserveDocumentsUseCase(get()) }
     factory { GetDocumentUseCase(get()) }
     factory { ImportDocumentUseCase(get(), get()) }
     factory { UpdateDocumentUseCase(get()) }
     factory { DeleteDocumentUseCase(get(), get()) }
     factory { ShareDocumentUseCase(get(), get(), get()) }
-factory { ExportAllDataUseCase (get(),get(),get(),get(),get(),get(), get()) }
+    factory { ExportAllDataUseCase (get(),get(),get(),get(),get(),get(), get()) }
+    factory { AddDefectMediaUseCase(get(), get()) }
+    factory { RemoveDefectMediaUseCase(get(), get()) }
+    factory { OpenDefectMediaUseCase(get()) }
 }
 
 val presentationModule = module {
@@ -150,7 +156,7 @@ val presentationModule = module {
     viewModel { ReminderFormViewModel(get()) }
     viewModel { DefectsViewModel(get(), get()) }
     viewModel { DefectFormViewModel(get(), get()) }
-    viewModel { DefectDetailViewModel(get(), get(), get(), get()) }
+    viewModel { DefectDetailViewModel(get(), get(), get(), get(),get(),get(),get()) }
     viewModel { DocumentsViewModel(get(), get(), get()) }
     viewModel { DocumentDetailViewModel(get(), get(), get(), get(), get()) }
     viewModel { LockViewModel(get(), get(), get()) }

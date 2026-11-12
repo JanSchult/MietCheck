@@ -45,8 +45,22 @@ class ExportAllDataUseCase(
                 val landlord = apartment.landlordContactId?.let { apartmentRepository.getLandlord(it) }
                 val bills = billRepository.getForApartment(apartment.id)
                 val reminders = reminderRepository.observeForApartment(apartment.id).first()
-                val defects = defectRepository.observeForApartment(apartment.id).first()
-
+                val defects = defectRepository.observeForApartment(apartment.id).first().map { defect ->
+                    val mediaPaths = defect.mediaFilePaths.mapIndexedNotNull { index, stored ->
+                        try {
+                            writer.addMedia(
+                                "maengel/${exportName(apartment.label)}/${exportName(defect.room)}-${defect.id.value.take(8)}/medium-${index + 1}",
+                                stored
+                            )
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            missing++
+                            null
+                        }
+                    }
+                    defect.toExport(mediaPaths)
+                }
                 val documents = documentRepository.observeForApartment(apartment.id).first().map { doc ->
                     documentCount++
                     // Jedes Dokument einzeln entschlüsseln und sofort ins Archiv schreiben
@@ -92,7 +106,7 @@ class ExportAllDataUseCase(
 
     private fun readme(date: String, missing: Int) = buildString {
         appendLine("MietCheck – Datenexport vom $date")
-        appendLine()
+        appendLine("- maengel/: Fotos und Videos zu deinen Mängeln.")
         appendLine("Inhalt")
         appendLine("- daten.json: Wohnungen, Vermieter, Abrechnungen mit Kostenpositionen, Mängel mit Verlauf,")
         appendLine("  Fristen und die Dokumentenliste. Geldbeträge stehen in Cent.")
@@ -103,7 +117,7 @@ class ExportAllDataUseCase(
         appendLine("und lösche ihn, wenn du ihn nicht mehr brauchst.")
         appendLine("Die PIN und die App-Einstellungen sind nicht enthalten.")
         if (missing > 0) {
-            appendLine()
+            appendLine("$missing Datei(en) konnten nicht gelesen werden und fehlen im Export.")
             appendLine("Hinweis: $missing Dokument(e) konnten nicht gelesen werden und fehlen im Ordner dokumente/.")
         }
     }

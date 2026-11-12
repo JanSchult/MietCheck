@@ -9,6 +9,7 @@ import com.example.shared.data.local.DatabaseKeyProvider
 import com.example.shared.data.local.MietCheckDatabase
 import com.example.shared.domain.platform.AndroidExportArchiveWriter
 import com.example.shared.domain.platform.AndroidFileSharer
+import com.example.shared.domain.platform.AndroidMediaVault
 import com.example.shared.domain.platform.AppDataEraser
 import com.example.shared.domain.platform.BiometricAuthenticator
 import com.example.shared.domain.platform.CurrentActivityProvider
@@ -17,6 +18,7 @@ import com.example.shared.domain.platform.FileSharer
 import com.example.shared.domain.platform.PinHasher
 import com.example.shared.domain.platform.SecureFileStorage
 import com.example.shared.domain.platform.TextSharer
+import com.example.shared.domain.repository.MediaVault
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
@@ -31,7 +33,9 @@ actual val platformModule = module {
     single { PinHasher() }
     single { AppDataEraser(androidContext()) }
     single<FileSharer> { AndroidFileSharer(androidContext(),get()) }
-    factory<ExportArchiveWriter> { AndroidExportArchiveWriter(androidContext(), get()) }
+    single { AndroidMediaVault(androidContext(), get()) }
+    single<MediaVault> { get<AndroidMediaVault>() }
+    factory<ExportArchiveWriter> { AndroidExportArchiveWriter(androidContext(), get(),get()) }
 }
 
 private fun createEncryptedDriver(context: Context): SqlDriver {

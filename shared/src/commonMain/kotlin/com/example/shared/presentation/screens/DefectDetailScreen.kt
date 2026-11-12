@@ -3,18 +3,20 @@ package com.example.shared.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,17 +28,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.CommunicationDirection
-import com.example.shared.domain.model.Defect
 import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.platform.rememberMediaCapturer
 import com.example.shared.presentation.componentes.AddCommunicationDialog
 import com.example.shared.presentation.componentes.DefectHeader
 import com.example.shared.presentation.componentes.DropdownField
-import com.example.shared.presentation.componentes.StatusChip
 import com.example.shared.presentation.defect.DefectDetailEffect
 import com.example.shared.presentation.defect.DefectDetailIntent
-import com.example.shared.presentation.defect.kind
 import com.example.shared.presentation.defect.label
 import com.example.shared.util.formatDate
 import com.example.shared.viewmodels.DefectDetailViewModel
@@ -54,7 +54,11 @@ fun DefectDetailScreen(
     val state by viewModel.state.collectAsState()
     var showAddDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
-
+    var mediaToRemove by remember { mutableStateOf<String?>(null) }
+    val capturer = rememberMediaCapturer(
+        onStored = { viewModel.onIntent(DefectDetailIntent.MediaStored(it)) },
+        onError = onShowError
+    )
     LaunchedEffect(defectId) { viewModel.onIntent(DefectDetailIntent.Load(defectId)) }
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
@@ -90,6 +94,48 @@ fun DefectDetailScreen(
             options = DefectStatus.entries,
             label = { it.label() },
             onSelected = { viewModel.onIntent(DefectDetailIntent.StatusSelected(it)) }
+        )
+        Text("Fotos und Videos", style = MaterialTheme.typography.titleLarge)
+        if (defect.mediaFilePaths.isEmpty()) {
+            Text("Noch keine Fotos oder Videos. Halte den Mangel mit Bildern fest.", style = MaterialTheme.typography.bodyLarge)
+        }
+        defect.mediaFilePaths.forEach { stored ->
+            Card(Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    MediaThumbnail(stored, Modifier.size(96.dp).clip(RoundedCornerShape(8.dp)))
+                    Column {
+                        TextButton(
+                            onClick = { viewModel.onIntent(DefectDetailIntent.OpenMedia(stored, share = false)) },
+                            modifier = Modifier.heightIn(min = 48.dp)
+                        ) { Text("Ansehen") }
+                        TextButton(
+                            onClick = { viewModel.onIntent(DefectDetailIntent.OpenMedia(stored, share = true)) },
+                            modifier = Modifier.heightIn(min = 48.dp)
+                        ) { Text("Teilen") }
+                        TextButton(
+                            onClick = { mediaToRemove = stored },
+                            modifier = Modifier.heightIn(min = 48.dp)
+                        ) { Text("Entfernen") }
+                    }
+                }
+            }
+        }
+        OutlinedButton(onClick = capturer::takePhoto, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+            Text("Foto aufnehmen")
+        }
+        OutlinedButton(onClick = capturer::recordVideo, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+            Text("Video aufnehmen")
+        }
+        OutlinedButton(onClick = capturer::pickFromGallery, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+            Text("Aus Galerie wählen")
+        }
+        Text(
+            "Zum Ansehen oder Teilen wird eine Kopie kurz entschlüsselt und nur für die gewählte App bereitgestellt.",
+            style = MaterialTheme.typography.bodyMedium
         )
 
         Text("Verlauf", style = MaterialTheme.typography.titleLarge)
@@ -132,7 +178,20 @@ fun DefectDetailScreen(
             }
         )
     }
-
+    mediaToRemove?.let { stored ->
+        AlertDialog(
+            onDismissRequest = { mediaToRemove = null },
+            title = { Text("Datei entfernen?") },
+            text = { Text("Die Datei wird von diesem Gerät gelöscht. Das lässt sich nicht rückgängig machen.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    mediaToRemove = null
+                    viewModel.onIntent(DefectDetailIntent.RemoveMedia(stored))
+                }) { Text("Entfernen") }
+            },
+            dismissButton = { TextButton(onClick = { mediaToRemove = null }) { Text("Abbrechen") } }
+        )
+    }
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },

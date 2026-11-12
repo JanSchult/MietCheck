@@ -60,9 +60,9 @@ class SettingsViewModel(
                 exporting.value = true
                 runCatching { exportAllData() }
                     .onSuccess { summary ->
-                        if (summary.missingDocuments > 0) {
+                        if (summary.missingFiles > 0) {
                             _effects.send(SettingsEffect.ShowMessage(
-                                "${summary.missingDocuments} Dokument(e) konnten nicht gelesen werden und fehlen im Export."
+                                "${summary.missingFiles} Datei(en) konnten nicht gelesen werden und fehlen im Export."
                             ))
                         }
                     }

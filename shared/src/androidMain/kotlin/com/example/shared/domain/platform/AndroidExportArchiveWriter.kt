@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
 import com.example.shared.domain.lock.AppLockManager
+import com.example.shared.domain.model.mediaKindOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -15,7 +17,8 @@ import java.util.zip.ZipOutputStream
 
 class AndroidExportArchiveWriter(
     private val context: Context,
-    private val lockManager: AppLockManager
+    private val lockManager: AppLockManager,
+    private val vault: AndroidMediaVault
 ) : ExportArchiveWriter {
 
     private val dir = File(context.cacheDir, "shared")     // dasselbe Verzeichnis wie beim Teilen von Dokumenten
@@ -28,6 +31,7 @@ class AndroidExportArchiveWriter(
         val target = File(dir, fileName)
         file = target
         zip = ZipOutputStream(BufferedOutputStream(FileOutputStream(target)))
+        zip!!.setLevel(java.util.zip.Deflater.BEST_SPEED)
     }
 
     override suspend fun addEntry(path: String, bytes: ByteArray) = withContext(Dispatchers.IO) {
@@ -36,7 +40,23 @@ class AndroidExportArchiveWriter(
         stream.write(bytes)
         stream.closeEntry()
     }
-
+    override suspend fun addMedia(pathWithoutExtension: String, storedName: String): String =
+        withContext(Dispatchers.IO) {
+            val stream = checkNotNull(zip) { "Das Archiv ist nicht geöffnet." }
+            vault.openDecrypted(storedName).use { raw ->
+                val input = BufferedInputStream(raw)
+                input.mark(16)
+                val head = ByteArray(12)
+                val read = input.read(head).coerceAtLeast(0)
+                input.reset()
+                val extension = vault.sniff(mediaKindOf(storedName), head, read).first
+                val path = "$pathWithoutExtension.$extension"
+                stream.putNextEntry(ZipEntry(path))
+                input.copyTo(stream)
+                stream.closeEntry()
+                path
+            }
+        }
     override suspend fun finishAndShare() {
         val archive = withContext(Dispatchers.IO) {
             zip?.close()

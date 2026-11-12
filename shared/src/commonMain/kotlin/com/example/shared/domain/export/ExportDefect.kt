@@ -1,6 +1,9 @@
 package com.example.shared.domain.export
 
+import com.example.shared.domain.model.Defect
+import com.example.shared.domain.model.StoredMedia
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
 
 @Serializable
 data class ExportDefect(
@@ -10,5 +13,6 @@ data class ExportDefect(
     val status: String,
     val createdAt: String,
     val reportedAt: String?,
-    val communications: List<ExportCommunication>
+    val communications: List<ExportCommunication>,
+    val media:List<String>
 )

@@ -78,7 +78,7 @@ class DefectFormViewModel(
             runCatching { saveDefect(defect) }
                 .onSuccess {
                     _state.update { it.copy(isSaving = false) }
-                    _effects.send(DefectFormEffect.Saved)
+                    _effects.send(DefectFormEffect.Saved(defect.id.value))
                 }
                 .onFailure { e ->
                     _state.update { it.copy(isSaving = false) }

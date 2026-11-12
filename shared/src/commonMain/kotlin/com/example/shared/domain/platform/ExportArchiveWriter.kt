@@ -7,4 +7,5 @@ interface ExportArchiveWriter {
     suspend fun addEntry(path: String, bytes: ByteArray)
     suspend fun finishAndShare()
     suspend fun abort()
+    suspend fun addMedia(pathWithoutExtension: String, storedName: String): String
 }

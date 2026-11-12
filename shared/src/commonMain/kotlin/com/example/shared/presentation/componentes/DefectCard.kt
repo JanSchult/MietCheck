@@ -30,10 +30,10 @@ fun DefectCard(defect: Defect, onClick: () -> Unit) {
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-            Text(
-                "Erfasst am ${defect.createdAt.formatDate()} · Dringlichkeit: ${defect.urgency.label()}",
-                style = MaterialTheme.typography.bodyMedium
-            )
+            buildString {
+                append("Erfasst am ${defect.createdAt.formatDate()} · Dringlichkeit: ${defect.urgency.label()}")
+                if (defect.mediaFilePaths.isNotEmpty()) append(" · ${defect.mediaFilePaths.size} Foto(s)/Video(s)")
+            }
             StatusChip(defect.status.kind(), defect.status.label())
         }
     }
