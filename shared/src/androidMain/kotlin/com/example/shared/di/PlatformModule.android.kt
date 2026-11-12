@@ -7,10 +7,12 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.example.shared.data.local.DatabaseKeyProvider
 import com.example.shared.data.local.MietCheckDatabase
+import com.example.shared.domain.platform.AndroidExportArchiveWriter
 import com.example.shared.domain.platform.AndroidFileSharer
 import com.example.shared.domain.platform.AppDataEraser
 import com.example.shared.domain.platform.BiometricAuthenticator
 import com.example.shared.domain.platform.CurrentActivityProvider
+import com.example.shared.domain.platform.ExportArchiveWriter
 import com.example.shared.domain.platform.FileSharer
 import com.example.shared.domain.platform.PinHasher
 import com.example.shared.domain.platform.SecureFileStorage
@@ -29,6 +31,7 @@ actual val platformModule = module {
     single { PinHasher() }
     single { AppDataEraser(androidContext()) }
     single<FileSharer> { AndroidFileSharer(androidContext(),get()) }
+    factory<ExportArchiveWriter> { AndroidExportArchiveWriter(androidContext(), get()) }
 }
 
 private fun createEncryptedDriver(context: Context): SqlDriver {
