@@ -25,6 +25,7 @@ import com.example.shared.domain.usecase.DeleteApartmentUseCase
 import com.example.shared.domain.usecase.DeleteDefectUseCase
 import com.example.shared.domain.usecase.DeleteDocumentUseCase
 import com.example.shared.domain.usecase.DeleteReminderUseCase
+import com.example.shared.domain.usecase.ExportAllDataUseCase
 import com.example.shared.domain.usecase.GetApartmentUseCase
 import com.example.shared.domain.usecase.GetDocumentUseCase
 import com.example.shared.domain.usecase.GetOpenChecksUseCase
@@ -135,7 +136,7 @@ val useCaseModule = module {
     factory { UpdateDocumentUseCase(get()) }
     factory { DeleteDocumentUseCase(get(), get()) }
     factory { ShareDocumentUseCase(get(), get(), get()) }
-
+factory { ExportAllDataUseCase (get(),get(),get(),get(),get(),get(), get()) }
 }
 
 val presentationModule = module {
@@ -155,7 +156,7 @@ val presentationModule = module {
     viewModel { LockViewModel(get(), get(), get()) }
     viewModel { PinSetupViewModel(get(), get()) }
     viewModel { OnboardingViewModel(get()) }
-    viewModel { SettingsViewModel(get(), get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get(), get()) }
 }
 
 val appModules = listOf(

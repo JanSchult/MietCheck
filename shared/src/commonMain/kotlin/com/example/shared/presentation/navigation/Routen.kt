@@ -20,3 +20,4 @@ import kotlinx.serialization.Serializable
 @Serializable data class DocumentDetailRoute(val documentId: String)
 @Serializable data object SettingsRoute
 @Serializable data class PinSetupRoute(val mode: String)
+@Serializable data object PrivacyRoute

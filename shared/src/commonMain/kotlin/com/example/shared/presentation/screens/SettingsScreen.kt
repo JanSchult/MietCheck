@@ -45,11 +45,13 @@ fun SettingsScreen(
     onSetupPin: () -> Unit,
     onChangePin: () -> Unit,
     onRemovePin: () -> Unit,
+    onOpenPrivacy: () -> Unit,
     onShowMessage: (String) -> Unit,
     viewModel: SettingsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     var showEraseDialog by remember { mutableStateOf(false) }
+    var showExportDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
@@ -119,6 +121,35 @@ fun SettingsScreen(
             "Alle Daten liegen verschlüsselt auf diesem Gerät. Es gibt kein Konto und keine Cloud.",
             style = MaterialTheme.typography.bodyLarge
         )
+        OutlinedButton(
+            onClick = { showExportDialog = true},
+            enabled = !state.isExporting,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)
+        ) {Text(if(state.isExporting) "Export wird ersetllt..." else " Alle Daten exportieren")}
+        OutlinedButton(
+            onClick = onOpenPrivacy,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)
+        ) { Text("Datenschutzerklärung") }
+
+        if (showExportDialog) {
+            AlertDialog(
+                onDismissRequest = { showExportDialog = false },
+                title = { Text("Alle Daten exportieren?") },
+                text = {
+                    Text(
+                        "Du erhältst eine ZIP-Datei mit allen Daten und Dokumenten. Die Datei ist nicht " +
+                                "verschlüsselt. Teile sie nur mit Orten, denen du vertraust, und lösche sie danach."
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showExportDialog = false
+                        viewModel.onIntent(SettingsIntent.ExportConfirmed)
+                    }) { Text("Export erstellen") }
+                },
+                dismissButton = { TextButton(onClick = { showExportDialog = false }) { Text("Abbrechen") } }
+            )
+        }
         OutlinedButton(
             onClick = { showEraseDialog = true },
             modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)

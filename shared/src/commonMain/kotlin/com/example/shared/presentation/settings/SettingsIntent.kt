@@ -6,4 +6,5 @@ sealed interface SettingsIntent {
     data class ScreenshotsToggled(val allowed: Boolean) : SettingsIntent
     data object LockNow : SettingsIntent
     data object EraseAllConfirmed : SettingsIntent
+    data object ExportConfirmed : SettingsIntent
 }

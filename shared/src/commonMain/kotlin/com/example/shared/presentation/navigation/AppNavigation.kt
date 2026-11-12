@@ -41,6 +41,7 @@ import com.example.shared.presentation.screens.DocumentsScreen
 import com.example.shared.presentation.screens.LetterEditorScreen
 import com.example.shared.presentation.screens.PinSetupScreen
 import com.example.shared.presentation.screens.PlaceholderScreen
+import com.example.shared.presentation.screens.PrivacyScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
 import com.example.shared.presentation.screens.ReminderListScreen
 import com.example.shared.presentation.screens.SettingsScreen
@@ -220,6 +221,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onSetupPin = { navController.navigate(PinSetupRoute(PinMode.SETUP.name)) },
                     onChangePin = { navController.navigate(PinSetupRoute(PinMode.CHANGE.name)) },
                     onRemovePin = { navController.navigate(PinSetupRoute(PinMode.REMOVE.name)) },
+                    onOpenPrivacy = {navController.navigate(PrivacyRoute)},
                     onShowMessage = showError
                 )
             }
@@ -232,6 +234,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                     onDone = { navController.popBackStack() }
                 )
             }
+            composable<PrivacyRoute> { PrivacyScreen() }
         }
     }
 }
@@ -258,5 +261,6 @@ private fun titleFor(destination: NavDestination?): String = when {
     destination.hasRoute<DocumentDetailRoute>() -> "Dokument"
     destination.hasRoute<SettingsRoute>() -> "Einstellungen"
     destination.hasRoute<PinSetupRoute>() -> "PIN"
+    destination.hasRoute<PrivacyRoute>() -> "Datenschutzerklärung"
     else -> ""
 }

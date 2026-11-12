@@ -5,5 +5,6 @@ data class SettingsState(
     val biometricAvailable: Boolean,
     val biometricEnabled: Boolean,
     val timeoutSeconds: Int,
-    val screenshotsAllowed: Boolean
+    val screenshotsAllowed: Boolean,
+    val isExporting: Boolean = false
 )
