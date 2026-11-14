@@ -24,10 +24,10 @@ private val PRIVACY_SECTIONS = listOf(
             "werden von der App nicht ins Internet gesendet und nicht an KI-Dienste übermittelt.",
 
     "Welche Daten die App verarbeitet" to
-            "Nur Angaben, die du selbst eingibst oder importierst: Wohnung (Adresse, Fläche, Bewohner, Mietbeginn, " +
-            "Vorauszahlungen), Kontaktdaten des Vermieters, Nebenkostenabrechnungen, Mängel samt Verlauf, Fristen, " +
-            "importierte oder gescannte Dokumente sowie Fotos und Videos zu Mängeln.",
-
+            "Nur Angaben, die du selbst eingibst oder importierst: dein Name und optional E-Mail und Telefonnummer " +
+            "für den Absender deiner Schreiben, Wohnung (Adresse, Fläche, Bewohner, Mietbeginn, Vorauszahlungen), " +
+            "Kontaktdaten des Vermieters, Nebenkostenabrechnungen, Mängel samt Verlauf, Fristen, importierte oder " +
+            "gescannte Dokumente sowie Fotos und Videos zu Mängeln.",
 
     "Wie die Daten geschützt werden" to
             "Die Datenbank ist verschlüsselt, Dokumente werden einzeln mit AES-256 verschlüsselt abgelegt. " +

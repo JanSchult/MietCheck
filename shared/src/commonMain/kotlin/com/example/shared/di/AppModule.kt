@@ -147,7 +147,7 @@ val useCaseModule = module {
     factory { UpdateDocumentUseCase(get()) }
     factory { DeleteDocumentUseCase(get(), get()) }
     factory { ShareDocumentUseCase(get(), get(), get()) }
-    factory { ExportAllDataUseCase (get(),get(),get(),get(),get(),get(), get()) }
+    factory { ExportAllDataUseCase (get(),get(),get(),get(),get(),get(), get(),get()) }
     factory { AddDefectMediaUseCase(get(), get()) }
     factory { RemoveDefectMediaUseCase(get(), get()) }
     factory { OpenDefectMediaUseCase(get()) }

@@ -2,6 +2,7 @@ package com.example.shared.domain.usecase
 
 import com.example.shared.domain.export.ExportRoot
 import com.example.shared.domain.export.ExportSummary
+import com.example.shared.domain.export.ExportTenant
 import com.example.shared.domain.export.toExport
 import com.example.shared.domain.model.detectMimeType
 import com.example.shared.domain.model.extensionFor
@@ -11,6 +12,7 @@ import com.example.shared.domain.repository.ApartmentRepository
 import com.example.shared.domain.repository.DefectRepository
 import com.example.shared.domain.repository.DocumentRepository
 import com.example.shared.domain.repository.ReminderRepository
+import com.example.shared.domain.repository.TenantProfileRepository
 import com.example.shared.domain.repository.UtilityBillRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.TimeZone
@@ -26,6 +28,7 @@ class ExportAllDataUseCase(
     private val reminderRepository: ReminderRepository,
     private val defectRepository: DefectRepository,
     private val documentRepository: DocumentRepository,
+    private val tenantProfileRepository: TenantProfileRepository,
     private val storage: SecureFileStorage,
     private val writer: ExportArchiveWriter
 ) {
@@ -83,10 +86,14 @@ class ExportAllDataUseCase(
                 apartment.toExport(landlord, bills, reminders, defects, documents)
             }
 
+            val tenant = tenantProfileRepository.get()
+                .takeIf { !it.isEmpty }
+                ?.let { ExportTenant(it.name, it.email, it.phone) }
             val root = ExportRoot(
                 formatVersion = 1,
                 exportedAt = now.toString(),
                 app = "MietCheck",
+                tenant = tenant,
                 apartments = apartments
             )
             writer.addEntry("daten.json", json.encodeToString(ExportRoot.serializer(), root).encodeToByteArray())

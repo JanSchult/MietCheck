@@ -85,8 +85,8 @@ fun DefectReportScreen(
         if (state.hasOpenPlaceholders) {
             StatusChip(StatusKind.NOTE, "Im Text stehen noch Platzhalter")
             Text(
-                "Stellen in {{…}} oder […] solltest du vor dem Versand ergänzen, zum Beispiel Datum, " +
-                        "Unterschrift, deinen Namen und die Angaben zum Vermieter.",
+                "Stellen in {{…}} oder […] solltest du vor dem Versand ergänzen, zum Beispiel Datum und Unterschrift. " +
+                        "Deinen Namen kannst du dauerhaft unter Einstellungen → Mein Profil hinterlegen.",
                 style = MaterialTheme.typography.bodyMedium
             )
         }
