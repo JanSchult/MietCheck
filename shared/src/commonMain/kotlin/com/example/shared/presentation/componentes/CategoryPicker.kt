@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.CostCategory
-import com.example.shared.presentation.form.displayName
+import com.example.shared.presentation.labels.displayName
 
 @Composable
  fun CategoryPicker(selected: CostCategory, onSelected: (CostCategory) -> Unit) {

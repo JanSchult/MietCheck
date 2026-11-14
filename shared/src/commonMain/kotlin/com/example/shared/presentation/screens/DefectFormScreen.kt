@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.DefectUrgency
 import com.example.shared.presentation.componentes.DropdownField
 import com.example.shared.presentation.componentes.FormField
-import com.example.shared.presentation.defect.DefectFormEffect
-import com.example.shared.presentation.defect.DefectFormIntent
-import com.example.shared.presentation.defect.label
+import com.example.shared.viewmodels.effects.DefectFormEffect
+import com.example.shared.viewmodels.intent.DefectFormIntent
+import com.example.shared.presentation.labels.label
 import com.example.shared.viewmodels.DefectFormViewModel
 import com.example.shared.viewmodels.state.DEFECT_ROOMS
 import com.example.shared.viewmodels.state.OTHER_ROOM

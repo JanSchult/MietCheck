@@ -1,18 +1,15 @@
 package com.example.shared.presentation.screens
 
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -26,18 +23,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.BillSummary
-import com.example.shared.domain.model.StatusKind
-import com.example.shared.domain.usecase.formatEuro
-import com.example.shared.presentation.checks.ChecksEffect
-import com.example.shared.presentation.checks.ChecksIntent
+import com.example.shared.viewmodels.effects.ChecksEffect
+import com.example.shared.viewmodels.intent.ChecksIntent
 import com.example.shared.presentation.componentes.BillCard
 import com.example.shared.presentation.componentes.CenteredHint
-import com.example.shared.presentation.componentes.StatusChip
-import com.example.shared.util.toDisplayDate
 import com.example.shared.viewmodels.ChecksViewModel
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.math.abs
 
 @Composable
 fun ChecksScreen(

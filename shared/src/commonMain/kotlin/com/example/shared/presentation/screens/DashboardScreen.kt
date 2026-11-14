@@ -31,8 +31,8 @@ import com.example.shared.presentation.componentes.LegalNotice
 import com.example.shared.presentation.componentes.OpenChecksSection
 import com.example.shared.presentation.componentes.QuickActionsSection
 import com.example.shared.presentation.componentes.RemindersSection
-import com.example.shared.presentation.dashboard.DashboardEffect
-import com.example.shared.presentation.dashboard.DashboardIntent
+import com.example.shared.viewmodels.effects.DashboardEffect
+import com.example.shared.viewmodels.intent.DashboardIntent
 import com.example.shared.viewmodels.DashboardViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

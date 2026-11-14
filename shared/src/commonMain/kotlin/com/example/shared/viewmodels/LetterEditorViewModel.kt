@@ -6,8 +6,8 @@ import com.example.shared.domain.model.LetterTemplateType
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
-import com.example.shared.presentation.letter.LetterEditorEffect
-import com.example.shared.presentation.letter.LetterEditorIntent
+import com.example.shared.viewmodels.effects.LetterEditorEffect
+import com.example.shared.viewmodels.intent.LetterEditorIntent
 import com.example.shared.viewmodels.state.LetterEditorState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.LetterTemplateType
-import com.example.shared.presentation.utilitybill.displayName
+import com.example.shared.presentation.labels.displayName
 
 @Composable
  fun LetterSection(onSelect: (LetterTemplateType) -> Unit) {

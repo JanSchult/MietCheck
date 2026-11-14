@@ -23,8 +23,8 @@ import com.example.shared.domain.model.BillFormField
 import com.example.shared.presentation.componentes.CostItemCard
 import com.example.shared.presentation.componentes.FormField
 import com.example.shared.presentation.componentes.SummaryCard
-import com.example.shared.presentation.form.UtilityBillFormEffect
-import com.example.shared.presentation.form.UtilityBillFormIntent
+import com.example.shared.viewmodels.effects.UtilityBillFormEffect
+import com.example.shared.viewmodels.intent.UtilityBillFormIntent
 import com.example.shared.viewmodels.UtilityBillFormViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

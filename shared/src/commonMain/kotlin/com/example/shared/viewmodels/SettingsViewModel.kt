@@ -7,15 +7,14 @@ import com.example.shared.domain.lock.LockConfig
 import com.example.shared.domain.platform.AppDataEraser
 import com.example.shared.domain.platform.BiometricAuthenticator
 import com.example.shared.domain.usecase.ExportAllDataUseCase
-import com.example.shared.presentation.settings.SettingsEffect
-import com.example.shared.presentation.settings.SettingsIntent
+import com.example.shared.viewmodels.effects.SettingsEffect
+import com.example.shared.viewmodels.intent.SettingsIntent
 import com.example.shared.viewmodels.state.SettingsState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch

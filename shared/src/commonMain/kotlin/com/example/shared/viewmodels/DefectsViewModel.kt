@@ -7,8 +7,8 @@ import com.example.shared.domain.model.DefectStatus
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.usecase.ObserveDefectsUseCase
-import com.example.shared.presentation.defect.DefectsEffect
-import com.example.shared.presentation.defect.DefectsIntent
+import com.example.shared.viewmodels.effects.DefectsEffect
+import com.example.shared.viewmodels.intent.DefectsIntent
 import com.example.shared.viewmodels.state.DefectsState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel

@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shared.presentation.componentes.PinDots
 import com.example.shared.presentation.componentes.PinPad
-import com.example.shared.presentation.lock.LockIntent
+import com.example.shared.viewmodels.intent.LockIntent
 import com.example.shared.viewmodels.LockViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

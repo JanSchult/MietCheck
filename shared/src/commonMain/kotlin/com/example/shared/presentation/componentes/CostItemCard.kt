@@ -24,9 +24,9 @@ import com.example.shared.domain.model.CostItemInput
 import com.example.shared.domain.model.CostItemRow
 import com.example.shared.domain.model.ItemField
 import com.example.shared.domain.usecase.formatEuro
-import com.example.shared.presentation.form.displayName
-import com.example.shared.presentation.utilitybill.kind
-import com.example.shared.presentation.utilitybill.label
+import com.example.shared.presentation.labels.displayName
+import com.example.shared.presentation.labels.kind
+import com.example.shared.presentation.labels.label
 
 @Composable
  fun CostItemCard(

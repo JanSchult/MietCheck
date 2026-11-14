@@ -7,7 +7,7 @@ import com.example.shared.domain.lock.PIN_LENGTH
 import com.example.shared.domain.lock.PinCheck
 import com.example.shared.domain.platform.AppDataEraser
 import com.example.shared.domain.platform.BiometricAuthenticator
-import com.example.shared.presentation.lock.LockIntent
+import com.example.shared.viewmodels.intent.LockIntent
 import com.example.shared.viewmodels.state.LockUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -9,8 +9,8 @@ import com.example.shared.domain.usecase.GetDocumentUseCase
 import com.example.shared.domain.usecase.ObserveApartmentsUseCase
 import com.example.shared.domain.usecase.ShareDocumentUseCase
 import com.example.shared.domain.usecase.UpdateDocumentUseCase
-import com.example.shared.presentation.document.DocumentDetailEffect
-import com.example.shared.presentation.document.DocumentDetailIntent
+import com.example.shared.viewmodels.effects.DocumentDetailEffect
+import com.example.shared.viewmodels.intent.DocumentDetailIntent
 import com.example.shared.viewmodels.state.DocumentDetailState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

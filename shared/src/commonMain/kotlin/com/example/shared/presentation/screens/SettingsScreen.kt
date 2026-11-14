@@ -3,7 +3,6 @@ package com.example.shared.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -13,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,14 +21,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.lock.AUTO_LOCK_OPTIONS_SECONDS
 import com.example.shared.presentation.componentes.DropdownField
 import com.example.shared.presentation.componentes.SwitchRow
-import com.example.shared.presentation.settings.SettingsEffect
-import com.example.shared.presentation.settings.SettingsIntent
+import com.example.shared.viewmodels.effects.SettingsEffect
+import com.example.shared.viewmodels.intent.SettingsIntent
 import com.example.shared.viewmodels.SettingsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

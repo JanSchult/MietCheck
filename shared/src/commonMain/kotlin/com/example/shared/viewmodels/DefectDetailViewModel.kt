@@ -10,8 +10,8 @@ import com.example.shared.domain.usecase.ObserveDefectUseCase
 import com.example.shared.domain.usecase.OpenDefectMediaUseCase
 import com.example.shared.domain.usecase.RemoveDefectMediaUseCase
 import com.example.shared.domain.usecase.UpdateDefectStatusUseCase
-import com.example.shared.presentation.defect.DefectDetailEffect
-import com.example.shared.presentation.defect.DefectDetailIntent
+import com.example.shared.viewmodels.effects.DefectDetailEffect
+import com.example.shared.viewmodels.intent.DefectDetailIntent
 import com.example.shared.viewmodels.state.DefectDetailState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel

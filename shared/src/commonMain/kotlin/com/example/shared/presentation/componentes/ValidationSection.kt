@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.LetterTemplateType
 import com.example.shared.domain.model.ValidationResult
 import com.example.shared.domain.model.ValidationSeverity
-import com.example.shared.presentation.utilitybill.kind
-import com.example.shared.presentation.utilitybill.label
-import com.example.shared.presentation.utilitybill.suggestedTemplateFor
+import com.example.shared.presentation.labels.kind
+import com.example.shared.presentation.labels.label
+import com.example.shared.presentation.labels.suggestedTemplateFor
 
 @Composable
 fun ValidationSection(

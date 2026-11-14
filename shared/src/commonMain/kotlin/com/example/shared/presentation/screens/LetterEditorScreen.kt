@@ -2,8 +2,8 @@ package com.example.shared.presentation.screens
 
 import com.example.shared.domain.model.StatusKind
 import com.example.shared.presentation.componentes.StatusChip
-import com.example.shared.presentation.letter.LetterEditorEffect
-import com.example.shared.presentation.letter.LetterEditorIntent
+import com.example.shared.viewmodels.effects.LetterEditorEffect
+import com.example.shared.viewmodels.intent.LetterEditorIntent
 import com.example.shared.viewmodels.LetterEditorViewModel
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

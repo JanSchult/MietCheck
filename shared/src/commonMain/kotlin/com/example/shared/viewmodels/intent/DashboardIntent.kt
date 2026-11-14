@@ -1,0 +1,12 @@
+package com.example.shared.viewmodels.intent
+
+import com.example.shared.domain.model.QuickAction
+
+sealed interface DashboardIntent {
+    data class SelectApartment(val apartmentId: String) : DashboardIntent
+    data class QuickActionClicked(val action: QuickAction) : DashboardIntent
+    data object AddApartmentClicked : DashboardIntent
+    data class OpenCheckClicked(val billId: String) : DashboardIntent
+    data object OpenRemindersClicked : DashboardIntent
+
+}

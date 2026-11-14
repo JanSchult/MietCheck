@@ -7,8 +7,8 @@ import com.example.shared.domain.model.DefectStatus
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.usecase.SaveDefectUseCase
-import com.example.shared.presentation.defect.DefectFormEffect
-import com.example.shared.presentation.defect.DefectFormIntent
+import com.example.shared.viewmodels.effects.DefectFormEffect
+import com.example.shared.viewmodels.intent.DefectFormIntent
 import com.example.shared.viewmodels.state.DefectFormState
 import com.example.shared.viewmodels.state.OTHER_ROOM
 import kotlinx.coroutines.channels.Channel

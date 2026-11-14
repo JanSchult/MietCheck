@@ -7,6 +7,7 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 import com.example.shared.data.local.DatabaseKeyProvider
 import com.example.shared.data.local.MietCheckDatabase
+import com.example.shared.domain.lock.AppLockManager
 import com.example.shared.domain.platform.AndroidExportArchiveWriter
 import com.example.shared.domain.platform.AndroidFileSharer
 import com.example.shared.domain.platform.AndroidMediaVault
@@ -26,7 +27,7 @@ import org.koin.dsl.module
 
 actual val platformModule = module {
     single<SqlDriver> { createEncryptedDriver(androidContext()) }
-    single<TextSharer> { AndroidTextSharer(androidContext()) }
+    single<TextSharer> { AndroidTextSharer(androidContext(),get()) }
     single(createdAtStart = true) { CurrentActivityProvider(androidApplication()) }
     single { BiometricAuthenticator(get()) }
     single { SecureFileStorage(androidContext()) }
@@ -49,8 +50,10 @@ private fun createEncryptedDriver(context: Context): SqlDriver {
     )
 }
 
-private class AndroidTextSharer(private val context: Context) : TextSharer {
+private class AndroidTextSharer(private val context: Context,
+    private val lockManager: AppLockManager) : TextSharer {
     override fun shareText(subject: String, text: String) {
+        lockManager.beginExternalFlow()
         val send = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(Intent.EXTRA_SUBJECT, subject)

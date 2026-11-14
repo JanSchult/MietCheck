@@ -9,8 +9,8 @@ import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.usecase.ObserveBillsUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
-import com.example.shared.presentation.checks.ChecksEffect
-import com.example.shared.presentation.checks.ChecksIntent
+import com.example.shared.viewmodels.effects.ChecksEffect
+import com.example.shared.viewmodels.intent.ChecksIntent
 import com.example.shared.viewmodels.state.ChecksState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel

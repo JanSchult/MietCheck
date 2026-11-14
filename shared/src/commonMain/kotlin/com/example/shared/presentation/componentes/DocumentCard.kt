@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.DocumentRecord
-import com.example.shared.presentation.document.label
+import com.example.shared.presentation.labels.label
 import com.example.shared.util.formatDate
 import kotlin.time.ExperimentalTime
 

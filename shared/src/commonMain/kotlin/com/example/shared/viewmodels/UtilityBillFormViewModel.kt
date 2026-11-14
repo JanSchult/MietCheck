@@ -16,9 +16,9 @@ import com.example.shared.domain.usecase.SaveUtilityBillUseCase
 import com.example.shared.domain.usecase.centsToInput
 import com.example.shared.domain.usecase.parseEuroToCents
 import com.example.shared.domain.usecase.parseSqm
-import com.example.shared.presentation.form.UtilityBillFormEffect
-import com.example.shared.presentation.form.UtilityBillFormIntent
-import com.example.shared.presentation.form.displayName
+import com.example.shared.viewmodels.effects.UtilityBillFormEffect
+import com.example.shared.viewmodels.intent.UtilityBillFormIntent
+import com.example.shared.presentation.labels.displayName
 import com.example.shared.domain.model.ItemField
 import com.example.shared.util.formatSqm
 import com.example.shared.util.parseDate

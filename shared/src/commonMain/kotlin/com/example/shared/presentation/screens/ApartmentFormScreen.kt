@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,8 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.ApartmentField
 import com.example.shared.domain.model.ApartmentFormField
-import com.example.shared.presentation.apartment.ApartmentFormEffect
-import com.example.shared.presentation.apartment.ApartmentFormIntent
+import com.example.shared.viewmodels.effects.ApartmentFormEffect
+import com.example.shared.viewmodels.intent.ApartmentFormIntent
 import com.example.shared.presentation.componentes.FormField
 import com.example.shared.presentation.componentes.SectionTitle
 import com.example.shared.viewmodels.ApartmentFormViewModel

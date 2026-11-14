@@ -9,8 +9,8 @@ import com.example.shared.domain.lock.PinMode
 import com.example.shared.domain.lock.PinStep
 import com.example.shared.domain.lock.isWeakPin
 import com.example.shared.domain.platform.BiometricAuthenticator
-import com.example.shared.presentation.lock.PinSetupEffect
-import com.example.shared.presentation.lock.PinSetupIntent
+import com.example.shared.viewmodels.effects.PinSetupEffect
+import com.example.shared.viewmodels.intent.PinSetupIntent
 import com.example.shared.viewmodels.state.PinSetupState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel

@@ -7,8 +7,8 @@ import com.example.shared.domain.model.LetterTemplateType
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.usecase.BuildBillOverviewUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
-import com.example.shared.presentation.utilitybill.UtilityBillOverviewEffect
-import com.example.shared.presentation.utilitybill.UtilityBillOverviewIntent
+import com.example.shared.viewmodels.effects.UtilityBillOverviewEffect
+import com.example.shared.viewmodels.intent.UtilityBillOverviewIntent
 import com.example.shared.viewmodels.state.UtilityBillOverviewState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

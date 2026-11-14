@@ -23,9 +23,9 @@ import com.example.shared.domain.model.RecurrenceRule
 import com.example.shared.domain.model.ReminderType
 import com.example.shared.presentation.componentes.DropdownField
 import com.example.shared.presentation.componentes.FormField
-import com.example.shared.presentation.reminder.ReminderFormEffect
-import com.example.shared.presentation.reminder.ReminderFormIntent
-import com.example.shared.presentation.reminder.displayName
+import com.example.shared.viewmodels.effects.ReminderFormEffect
+import com.example.shared.viewmodels.intent.ReminderFormIntent
+import com.example.shared.presentation.labels.displayName
 import com.example.shared.viewmodels.ReminderFormViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

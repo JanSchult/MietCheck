@@ -8,9 +8,9 @@ import com.example.shared.domain.usecase.GetOpenChecksUseCase
 import com.example.shared.domain.usecase.ObserveApartmentsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
-import com.example.shared.presentation.dashboard.DashboardEffect
+import com.example.shared.viewmodels.effects.DashboardEffect
 import com.example.shared.viewmodels.state.DashboardState
-import com.example.shared.presentation.dashboard.DashboardIntent
+import com.example.shared.viewmodels.intent.DashboardIntent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

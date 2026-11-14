@@ -35,9 +35,9 @@ import com.example.shared.domain.platform.rememberMediaCapturer
 import com.example.shared.presentation.componentes.AddCommunicationDialog
 import com.example.shared.presentation.componentes.DefectHeader
 import com.example.shared.presentation.componentes.DropdownField
-import com.example.shared.presentation.defect.DefectDetailEffect
-import com.example.shared.presentation.defect.DefectDetailIntent
-import com.example.shared.presentation.defect.label
+import com.example.shared.viewmodels.effects.DefectDetailEffect
+import com.example.shared.viewmodels.intent.DefectDetailIntent
+import com.example.shared.presentation.labels.label
 import com.example.shared.util.formatDate
 import com.example.shared.viewmodels.DefectDetailViewModel
 import org.koin.compose.viewmodel.koinViewModel

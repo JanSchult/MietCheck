@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.RecurrenceRule
 import com.example.shared.domain.model.Reminder
 import com.example.shared.domain.repository.ReminderListIntent
-import com.example.shared.presentation.reminder.displayName
+import com.example.shared.presentation.labels.displayName
 import com.example.shared.util.formatDate
 import com.example.shared.viewmodels.ReminderListViewModel
 import kotlin.time.ExperimentalTime

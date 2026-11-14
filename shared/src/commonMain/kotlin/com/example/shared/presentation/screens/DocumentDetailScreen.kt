@@ -1,6 +1,6 @@
 package com.example.shared.presentation.screens
 
-import com.example.shared.presentation.document.DocumentDetailIntent
+import com.example.shared.viewmodels.intent.DocumentDetailIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.DocumentType
 import com.example.shared.presentation.componentes.DropdownField
 import com.example.shared.presentation.componentes.FormField
-import com.example.shared.presentation.document.DocumentDetailEffect
-import com.example.shared.presentation.document.label
+import com.example.shared.viewmodels.effects.DocumentDetailEffect
+import com.example.shared.presentation.labels.label
 import com.example.shared.util.formatDate
 import kotlin.time.ExperimentalTime
 import com.example.shared.viewmodels.DocumentDetailViewModel

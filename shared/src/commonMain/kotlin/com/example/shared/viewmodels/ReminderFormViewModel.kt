@@ -9,9 +9,9 @@ import com.example.shared.domain.model.ReminderType
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.ReminderId
 import com.example.shared.domain.usecase.SaveReminderUseCase
-import com.example.shared.presentation.reminder.ReminderFormEffect
-import com.example.shared.presentation.reminder.ReminderFormIntent
-import com.example.shared.presentation.reminder.displayName
+import com.example.shared.viewmodels.effects.ReminderFormEffect
+import com.example.shared.viewmodels.intent.ReminderFormIntent
+import com.example.shared.presentation.labels.displayName
 import com.example.shared.viewmodels.state.ReminderFormState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

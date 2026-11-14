@@ -11,8 +11,8 @@ import com.example.shared.domain.model.ids.LandlordContactId
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.parseEuroToCents
 import com.example.shared.domain.usecase.parseSqm
-import com.example.shared.presentation.apartment.ApartmentFormEffect
-import com.example.shared.presentation.apartment.ApartmentFormIntent
+import com.example.shared.viewmodels.effects.ApartmentFormEffect
+import com.example.shared.viewmodels.intent.ApartmentFormIntent
 import com.example.shared.viewmodels.state.ApartmentFormState
 import com.example.shared.domain.model.ApartmentField
 import com.example.shared.domain.repository.SelectedApartmentRepository

@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.Defect
-import com.example.shared.presentation.defect.kind
-import com.example.shared.presentation.defect.label
+import com.example.shared.presentation.labels.kind
+import com.example.shared.presentation.labels.label
 import com.example.shared.util.formatDate
 import kotlin.time.ExperimentalTime
 

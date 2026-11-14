@@ -23,8 +23,8 @@ import com.example.shared.presentation.componentes.KeyFiguresCard
 import com.example.shared.presentation.componentes.LetterSection
 import com.example.shared.presentation.componentes.ResultCard
 import com.example.shared.presentation.componentes.ValidationSection
-import com.example.shared.presentation.utilitybill.UtilityBillOverviewEffect
-import com.example.shared.presentation.utilitybill.UtilityBillOverviewIntent
+import com.example.shared.viewmodels.effects.UtilityBillOverviewEffect
+import com.example.shared.viewmodels.intent.UtilityBillOverviewIntent
 import com.example.shared.util.toDisplayDate
 import com.example.shared.viewmodels.UtilityBillOverviewViewModel
 import org.koin.compose.viewmodel.koinViewModel
