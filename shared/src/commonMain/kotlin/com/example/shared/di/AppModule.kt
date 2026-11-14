@@ -8,6 +8,7 @@ import com.example.shared.data.repositorys.SqlDelightDefectRepository
 import com.example.shared.data.repositorys.SqlDelightDocumentRepository
 import com.example.shared.data.repositorys.SqlDelightReminderRepository
 import com.example.shared.data.repositorys.SqlDelightSelectedApartmentRepository
+import com.example.shared.data.repositorys.SqlDelightTenantProfileRepository
 import com.example.shared.data.repositorys.SqlDelightUtilityBillRepository
 import com.example.shared.domain.lock.AppLockManager
 import com.example.shared.domain.lock.AppLockRepository
@@ -16,6 +17,7 @@ import com.example.shared.domain.repository.DefectRepository
 import com.example.shared.domain.repository.DocumentRepository
 import com.example.shared.domain.repository.ReminderRepository
 import com.example.shared.domain.repository.SelectedApartmentRepository
+import com.example.shared.domain.repository.TenantProfileRepository
 import com.example.shared.domain.repository.UtilityBillRepository
 import com.example.shared.domain.usecase.AddCommunicationUseCase
 import com.example.shared.domain.usecase.AddDefectMediaUseCase
@@ -31,6 +33,7 @@ import com.example.shared.domain.usecase.ExportAllDataUseCase
 import com.example.shared.domain.usecase.GetApartmentUseCase
 import com.example.shared.domain.usecase.GetDocumentUseCase
 import com.example.shared.domain.usecase.GetOpenChecksUseCase
+import com.example.shared.domain.usecase.GetTenantProfileUseCase
 import com.example.shared.domain.usecase.GetUtilityBillUseCase
 import com.example.shared.domain.usecase.ImportDocumentUseCase
 import com.example.shared.domain.usecase.MarkReminderCompletedUseCase
@@ -47,6 +50,7 @@ import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
 import com.example.shared.domain.usecase.SaveDefectUseCase
 import com.example.shared.domain.usecase.SaveReminderUseCase
+import com.example.shared.domain.usecase.SaveTenantProfileUseCase
 import com.example.shared.domain.usecase.SaveUtilityBillUseCase
 import com.example.shared.domain.usecase.ShareDocumentUseCase
 import com.example.shared.domain.usecase.UpdateDefectStatusUseCase
@@ -73,6 +77,7 @@ import com.example.shared.viewmodels.PinSetupViewModel
 import com.example.shared.viewmodels.ReminderFormViewModel
 import com.example.shared.viewmodels.ReminderListViewModel
 import com.example.shared.viewmodels.SettingsViewModel
+import com.example.shared.viewmodels.TenantProfileViewModel
 import com.example.shared.viewmodels.UtilityBillFormViewModel
 import com.example.shared.viewmodels.UtilityBillOverviewViewModel
 import org.koin.core.module.dsl.viewModel
@@ -88,6 +93,7 @@ val dataModule = module {
     single<DefectRepository> { SqlDelightDefectRepository(get()) }
     single<AppLockRepository> { SqlDelightAppLockRepository(get()) }
     single { AppLockManager(get(), get()) }
+    single<TenantProfileRepository> { SqlDelightTenantProfileRepository(get()) }
 
 }
 
@@ -126,7 +132,7 @@ val useCaseModule = module {
     // Dokumente
     factory { ObserveRecentDocumentsUseCase(get()) }
     // Schreiben
-    factory { BuildLetterContextUseCase(get(), get()) }
+    factory { BuildLetterContextUseCase(get(), get(),get()) }
     factory { BuildLetterDraftUseCase() }
     // Mängel
     factory { ObserveDefectsUseCase(get()) }
@@ -145,8 +151,9 @@ val useCaseModule = module {
     factory { AddDefectMediaUseCase(get(), get()) }
     factory { RemoveDefectMediaUseCase(get(), get()) }
     factory { OpenDefectMediaUseCase(get()) }
-    factory { BuildDefectReportUseCase(get(), get()) }
-
+    factory { BuildDefectReportUseCase(get(), get(),get()) }
+    factory { GetTenantProfileUseCase(get()) }
+    factory { SaveTenantProfileUseCase(get()) }
 }
 
 val presentationModule = module {
@@ -168,7 +175,7 @@ val presentationModule = module {
     viewModel { OnboardingViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get(), get()) }
     viewModel { DefectReportViewModel(get(), get(), get(), get()) }
-
+viewModel { TenantProfileViewModel(get(), get()) }
 }
 
 val appModules = listOf(

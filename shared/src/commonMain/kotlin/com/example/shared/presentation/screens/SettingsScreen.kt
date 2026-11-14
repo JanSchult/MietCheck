@@ -40,6 +40,7 @@ private fun timeoutLabel(seconds: Int) = when (seconds) {
 @Composable
 fun SettingsScreen(
     onSetupPin: () -> Unit,
+    onOpenProfile: () -> Unit,
     onChangePin: () -> Unit,
     onRemovePin: () -> Unit,
     onOpenPrivacy: () -> Unit,
@@ -60,6 +61,9 @@ fun SettingsScreen(
         modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        OutlinedButton(onClick = onOpenProfile, modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)) {
+            Text("Mein Profil (Absender für Briefe)")
+        }
         Text("App-Sperre", style = MaterialTheme.typography.titleLarge)
 
         if (!state.hasPin) {

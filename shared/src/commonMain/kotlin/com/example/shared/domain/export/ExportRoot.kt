@@ -7,5 +7,6 @@ data class ExportRoot(
     val formatVersion: Int,
     val exportedAt: String,
     val app: String,
+    val tenant: ExportTenant?,
     val apartments: List<ExportApartment>
 )

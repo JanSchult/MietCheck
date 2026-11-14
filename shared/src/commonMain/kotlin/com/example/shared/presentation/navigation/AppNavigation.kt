@@ -46,6 +46,7 @@ import com.example.shared.presentation.screens.PrivacyScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
 import com.example.shared.presentation.screens.ReminderListScreen
 import com.example.shared.presentation.screens.SettingsScreen
+import com.example.shared.presentation.screens.TenantProfileScreen
 import com.example.shared.presentation.screens.UtilityBillFormScreen
 import com.example.shared.presentation.screens.UtilityBillOverviewScreen
 import kotlinx.coroutines.launch
@@ -227,6 +228,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
             }
             composable<SettingsRoute> {
                 SettingsScreen(
+                    onOpenProfile = { navController.navigate(ProfileRoute) },
                     onSetupPin = { navController.navigate(PinSetupRoute(PinMode.SETUP.name)) },
                     onChangePin = { navController.navigate(PinSetupRoute(PinMode.CHANGE.name)) },
                     onRemovePin = { navController.navigate(PinSetupRoute(PinMode.REMOVE.name)) },
@@ -248,6 +250,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 val route = entry.toRoute<DefectReportRoute>()
                 DefectReportScreen(defectId = route.defectId, onShowMessage = showError)
             }
+            composable<ProfileRoute> { TenantProfileScreen(onSaved = { navController.popBackStack() }, onShowError = showError) }
         }
     }
 }
@@ -276,5 +279,6 @@ private fun titleFor(destination: NavDestination?): String = when {
     destination.hasRoute<PinSetupRoute>() -> "PIN"
     destination.hasRoute<PrivacyRoute>() -> "Datenschutzerklärung"
     destination.hasRoute<DefectReportRoute>() -> "Mängelanzeige"
+    destination.hasRoute<ProfileRoute>() -> "Mein Profil"
     else -> ""
 }
