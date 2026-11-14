@@ -7,6 +7,7 @@ import com.example.shared.domain.model.LandlordContact
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.repository.ApartmentRepository
 import com.example.shared.domain.repository.DefectRepository
+import com.example.shared.domain.repository.TenantProfileRepository
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
@@ -20,7 +21,8 @@ import kotlin.time.Instant
  */
 class BuildDefectReportUseCase(
     private val defectRepository: DefectRepository,
-    private val apartmentRepository: ApartmentRepository
+    private val apartmentRepository: ApartmentRepository,
+    private val tenantProfileRepository: TenantProfileRepository
 ) {
     @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(defectId: DefectId): DefectReportDraft? {
@@ -33,7 +35,7 @@ class BuildDefectReportUseCase(
 
         val addressBlock: String? = apartment?.address?.let { "${it.street} ${it.houseNumber}\n${it.postalCode} ${it.city}" }
         val addressLine: String = addressBlock?.replace("\n", ", ") ?: "[Adresse der Wohnung]"
-
+        val tenant = tenantProfileRepository.get()
         val recipientName: String = if (landlord != null) {
             listOfNotNull(landlord.company, landlord.name).joinToString("\n")
         } else "[Vermieter / Hausverwaltung]"
@@ -46,8 +48,8 @@ class BuildDefectReportUseCase(
         val mediaCount = defect.mediaFilePaths.size
 
         val body = buildString {
-            appendLine("[Dein Name]")
-            appendLine(addressBlock ?: "[Deine Adresse]")
+            appendLine(tenant.name.ifBlank { "[Dein Name]" })
+            appendLine(tenant.withContact(addressBlock ?: "[Deine Adresse]"))
             appendLine()
             appendLine(recipientName)
             appendLine(recipientAddress)

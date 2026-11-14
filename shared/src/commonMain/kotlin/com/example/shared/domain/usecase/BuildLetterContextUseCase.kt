@@ -6,13 +6,15 @@ import com.example.shared.domain.model.LandlordContact
 import com.example.shared.domain.model.LetterContext
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.repository.ApartmentRepository
+import com.example.shared.domain.repository.TenantProfileRepository
 import com.example.shared.domain.repository.UtilityBillRepository
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 
 class BuildLetterContextUseCase(
     private val billRepository: UtilityBillRepository,
-    private val apartmentRepository: ApartmentRepository
+    private val apartmentRepository: ApartmentRepository,
+    private val tenantProfileRepository: TenantProfileRepository
 ) {
     suspend operator fun invoke(billId: UtilityBillId): LetterContext? {
         val bill = billRepository.getById(billId) ?: return null
@@ -23,7 +25,7 @@ class BuildLetterContextUseCase(
             if (landlordId != null) apartmentRepository.getLandlord(landlordId) else null
 
         val apartmentAddress: String = apartment?.address?.format() ?: "[Adresse der Wohnung]"
-
+        val tenant = tenantProfileRepository.get()
         val recipientName: String = if (landlord != null) {
             listOfNotNull(landlord.company, landlord.name).joinToString("\n")
         } else {
@@ -34,8 +36,8 @@ class BuildLetterContextUseCase(
             landlord?.postalAddress?.format() ?: "[Adresse Vermieter]"
 
         return LetterContext(
-            senderName = "[Dein Name]",
-            senderAddress = apartmentAddress,
+            senderName = tenant.name.ifBlank { "[Dein Name]" },
+            senderAddress = tenant.withContact(apartmentAddress),
             recipientName = recipientName,
             recipientAddress = recipientAddress,
             apartmentAddress = apartmentAddress.replace("\n", ", "),
