@@ -11,11 +11,13 @@ import com.example.shared.domain.lock.AppLockManager
 import com.example.shared.domain.platform.AndroidExportArchiveWriter
 import com.example.shared.domain.platform.AndroidFileSharer
 import com.example.shared.domain.platform.AndroidMediaVault
+import com.example.shared.domain.platform.AndroidPdfTextWriter
 import com.example.shared.domain.platform.AppDataEraser
 import com.example.shared.domain.platform.BiometricAuthenticator
 import com.example.shared.domain.platform.CurrentActivityProvider
 import com.example.shared.domain.platform.ExportArchiveWriter
 import com.example.shared.domain.platform.FileSharer
+import com.example.shared.domain.platform.PdfTextWriter
 import com.example.shared.domain.platform.PinHasher
 import com.example.shared.domain.platform.SecureFileStorage
 import com.example.shared.domain.platform.TextSharer
@@ -37,6 +39,7 @@ actual val platformModule = module {
     single { AndroidMediaVault(androidContext(), get()) }
     single<MediaVault> { get<AndroidMediaVault>() }
     factory<ExportArchiveWriter> { AndroidExportArchiveWriter(androidContext(), get(),get()) }
+    single<PdfTextWriter> { AndroidPdfTextWriter() }
 }
 
 private fun createEncryptedDriver(context: Context): SqlDriver {

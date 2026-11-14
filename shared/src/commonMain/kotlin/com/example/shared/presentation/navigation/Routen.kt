@@ -21,3 +21,4 @@ import kotlinx.serialization.Serializable
 @Serializable data object SettingsRoute
 @Serializable data class PinSetupRoute(val mode: String)
 @Serializable data object PrivacyRoute
+@Serializable data class DefectReportRoute(val defectId: String)

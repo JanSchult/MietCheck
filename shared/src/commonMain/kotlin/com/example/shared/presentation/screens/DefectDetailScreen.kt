@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +49,7 @@ import kotlin.time.ExperimentalTime
 fun DefectDetailScreen(
     defectId: String,
     onDeleted: () -> Unit,
+    onPrepareReport: () -> Unit,
     onShowError: (String) -> Unit,
     viewModel: DefectDetailViewModel = koinViewModel()
 ) {
@@ -162,6 +164,11 @@ fun DefectDetailScreen(
             onClick = { showAddDialog = true },
             modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp)
         ) { Text("Eintrag hinzufügen") }
+
+        Button(
+            onClick = onPrepareReport,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)
+        ) { Text("Mängelanzeige vorbereiten", style = MaterialTheme.typography.titleMedium) }
 
         OutlinedButton(
             onClick = { showDeleteDialog = true },

@@ -35,6 +35,7 @@ import com.example.shared.presentation.screens.ChecksScreen
 import com.example.shared.presentation.screens.DashboardScreen
 import com.example.shared.presentation.screens.DefectDetailScreen
 import com.example.shared.presentation.screens.DefectFormScreen
+import com.example.shared.presentation.screens.DefectReportScreen
 import com.example.shared.presentation.screens.DefectsScreen
 import com.example.shared.presentation.screens.DocumentDetailScreen
 import com.example.shared.presentation.screens.DocumentsScreen
@@ -164,6 +165,7 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 val route = entry.toRoute<DefectDetailRoute>()
                 DefectDetailScreen(
                     defectId = route.defectId,
+                    onPrepareReport = { navController.navigate(DefectReportRoute(route.defectId)) },
                     onDeleted = { navController.popBackStack() },
                     onShowError = showError
                 )
@@ -242,6 +244,10 @@ fun AppNavigation(navController: NavHostController = rememberNavController()) {
                 )
             }
             composable<PrivacyRoute> { PrivacyScreen() }
+            composable<DefectReportRoute> { entry ->
+                val route = entry.toRoute<DefectReportRoute>()
+                DefectReportScreen(defectId = route.defectId, onShowMessage = showError)
+            }
         }
     }
 }
@@ -269,5 +275,6 @@ private fun titleFor(destination: NavDestination?): String = when {
     destination.hasRoute<SettingsRoute>() -> "Einstellungen"
     destination.hasRoute<PinSetupRoute>() -> "PIN"
     destination.hasRoute<PrivacyRoute>() -> "Datenschutzerklärung"
+    destination.hasRoute<DefectReportRoute>() -> "Mängelanzeige"
     else -> ""
 }

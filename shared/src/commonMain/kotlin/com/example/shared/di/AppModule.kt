@@ -20,6 +20,7 @@ import com.example.shared.domain.repository.UtilityBillRepository
 import com.example.shared.domain.usecase.AddCommunicationUseCase
 import com.example.shared.domain.usecase.AddDefectMediaUseCase
 import com.example.shared.domain.usecase.BuildBillOverviewUseCase
+import com.example.shared.domain.usecase.BuildDefectReportUseCase
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase
 import com.example.shared.domain.usecase.DeleteApartmentUseCase
@@ -61,6 +62,7 @@ import com.example.shared.viewmodels.ChecksViewModel
 import com.example.shared.viewmodels.DashboardViewModel
 import com.example.shared.viewmodels.DefectDetailViewModel
 import com.example.shared.viewmodels.DefectFormViewModel
+import com.example.shared.viewmodels.DefectReportViewModel
 import com.example.shared.viewmodels.DefectsViewModel
 import com.example.shared.viewmodels.DocumentDetailViewModel
 import com.example.shared.viewmodels.DocumentsViewModel
@@ -143,6 +145,8 @@ val useCaseModule = module {
     factory { AddDefectMediaUseCase(get(), get()) }
     factory { RemoveDefectMediaUseCase(get(), get()) }
     factory { OpenDefectMediaUseCase(get()) }
+    factory { BuildDefectReportUseCase(get(), get()) }
+
 }
 
 val presentationModule = module {
@@ -163,6 +167,8 @@ val presentationModule = module {
     viewModel { PinSetupViewModel(get(), get()) }
     viewModel { OnboardingViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get(), get()) }
+    viewModel { DefectReportViewModel(get(), get(), get(), get()) }
+
 }
 
 val appModules = listOf(
