@@ -3,7 +3,9 @@ package com.example.shared.di
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.native.NativeSqliteDriver
 import com.example.shared.data.local.MietCheckDatabase
+import com.example.shared.domain.platform.OcrEngine
 import com.example.shared.domain.platform.TextSharer
+import com.example.shared.domain.platform.UnavailableOcrEngine
 import com.example.shared.domain.repository.MediaVault
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -14,6 +16,7 @@ actual val platformModule = module {
     single<SqlDriver> { NativeSqliteDriver(MietCheckDatabase.Schema, "mietcheck.db") }
     single<MediaVault> { get<MediaVault>() }
     single<TextSharer> { IosTextSharer() }
+    single<OcrEngine> { UnavailableOcrEngine() }
 }
 
 private class IosTextSharer : TextSharer {

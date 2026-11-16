@@ -87,8 +87,6 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.androidx.biometric)
-                implementation(libs.play.services.mlkit.text.recognition)
-                implementation(libs.play.services.mlkit.text.recognition.common)
                 implementation(libs.koin.android)
 
                 // SQLDelight + SQLCipher (verschlüsselte Datenbank)
@@ -98,6 +96,8 @@ kotlin {
                 implementation(libs.security.crypto)
                 implementation(libs.play.services.mlkit.document.scanner)
                 implementation(libs.androidx.activity.compose)
+                implementation(libs.mlkit.text.recognition)
+
             }
         }
 

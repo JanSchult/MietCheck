@@ -1,11 +1,11 @@
 package com.example.shared.viewmodels
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.Apartment
 import com.example.shared.domain.model.BillFormField
 import com.example.shared.domain.model.CostItemInput
+import com.example.shared.domain.model.ImportedFile
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.UtilityCostItem
 import com.example.shared.domain.model.ids.ApartmentId
@@ -20,6 +20,8 @@ import com.example.shared.viewmodels.effects.UtilityBillFormEffect
 import com.example.shared.viewmodels.intent.UtilityBillFormIntent
 import com.example.shared.presentation.labels.displayName
 import com.example.shared.domain.model.ItemField
+import com.example.shared.domain.usecase.ImportDocumentUseCase
+import com.example.shared.domain.usecase.ReadBillDocumentUseCase
 import com.example.shared.util.formatSqm
 import com.example.shared.util.parseDate
 import com.example.shared.viewmodels.state.UtilityBillFormState
@@ -39,7 +41,9 @@ import kotlin.time.ExperimentalTime
 
 class UtilityBillFormViewModel(
     private val getApartment: GetApartmentUseCase,
-    private val saveBill: SaveUtilityBillUseCase
+    private val saveBill: SaveUtilityBillUseCase,
+    private val readBill: ReadBillDocumentUseCase,
+    private val importDocument: ImportDocumentUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(UtilityBillFormState())
@@ -50,6 +54,7 @@ class UtilityBillFormViewModel(
 
     private var apartment: Apartment? = null
     private var nextItemKey = 0L
+    private var pendingDocument: ImportedFile? = null
 
     fun onIntent(intent: UtilityBillFormIntent) {
         when (intent) {

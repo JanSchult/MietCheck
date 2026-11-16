@@ -2,6 +2,7 @@ package com.example.shared.viewmodels.state
 
 import com.example.shared.domain.model.BillFormField
 import com.example.shared.domain.model.CostItemInput
+import com.example.shared.domain.model.OcrReview
 import com.example.shared.domain.usecase.parseEuroToCents
 
 data class UtilityBillFormState(
@@ -16,7 +17,12 @@ data class UtilityBillFormState(
     val items: List<CostItemInput> = emptyList(),
     val fieldErrors: Map<BillFormField, String> = emptyMap(),
     val itemErrors: Map<Long, String> = emptyMap(),
-    val isSaving: Boolean = false
+    val isSaving: Boolean = false,
+    val ocrAvailable: Boolean = false,
+    val isReading: Boolean = false,
+    val review: OcrReview? = null,
+    val sourceDocumentName: String? = null,
+    val ocrResultCents: Long? = null
 ) {
     // Live-Werte für die Zusammenfassung (alles in Cent, kein Double)
     val itemsSumCents: Long get() = items.sumOf { parseEuroToCents(it.amount) ?: 0L }

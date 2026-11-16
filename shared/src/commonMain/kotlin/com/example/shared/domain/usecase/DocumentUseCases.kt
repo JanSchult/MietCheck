@@ -28,7 +28,7 @@ class GetDocumentUseCase(private val repository: DocumentRepository) {
 
 sealed interface ImportResult {
     data class Saved(val id: DocumentId) : ImportResult
-    data class Duplicate(val existingName: String) : ImportResult
+    data class Duplicate(val id: DocumentId,val existingName: String) : ImportResult
 }
 
 class ImportDocumentUseCase(
@@ -45,8 +45,7 @@ class ImportDocumentUseCase(
 
         val duplicate = repository.observeForApartment(apartmentId).first()
             .firstOrNull { it.sourceHash == file.sha256 }
-        if (duplicate != null) return ImportResult.Duplicate(duplicate.displayName)
-
+        if (duplicate != null) return ImportResult.Duplicate(duplicate.id, duplicate.displayName)
         val id = DocumentId.new()
         val storedName = storage.save(file.bytes, "${id.value}.bin")
         val record = DocumentRecord(

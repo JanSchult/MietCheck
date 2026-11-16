@@ -17,6 +17,8 @@ import com.example.shared.domain.platform.BiometricAuthenticator
 import com.example.shared.domain.platform.CurrentActivityProvider
 import com.example.shared.domain.platform.ExportArchiveWriter
 import com.example.shared.domain.platform.FileSharer
+import com.example.shared.domain.platform.MlKitOcrEngine
+import com.example.shared.domain.platform.OcrEngine
 import com.example.shared.domain.platform.PdfTextWriter
 import com.example.shared.domain.platform.PinHasher
 import com.example.shared.domain.platform.SecureFileStorage
@@ -40,6 +42,7 @@ actual val platformModule = module {
     single<MediaVault> { get<AndroidMediaVault>() }
     factory<ExportArchiveWriter> { AndroidExportArchiveWriter(androidContext(), get(),get()) }
     single<PdfTextWriter> { AndroidPdfTextWriter() }
+    single<OcrEngine> { MlKitOcrEngine(androidContext()) }
 }
 
 private fun createEncryptedDriver(context: Context): SqlDriver {

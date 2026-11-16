@@ -1,5 +1,8 @@
 package com.example.shared.domain.platform
 
-expect class OcrEngine {
-    suspend fun recognizeText(imagePath: String): OcrResult
+import com.example.shared.domain.model.OcrText
+
+interface OcrEngine {
+    val isAvailable: Boolean
+    suspend fun recognize(bytes: ByteArray, mimeType: String): OcrText
 }
