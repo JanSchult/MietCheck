@@ -20,9 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.shared.domain.model.BillFormField
+import com.example.shared.domain.usecase.formatEuro
 import com.example.shared.presentation.componentes.CostItemCard
 import com.example.shared.presentation.componentes.FormField
+import com.example.shared.presentation.componentes.OcrReviewContent
+import com.example.shared.presentation.componentes.OcrSourceCard
 import com.example.shared.presentation.componentes.SummaryCard
+import com.example.shared.presentation.componentes.rememberDocumentImporter
 import com.example.shared.viewmodels.effects.UtilityBillFormEffect
 import com.example.shared.viewmodels.intent.UtilityBillFormIntent
 import com.example.shared.viewmodels.UtilityBillFormViewModel
@@ -36,7 +40,19 @@ fun UtilityBillFormScreen(
     viewModel: UtilityBillFormViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
-
+    val importer = rememberDocumentImporter(
+        onImported = { viewModel.onIntent(UtilityBillFormIntent.OcrFileSelected(it)) },
+        onError = onShowError
+    )
+    state.review?.let { review ->
+        OcrReviewContent(
+            review = review,
+            onToggle = { viewModel.onIntent(UtilityBillFormIntent.OcrToggle(it)) },
+            onApply = { viewModel.onIntent(UtilityBillFormIntent.OcrApply) },
+            onCancel = { viewModel.onIntent(UtilityBillFormIntent.OcrCancel) }
+        )
+        return
+    }
     LaunchedEffect(apartmentId) { viewModel.onIntent(UtilityBillFormIntent.Init(apartmentId)) }
     LaunchedEffect(Unit) {
         viewModel.effects.collect { effect ->
@@ -59,7 +75,15 @@ fun UtilityBillFormScreen(
             "Übertrage die Werte aus deiner Nebenkostenabrechnung. Alles bleibt auf diesem Gerät.",
             style = MaterialTheme.typography.bodyLarge
         )
-
+        if (state.ocrAvailable) {
+            OcrSourceCard(
+                isReading = state.isReading,
+                sourceName = state.sourceDocumentName,
+                onPickFile = importer::pickFile,
+                onScan = importer::scan,
+                onRemoveSource = { viewModel.onIntent(UtilityBillFormIntent.RemoveSourceDocument) }
+            )
+        }
         Text("Abrechnungszeitraum", style = MaterialTheme.typography.titleMedium)
         FormField("Beginn (JJJJ-MM-TT)", state.periodStart, state.fieldErrors[BillFormField.PERIOD_START],
             KeyboardType.Number, field(BillFormField.PERIOD_START))
@@ -105,6 +129,17 @@ fun UtilityBillFormScreen(
         ) { Text("Position hinzufügen") }
 
         SummaryCard(state)
+        state.ocrResultCents?.let { expected ->
+            val balance = state.balanceCents
+            if (balance != null && balance != expected) {
+                fun text(cents: Long) = if (cents < 0) "Guthaben ${formatEuro(-cents)}" else "Nachzahlung ${formatEuro(cents)}"
+                Text(
+                    "Die Abrechnung nennt ${text(expected)}. Deine Eingaben ergeben ${text(balance)}. " +
+                            "Bitte vergleiche die Werte mit dem Dokument.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
 
         Button(
             onClick = { viewModel.onIntent(UtilityBillFormIntent.Save) },

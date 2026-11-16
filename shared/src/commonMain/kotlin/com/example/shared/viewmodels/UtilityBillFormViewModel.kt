@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.Apartment
 import com.example.shared.domain.model.BillFormField
 import com.example.shared.domain.model.CostItemInput
+import com.example.shared.domain.model.DocumentType
 import com.example.shared.domain.model.ImportedFile
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.UtilityCostItem
@@ -20,7 +21,10 @@ import com.example.shared.viewmodels.effects.UtilityBillFormEffect
 import com.example.shared.viewmodels.intent.UtilityBillFormIntent
 import com.example.shared.presentation.labels.displayName
 import com.example.shared.domain.model.ItemField
+import com.example.shared.domain.model.OcrField
+import com.example.shared.domain.model.OcrReview
 import com.example.shared.domain.usecase.ImportDocumentUseCase
+import com.example.shared.domain.usecase.ImportResult
 import com.example.shared.domain.usecase.ReadBillDocumentUseCase
 import com.example.shared.util.formatSqm
 import com.example.shared.util.parseDate
@@ -55,6 +59,7 @@ class UtilityBillFormViewModel(
     private var apartment: Apartment? = null
     private var nextItemKey = 0L
     private var pendingDocument: ImportedFile? = null
+    init { _state.update { it.copy(ocrAvailable = readBill.isAvailable) } }
 
     fun onIntent(intent: UtilityBillFormIntent) {
         when (intent) {
@@ -75,6 +80,18 @@ class UtilityBillFormViewModel(
             }
             UtilityBillFormIntent.ApplyAdvanceSuggestion -> applyAdvanceSuggestion()
             UtilityBillFormIntent.Save -> save()
+            is UtilityBillFormIntent.OcrFileSelected -> readDocument(intent.file)
+            is UtilityBillFormIntent.OcrToggle -> _state.update { s ->
+                val review = s.review ?: return@update s
+                val next = if (intent.field in review.selected) review.selected - intent.field else review.selected + intent.field
+                s.copy(review = review.copy(selected = next))
+            }
+            UtilityBillFormIntent.OcrApply -> applyReview()
+            UtilityBillFormIntent.OcrCancel -> _state.update { it.copy(review = null) }
+            UtilityBillFormIntent.RemoveSourceDocument -> {
+                pendingDocument = null
+                _state.update { it.copy(sourceDocumentName = null) }
+            }
         }
     }
 
@@ -96,7 +113,72 @@ class UtilityBillFormViewModel(
             }
         }
     }
+    private fun readDocument(file: ImportedFile) {
+        _state.update { it.copy(isReading = true) }
+        viewModelScope.launch {
+            runCatching { readBill(file) }
+                .onSuccess { outcome ->
+                    val p = outcome.parsed
+                    if (p.isEmpty) {
+                        _effects.send(UtilityBillFormEffect.ShowError(
+                            "Es konnten keine Werte erkannt werden. Du kannst die Angaben von Hand eintragen."
+                        ))
+                    } else {
+                        // Unsichere Werte sind nicht vorausgewählt: Du entscheidest bewusst
+                        val selected = buildSet {
+                            if (p.period != null && !p.period.uncertain) add(OcrField.PERIOD)
+                            if (p.issueDate != null && !p.issueDate.uncertain) add(OcrField.ISSUE_DATE)
+                            if (p.livingSpaceSqm != null && !p.livingSpaceSqm.uncertain) add(OcrField.LIVING_SPACE)
+                            if (p.occupants != null && !p.occupants.uncertain) add(OcrField.OCCUPANTS)
+                            if (p.advancePaymentsCents != null && !p.advancePaymentsCents.uncertain) add(OcrField.ADVANCE)
+                            if (p.totalCostsCents != null && !p.totalCostsCents.uncertain) add(OcrField.TOTAL)
+                            if (p.items.isNotEmpty()) add(OcrField.ITEMS)
+                        }
+                        _state.update { it.copy(review = OcrReview(outcome, file, selected)) }
+                    }
+                }
+                .onFailure { e ->
+                    _effects.send(UtilityBillFormEffect.ShowError(e.message ?: "Das Dokument konnte nicht gelesen werden."))
+                }
+            _state.update { it.copy(isReading = false) }
+        }
+    }
 
+    private fun applyReview() {
+        val review = _state.value.review ?: return
+        val p = review.outcome.parsed
+        fun picked(field: OcrField) = field in review.selected
+
+        // Schlüssel außerhalb von update{} vergeben (der Block kann erneut laufen)
+        val newItems = if (picked(OcrField.ITEMS)) p.items.map {
+            CostItemInput(
+                key = nextItemKey++,
+                category = it.category,
+                label = it.label,
+                amount = centsToInput(it.amountCents),
+                distributionKey = it.distributionKey.orEmpty()
+            )
+        } else null
+
+        pendingDocument = review.file
+        _state.update { s ->
+            s.copy(
+                periodStart = p.period?.takeIf { picked(OcrField.PERIOD) }?.value?.first?.toString() ?: s.periodStart,
+                periodEnd = p.period?.takeIf { picked(OcrField.PERIOD) }?.value?.second?.toString() ?: s.periodEnd,
+                issueDate = p.issueDate?.takeIf { picked(OcrField.ISSUE_DATE) }?.value?.toString() ?: s.issueDate,
+                livingSpace = p.livingSpaceSqm?.takeIf { picked(OcrField.LIVING_SPACE) }?.value?.let(::formatSqm) ?: s.livingSpace,
+                occupants = p.occupants?.takeIf { picked(OcrField.OCCUPANTS) }?.value?.toString() ?: s.occupants,
+                advancePayments = p.advancePaymentsCents?.takeIf { picked(OcrField.ADVANCE) }?.value?.let(::centsToInput) ?: s.advancePayments,
+                totalCosts = p.totalCostsCents?.takeIf { picked(OcrField.TOTAL) }?.value?.let(::centsToInput) ?: s.totalCosts,
+                items = newItems ?: s.items,
+                review = null,
+                sourceDocumentName = review.file.suggestedName,
+                ocrResultCents = p.resultCents?.value,
+                fieldErrors = emptyMap(),
+                itemErrors = emptyMap()
+            )
+        }
+    }
     private fun fieldChanged(field: BillFormField, value: String) = _state.update {
         val errors = it.fieldErrors - field
         when (field) {
@@ -232,8 +314,16 @@ class UtilityBillFormViewModel(
 
         _state.update { it.copy(fieldErrors = emptyMap(), itemErrors = emptyMap(), isSaving = true) }
         viewModelScope.launch {
-            runCatching { saveBill(bill) }
+            runCatching { val documentId = pendingDocument?.let { file ->
+                when (val imported = importDocument(a.id, DocumentType.UTILITY_BILL, file)) {
+                    is ImportResult.Saved -> imported.id
+                    is ImportResult.Duplicate -> imported.id
+                }
+            }
+                saveBill(bill.copy(documentId = documentId))
+            }
                 .onSuccess {
+                    pendingDocument = null
                     _state.update { it.copy(isSaving = false) }
                     _effects.send(UtilityBillFormEffect.Saved(bill.id.value))
                 }

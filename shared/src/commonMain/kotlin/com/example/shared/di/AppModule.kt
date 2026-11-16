@@ -45,6 +45,7 @@ import com.example.shared.domain.usecase.ObserveDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRecentDocumentsUseCase
 import com.example.shared.domain.usecase.ObserveRemindersUseCase
 import com.example.shared.domain.usecase.OpenDefectMediaUseCase
+import com.example.shared.domain.usecase.ReadBillDocumentUseCase
 import com.example.shared.domain.usecase.RemoveDefectMediaUseCase
 import com.example.shared.domain.usecase.RunValidationUseCase
 import com.example.shared.domain.usecase.SaveApartmentUseCase
@@ -154,12 +155,14 @@ val useCaseModule = module {
     factory { BuildDefectReportUseCase(get(), get(),get()) }
     factory { GetTenantProfileUseCase(get()) }
     factory { SaveTenantProfileUseCase(get()) }
+    factory { ReadBillDocumentUseCase(get()) }
+
 }
 
 val presentationModule = module {
     viewModel { DashboardViewModel(get(), get(), get(), get(), get()) }
     viewModel { ApartmentFormViewModel(get(), get()) }
-    viewModel { UtilityBillFormViewModel(get(), get()) }
+    viewModel { UtilityBillFormViewModel(get(), get(),get(),get()) }
     viewModel { UtilityBillOverviewViewModel(get(), get()) }
     viewModel { ChecksViewModel(get(), get(), get()) }
     viewModel { LetterEditorViewModel(get(), get()) }
