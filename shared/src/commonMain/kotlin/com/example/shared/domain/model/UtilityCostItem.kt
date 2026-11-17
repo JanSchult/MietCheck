@@ -1,5 +1,6 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.CostCategory
 import com.example.shared.domain.model.ids.CostItemId
 
 data class UtilityCostItem(

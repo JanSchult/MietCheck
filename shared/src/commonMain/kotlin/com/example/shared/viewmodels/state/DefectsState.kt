@@ -1,7 +1,7 @@
 package com.example.shared.viewmodels.state
 
 import com.example.shared.domain.model.Defect
-import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.model.enums.DefectStatus
 
 data class DefectsState(
     val apartmentId: String? = null,

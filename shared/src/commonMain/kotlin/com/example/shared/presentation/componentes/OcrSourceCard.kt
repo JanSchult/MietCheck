@@ -1,6 +1,6 @@
 package com.example.shared.presentation.componentes
 
-import com.example.shared.domain.model.OcrField
+import com.example.shared.domain.model.enums.OcrField
 import com.example.shared.domain.model.OcrReview
 import com.example.shared.util.toDisplayDate
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.StatusKind
+import com.example.shared.domain.model.enums.StatusKind
 import com.example.shared.domain.ocr.Found
 import com.example.shared.domain.usecase.formatEuro
 import com.example.shared.presentation.labels.displayName

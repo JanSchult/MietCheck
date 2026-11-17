@@ -1,8 +1,8 @@
 package com.example.shared.domain.usecase
 
-import com.example.shared.domain.model.CommunicationDirection
+import com.example.shared.domain.model.enums.CommunicationDirection
 import com.example.shared.domain.model.DefectReportDraft
-import com.example.shared.domain.model.DefectUrgency
+import com.example.shared.domain.model.enums.DefectUrgency
 import com.example.shared.domain.model.LandlordContact
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.repository.ApartmentRepository

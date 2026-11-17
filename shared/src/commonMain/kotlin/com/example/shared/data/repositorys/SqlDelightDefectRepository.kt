@@ -10,7 +10,7 @@ import com.example.shared.data.mapper.toDomain
 import com.example.shared.data.mapper.toEntity
 import com.example.shared.domain.model.Communication
 import com.example.shared.domain.model.Defect
-import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.model.enums.DefectStatus
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.repository.DefectRepository

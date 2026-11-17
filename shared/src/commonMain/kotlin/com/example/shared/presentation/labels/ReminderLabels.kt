@@ -1,7 +1,7 @@
 package com.example.shared.presentation.labels
 
 import com.example.shared.domain.model.RecurrenceRule
-import com.example.shared.domain.model.ReminderType
+import com.example.shared.domain.model.enums.ReminderType
 
 fun ReminderType.displayName(): String = when (this) {
     ReminderType.BILL_DUE -> "Abrechnung erwartet"

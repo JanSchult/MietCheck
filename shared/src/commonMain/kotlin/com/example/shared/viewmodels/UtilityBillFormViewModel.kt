@@ -3,9 +3,9 @@ package com.example.shared.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.Apartment
-import com.example.shared.domain.model.BillFormField
+import com.example.shared.domain.model.enums.BillFormField
 import com.example.shared.domain.model.CostItemInput
-import com.example.shared.domain.model.DocumentType
+import com.example.shared.domain.model.enums.DocumentType
 import com.example.shared.domain.model.ImportedFile
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.UtilityCostItem
@@ -20,8 +20,8 @@ import com.example.shared.domain.usecase.parseSqm
 import com.example.shared.viewmodels.effects.UtilityBillFormEffect
 import com.example.shared.viewmodels.intent.UtilityBillFormIntent
 import com.example.shared.presentation.labels.displayName
-import com.example.shared.domain.model.ItemField
-import com.example.shared.domain.model.OcrField
+import com.example.shared.domain.model.enums.ItemField
+import com.example.shared.domain.model.enums.OcrField
 import com.example.shared.domain.model.OcrReview
 import com.example.shared.domain.usecase.ImportDocumentUseCase
 import com.example.shared.domain.usecase.ImportResult

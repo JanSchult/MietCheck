@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.shared.domain.model.MediaKind
+import com.example.shared.domain.model.enums.MediaKind
 import com.example.shared.domain.model.mediaKindOf
 import com.example.shared.domain.platform.EncryptedImage
 

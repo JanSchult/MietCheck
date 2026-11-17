@@ -2,7 +2,7 @@ package com.example.shared.domain.usecase
 
 
 import com.example.shared.domain.model.DocumentRecord
-import com.example.shared.domain.model.DocumentType
+import com.example.shared.domain.model.enums.DocumentType
 import com.example.shared.domain.model.ImportedFile
 import com.example.shared.domain.model.MAX_IMPORT_BYTES
 import com.example.shared.domain.model.detectMimeType

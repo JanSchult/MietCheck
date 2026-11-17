@@ -1,4 +1,4 @@
-package com.example.shared.domain.model
+package com.example.shared.domain.model.enums
 
 enum class LetterTemplateType {
     REQUEST_EXPLANATION, REQUEST_RECEIPT_ACCESS, NOTE_CALCULATION_DISCREPANCY,

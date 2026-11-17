@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.state
 
-import com.example.shared.domain.model.TenantField
+import com.example.shared.domain.model.enums.TenantField
 
 data class TenantProfileState(
     val name: String = "",

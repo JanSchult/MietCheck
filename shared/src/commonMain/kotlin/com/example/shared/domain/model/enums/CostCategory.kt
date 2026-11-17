@@ -1,4 +1,4 @@
-package com.example.shared.domain.model
+package com.example.shared.domain.model.enums
 
 enum class CostCategory {
     WATER_SEWAGE, HEATING, HOT_WATER, WASTE_DISPOSAL, BUILDING_CLEANING,

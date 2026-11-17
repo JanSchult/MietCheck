@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.state
 
-import com.example.shared.domain.model.DefectUrgency
+import com.example.shared.domain.model.enums.DefectUrgency
 
 
 const val OTHER_ROOM = "Sonstiger Raum"

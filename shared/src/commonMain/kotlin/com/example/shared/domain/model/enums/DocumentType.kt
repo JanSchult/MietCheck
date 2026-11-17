@@ -1,4 +1,4 @@
-package com.example.shared.domain.model
+package com.example.shared.domain.model.enums
 
 enum class DocumentType {
     UTILITY_BILL, RENTAL_CONTRACT, HANDOVER_PROTOCOL,

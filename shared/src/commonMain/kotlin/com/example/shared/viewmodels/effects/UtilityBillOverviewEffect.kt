@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.effects
 
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 
 sealed interface UtilityBillOverviewEffect {
     data class NavigateToLetterEditor(val templateType: LetterTemplateType, val billId: String) :

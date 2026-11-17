@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.Address
 import com.example.shared.domain.model.Apartment
-import com.example.shared.domain.model.ApartmentFormField
+import com.example.shared.domain.model.enums.ApartmentFormField
 import com.example.shared.domain.model.LandlordContact
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.LandlordContactId
@@ -14,7 +14,7 @@ import com.example.shared.domain.usecase.parseSqm
 import com.example.shared.viewmodels.effects.ApartmentFormEffect
 import com.example.shared.viewmodels.intent.ApartmentFormIntent
 import com.example.shared.viewmodels.state.ApartmentFormState
-import com.example.shared.domain.model.ApartmentField
+import com.example.shared.domain.model.enums.ApartmentField
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

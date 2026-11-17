@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.effects
 
-import com.example.shared.domain.model.QuickAction
+import com.example.shared.domain.model.enums.QuickAction
 
 sealed interface DashboardEffect {
     data class StartQuickAction(val action: QuickAction, val apartmentId: String?) : DashboardEffect

@@ -24,7 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.QuickAction
+import com.example.shared.domain.model.enums.QuickAction
 import com.example.shared.presentation.componentes.ApartmentSection
 import com.example.shared.presentation.componentes.DocumentsSection
 import com.example.shared.presentation.componentes.LegalNotice

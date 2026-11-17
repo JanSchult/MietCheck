@@ -2,7 +2,7 @@ package com.example.shared.domain.usecase
 
 import com.example.shared.domain.model.DocumentRecord
 import com.example.shared.domain.model.UtilityBill
-import com.example.shared.domain.model.ValidationSeverity
+import com.example.shared.domain.model.enums.ValidationSeverity
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.repository.DocumentRepository
 import com.example.shared.domain.repository.UtilityBillRepository

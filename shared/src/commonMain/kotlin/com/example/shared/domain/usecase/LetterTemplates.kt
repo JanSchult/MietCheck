@@ -1,6 +1,6 @@
 package com.example.shared.domain.usecase
 
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 
 /**
  * Neutrale Vorlagen. Bewusst keine Fristsetzungen, keine Drohungen,

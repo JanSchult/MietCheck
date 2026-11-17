@@ -1,4 +1,4 @@
-package com.example.shared.domain.model
+package com.example.shared.domain.model.enums
 
 enum class ItemStatus {
     NO_FINDING,        // Keine Auffälligkeit erkannt

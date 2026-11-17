@@ -1,10 +1,10 @@
 package com.example.shared.viewmodels.intent
 
-import com.example.shared.domain.model.BillFormField
-import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.enums.BillFormField
+import com.example.shared.domain.model.enums.CostCategory
 import com.example.shared.domain.model.ImportedFile
-import com.example.shared.domain.model.ItemField
-import com.example.shared.domain.model.OcrField
+import com.example.shared.domain.model.enums.ItemField
+import com.example.shared.domain.model.enums.OcrField
 
 sealed interface UtilityBillFormIntent {
     data class Init(val apartmentId: String) : UtilityBillFormIntent

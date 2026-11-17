@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.intent
 
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 
 sealed interface UtilityBillOverviewIntent {
     data class LoadBill(val billId: String) : UtilityBillOverviewIntent

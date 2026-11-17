@@ -18,9 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 import com.example.shared.domain.model.ValidationResult
-import com.example.shared.domain.model.ValidationSeverity
+import com.example.shared.domain.model.enums.ValidationSeverity
 import com.example.shared.presentation.labels.kind
 import com.example.shared.presentation.labels.label
 import com.example.shared.presentation.labels.suggestedTemplateFor

@@ -1,6 +1,6 @@
 package com.example.shared.presentation.screens
 
-import com.example.shared.domain.model.StatusKind
+import com.example.shared.domain.model.enums.StatusKind
 import com.example.shared.presentation.componentes.StatusChip
 import com.example.shared.viewmodels.effects.LetterEditorEffect
 import com.example.shared.viewmodels.intent.LetterEditorIntent

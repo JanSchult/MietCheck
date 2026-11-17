@@ -1,5 +1,7 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.ValidationSeverity
+
 data class ValidationResult(
     val ruleId: String,
     val severity: ValidationSeverity,

@@ -1,4 +1,4 @@
-package com.example.shared.domain.model
+package com.example.shared.domain.model.enums
 
 enum class CommunicationDirection {
     /** Eingehende Kommunikation (z. B. Nachfragen oder Meldungen vom Mieter/Handwerker) */

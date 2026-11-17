@@ -19,7 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.DefectUrgency
+import com.example.shared.domain.model.enums.DefectUrgency
 import com.example.shared.presentation.componentes.DropdownField
 import com.example.shared.presentation.componentes.FormField
 import com.example.shared.viewmodels.effects.DefectFormEffect

@@ -2,7 +2,7 @@ package com.example.shared.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shared.domain.model.TenantField
+import com.example.shared.domain.model.enums.TenantField
 import com.example.shared.domain.model.TenantProfile
 import com.example.shared.domain.usecase.GetTenantProfileUseCase
 import com.example.shared.domain.usecase.SaveTenantProfileUseCase

@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.StatusKind
+import com.example.shared.domain.model.enums.StatusKind
 
 /** Farbe plus Symbol plus Text: Der Status ist nie nur über die Farbe erkennbar. */
 @Composable

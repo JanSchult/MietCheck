@@ -3,7 +3,7 @@ package com.example.shared.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.Defect
-import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.model.enums.DefectStatus
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.usecase.ObserveDefectsUseCase

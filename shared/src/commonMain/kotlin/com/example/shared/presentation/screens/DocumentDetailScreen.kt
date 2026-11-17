@@ -26,7 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.DocumentType
+import com.example.shared.domain.model.enums.DocumentType
 import com.example.shared.presentation.componentes.DropdownField
 import com.example.shared.presentation.componentes.FormField
 import com.example.shared.viewmodels.effects.DocumentDetailEffect

@@ -2,7 +2,7 @@ package com.example.shared.domain.usecase
 
 import com.example.shared.domain.model.LetterContext
 import com.example.shared.domain.model.LetterDraft
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 
 /**
  * Füllt die Platzhalter. Datum und Unterschrift bleiben bewusst als

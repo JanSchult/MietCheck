@@ -18,8 +18,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.ApartmentField
-import com.example.shared.domain.model.ApartmentFormField
+import com.example.shared.domain.model.enums.ApartmentField
+import com.example.shared.domain.model.enums.ApartmentFormField
 import com.example.shared.viewmodels.effects.ApartmentFormEffect
 import com.example.shared.viewmodels.intent.ApartmentFormIntent
 import com.example.shared.presentation.componentes.FormField

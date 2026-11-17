@@ -2,7 +2,7 @@ package com.example.shared.validation
 
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
-import com.example.shared.domain.model.ValidationSeverity
+import com.example.shared.domain.model.enums.ValidationSeverity
 import kotlinx.datetime.daysUntil
 
 object BillingPeriodLengthRule : ValidationRule {

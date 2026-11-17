@@ -1,5 +1,6 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.ReminderType
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.ReminderId
 import kotlin.time.ExperimentalTime

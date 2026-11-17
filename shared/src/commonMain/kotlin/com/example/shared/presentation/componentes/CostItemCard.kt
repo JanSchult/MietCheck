@@ -19,10 +19,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.enums.CostCategory
 import com.example.shared.domain.model.CostItemInput
 import com.example.shared.domain.model.CostItemRow
-import com.example.shared.domain.model.ItemField
+import com.example.shared.domain.model.enums.ItemField
 import com.example.shared.domain.usecase.formatEuro
 import com.example.shared.presentation.labels.displayName
 import com.example.shared.presentation.labels.kind

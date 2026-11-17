@@ -4,7 +4,7 @@ package com.example.shared.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.BillSummary
-import com.example.shared.domain.model.ValidationSeverity
+import com.example.shared.domain.model.enums.ValidationSeverity
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.repository.SelectedApartmentRepository
 import com.example.shared.domain.usecase.ObserveBillsUseCase

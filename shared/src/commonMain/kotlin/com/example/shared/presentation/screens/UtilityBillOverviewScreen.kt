@@ -17,7 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 import com.example.shared.presentation.componentes.CostItemCard
 import com.example.shared.presentation.componentes.KeyFiguresCard
 import com.example.shared.presentation.componentes.LetterSection

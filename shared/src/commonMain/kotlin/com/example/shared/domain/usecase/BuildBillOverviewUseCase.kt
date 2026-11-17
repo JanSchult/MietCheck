@@ -1,9 +1,9 @@
 package com.example.shared.domain.usecase
 
 import com.example.shared.domain.model.BillOverview
-import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.enums.CostCategory
 import com.example.shared.domain.model.CostItemRow
-import com.example.shared.domain.model.ItemStatus
+import com.example.shared.domain.model.enums.ItemStatus
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.repository.ApartmentRepository

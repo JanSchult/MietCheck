@@ -1,7 +1,7 @@
 package com.example.shared.domain.ocr
 
 
-import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.enums.CostCategory
 import com.example.shared.domain.usecase.formatEuro
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.daysUntil

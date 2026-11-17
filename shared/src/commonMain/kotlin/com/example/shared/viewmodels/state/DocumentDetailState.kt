@@ -2,7 +2,7 @@ package com.example.shared.viewmodels.state
 
 import com.example.shared.domain.model.Apartment
 import com.example.shared.domain.model.DocumentRecord
-import com.example.shared.domain.model.DocumentType
+import com.example.shared.domain.model.enums.DocumentType
 
 data class DocumentDetailState(
     val document: DocumentRecord? = null,

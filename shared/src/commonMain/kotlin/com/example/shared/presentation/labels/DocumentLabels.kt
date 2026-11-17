@@ -1,6 +1,6 @@
 package com.example.shared.presentation.labels
 
-import com.example.shared.domain.model.DocumentType
+import com.example.shared.domain.model.enums.DocumentType
 
 fun DocumentType.label(): String = when (this) {
     DocumentType.UTILITY_BILL -> "Nebenkostenabrechnung"

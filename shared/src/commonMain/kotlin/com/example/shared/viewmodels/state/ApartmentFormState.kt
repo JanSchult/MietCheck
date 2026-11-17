@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.state
 
-import com.example.shared.domain.model.ApartmentField
+import com.example.shared.domain.model.enums.ApartmentField
 
 data class ApartmentFormState(
     val label: String = "",

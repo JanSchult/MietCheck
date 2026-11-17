@@ -1,6 +1,6 @@
 package com.example.shared.domain.usecase
 
-import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.enums.CostCategory
 
 /** Allgemeine Erklärungen, keine Rechtsberatung. Später auf String-Resources umstellen (i18n). */
 object CostItemExplanations {

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shared.domain.model.RecurrenceRule
 import com.example.shared.domain.model.Reminder
-import com.example.shared.domain.model.ReminderType
+import com.example.shared.domain.model.enums.ReminderType
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.ReminderId
 import com.example.shared.domain.usecase.SaveReminderUseCase

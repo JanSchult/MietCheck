@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.state
 
-import com.example.shared.domain.model.BillFormField
+import com.example.shared.domain.model.enums.BillFormField
 import com.example.shared.domain.model.CostItemInput
 import com.example.shared.domain.model.OcrReview
 import com.example.shared.domain.usecase.parseEuroToCents

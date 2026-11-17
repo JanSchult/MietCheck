@@ -1,6 +1,6 @@
 package com.example.shared.presentation.labels
 
-import com.example.shared.domain.model.CostCategory
+import com.example.shared.domain.model.enums.CostCategory
 
 fun CostCategory.displayName(): String = when (this) {
     CostCategory.WATER_SEWAGE -> "Wasser und Abwasser"

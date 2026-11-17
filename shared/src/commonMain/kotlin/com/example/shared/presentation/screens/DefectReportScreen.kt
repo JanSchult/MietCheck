@@ -25,7 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.StatusKind
+import com.example.shared.domain.model.enums.StatusKind
 import com.example.shared.presentation.componentes.StatusChip
 import com.example.shared.viewmodels.DefectReportViewModel
 import com.example.shared.viewmodels.effects.DefectReportEffect

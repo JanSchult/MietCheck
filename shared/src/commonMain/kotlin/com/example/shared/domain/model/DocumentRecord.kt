@@ -1,5 +1,6 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.DocumentType
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.DocumentId
 import kotlin.time.ExperimentalTime

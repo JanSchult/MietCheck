@@ -1,5 +1,7 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.DefectStatus
+import com.example.shared.domain.model.enums.DefectUrgency
 import com.example.shared.domain.model.ids.ApartmentId
 import com.example.shared.domain.model.ids.DefectId
 import kotlin.time.ExperimentalTime

@@ -1,5 +1,6 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.CommunicationDirection
 import com.example.shared.domain.model.ids.CommunicationId
 import com.example.shared.domain.model.ids.DefectId
 import com.example.shared.domain.model.ids.DocumentId

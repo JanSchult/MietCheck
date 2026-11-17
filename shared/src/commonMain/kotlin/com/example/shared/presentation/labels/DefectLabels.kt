@@ -1,10 +1,10 @@
 package com.example.shared.presentation.labels
 
 
-import com.example.shared.domain.model.CommunicationDirection
-import com.example.shared.domain.model.DefectStatus
-import com.example.shared.domain.model.DefectUrgency
-import com.example.shared.domain.model.StatusKind
+import com.example.shared.domain.model.enums.CommunicationDirection
+import com.example.shared.domain.model.enums.DefectStatus
+import com.example.shared.domain.model.enums.DefectUrgency
+import com.example.shared.domain.model.enums.StatusKind
 
 fun DefectStatus.label(): String = when (this) {
     DefectStatus.NEW -> "Neu"

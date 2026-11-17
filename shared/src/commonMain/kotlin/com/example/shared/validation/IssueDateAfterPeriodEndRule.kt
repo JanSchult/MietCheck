@@ -2,7 +2,7 @@ package com.example.shared.validation
 
 import com.example.shared.domain.model.UtilityBill
 import com.example.shared.domain.model.ValidationResult
-import com.example.shared.domain.model.ValidationSeverity
+import com.example.shared.domain.model.enums.ValidationSeverity
 
 object IssueDateAfterPeriodEndRule : ValidationRule {
     override val id = "issue_date_after_period_end"

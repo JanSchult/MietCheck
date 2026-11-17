@@ -29,7 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.shared.domain.lock.PinMode
-import com.example.shared.domain.model.QuickAction
+import com.example.shared.domain.model.enums.QuickAction
 import com.example.shared.presentation.screens.ApartmentFormScreen
 import com.example.shared.presentation.screens.ChecksScreen
 import com.example.shared.presentation.screens.DashboardScreen
@@ -41,7 +41,6 @@ import com.example.shared.presentation.screens.DocumentDetailScreen
 import com.example.shared.presentation.screens.DocumentsScreen
 import com.example.shared.presentation.screens.LetterEditorScreen
 import com.example.shared.presentation.screens.PinSetupScreen
-import com.example.shared.presentation.screens.PlaceholderScreen
 import com.example.shared.presentation.screens.PrivacyScreen
 import com.example.shared.presentation.screens.ReminderFormScreen
 import com.example.shared.presentation.screens.ReminderListScreen

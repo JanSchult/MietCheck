@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.TenantField
+import com.example.shared.domain.model.enums.TenantField
 import com.example.shared.presentation.componentes.FormField
 import com.example.shared.viewmodels.TenantProfileViewModel
 import com.example.shared.viewmodels.effects.TenantProfileEffect

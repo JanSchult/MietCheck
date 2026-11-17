@@ -31,7 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.model.enums.DefectStatus
 import com.example.shared.domain.platform.rememberMediaCapturer
 import com.example.shared.presentation.componentes.AddCommunicationDialog
 import com.example.shared.presentation.componentes.DefectHeader

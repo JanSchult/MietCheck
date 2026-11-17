@@ -1,7 +1,7 @@
 package com.example.shared.viewmodels.intent
 
 import com.example.shared.domain.model.RecurrenceRule
-import com.example.shared.domain.model.ReminderType
+import com.example.shared.domain.model.enums.ReminderType
 
 sealed interface ReminderFormIntent {
     data class Init(val apartmentId: String) : ReminderFormIntent

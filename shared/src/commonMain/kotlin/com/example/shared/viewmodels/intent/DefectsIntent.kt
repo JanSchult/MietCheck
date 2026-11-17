@@ -1,6 +1,6 @@
 package com.example.shared.viewmodels.intent
 
-import com.example.shared.domain.model.DefectStatus
+import com.example.shared.domain.model.enums.DefectStatus
 
 sealed interface DefectsIntent {
     data object AddClicked : DefectsIntent

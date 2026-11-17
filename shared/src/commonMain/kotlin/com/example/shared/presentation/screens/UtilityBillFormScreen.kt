@@ -19,7 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.shared.domain.model.BillFormField
+import com.example.shared.domain.model.enums.BillFormField
 import com.example.shared.domain.usecase.formatEuro
 import com.example.shared.presentation.componentes.CostItemCard
 import com.example.shared.presentation.componentes.FormField

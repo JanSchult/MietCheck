@@ -1,9 +1,9 @@
 package com.example.shared.presentation.labels
 
-import com.example.shared.domain.model.ItemStatus
-import com.example.shared.domain.model.LetterTemplateType
-import com.example.shared.domain.model.StatusKind
-import com.example.shared.domain.model.ValidationSeverity
+import com.example.shared.domain.model.enums.ItemStatus
+import com.example.shared.domain.model.enums.LetterTemplateType
+import com.example.shared.domain.model.enums.StatusKind
+import com.example.shared.domain.model.enums.ValidationSeverity
 
 fun ValidationSeverity.kind(): StatusKind = when (this) {
     ValidationSeverity.OK -> StatusKind.OK

@@ -12,7 +12,7 @@ import android.net.Uri
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import com.example.shared.domain.model.StoredMedia
-import com.example.shared.domain.model.MediaKind
+import com.example.shared.domain.model.enums.MediaKind
 import com.example.shared.data.local.DatabaseKeyProvider
 import com.example.shared.domain.lock.AppLockManager
 import com.example.shared.domain.model.MAX_PHOTO_BYTES

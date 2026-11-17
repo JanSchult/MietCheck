@@ -1,5 +1,7 @@
 package com.example.shared.domain.model
 
+import com.example.shared.domain.model.enums.MediaKind
+
 data class StoredMedia(val storedName: String, val kind: MediaKind, val sizeBytes: Long)
 
 const val MAX_PHOTO_BYTES = 25L * 1024 * 1024

@@ -2,7 +2,7 @@ package com.example.shared.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shared.domain.model.LetterTemplateType
+import com.example.shared.domain.model.enums.LetterTemplateType
 import com.example.shared.domain.model.ids.UtilityBillId
 import com.example.shared.domain.usecase.BuildLetterContextUseCase
 import com.example.shared.domain.usecase.BuildLetterDraftUseCase

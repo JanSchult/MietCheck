@@ -1,4 +1,4 @@
-package com.example.shared.domain.model
+package com.example.shared.domain.model.enums
 
 enum class ApartmentField {
     LABEL, STREET, HOUSE_NUMBER, POSTAL_CODE, CITY, LIVING_SPACE,
