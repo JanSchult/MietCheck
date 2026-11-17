@@ -46,6 +46,12 @@ private val PRIVACY_SECTIONS = listOf(
             "werden die Bilder auf dem Gerät verarbeitet. Google kann dabei technische Nutzungsdaten nach den " +
             "eigenen Datenschutzbestimmungen verarbeiten. [Aktuelle Angaben von Google prüfen und hier ergänzen]",
 
+    "Texterkennung" to
+            "Beim Auslesen einer Abrechnung erkennt die App den Text mit ML Kit direkt auf deinem Gerät. Das " +
+            "Erkennungsmodell ist in der App enthalten, es werden weder Bilder noch Texte übertragen. Beim Lesen von " +
+            "PDF-Dateien entstehen kurz temporäre Dateien im Zwischenspeicher, die danach gelöscht werden. Erkannte " +
+            "Werte sind Vorschläge und werden erst nach deiner Bestätigung übernommen.",
+
     "Kamera, Fotos und Videos" to
             "Fotos und Videos nimmt die Kamera-App deines Geräts auf, die Auswahl aus der Galerie läuft über den " +
             "Foto-Dialog des Systems. Die Aufnahme liegt dabei kurz unverschlüsselt im Zwischenspeicher der App und " +

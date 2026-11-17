@@ -178,7 +178,7 @@ val presentationModule = module {
     viewModel { OnboardingViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get(), get()) }
     viewModel { DefectReportViewModel(get(), get(), get(), get()) }
-viewModel { TenantProfileViewModel(get(), get()) }
+    viewModel { TenantProfileViewModel(get(), get()) }
 }
 
 val appModules = listOf(
