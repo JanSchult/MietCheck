@@ -20,7 +20,8 @@ internal fun UtilityBill.toExport() = ExportBill(
     occupants = occupantsAtBilling,
     advancePaymentsCents = advancePaymentsMadeCents,
     totalCostsCents = totalCostsCents,
-    items = items.map { ExportCostItem(it.category.name, it.label, it.amountCents, it.distributionKey, it.note) }
+    items = items.map { ExportCostItem(it.category.name, it.label, it.amountCents, it.distributionKey, it.note) },
+    statedBalanceCents = statedBalanceCents
 )
 
 @OptIn(ExperimentalTime::class)

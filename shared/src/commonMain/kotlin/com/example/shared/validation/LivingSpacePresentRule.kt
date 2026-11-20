@@ -7,19 +7,17 @@ import com.example.shared.domain.model.enums.ValidationSeverity
 object LivingSpacePresentRule : ValidationRule {
     override val id = "living_space_present"
 
-    override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
-        val sqm = current.livingSpaceSqmAtBilling
-        val isPresent = sqm != null && sqm > 0.0   // war: BigDecimal.ZERO
-
+    override fun evaluate(context: ValidationContext): ValidationResult {
+        val sqm = context.current.livingSpaceSqmAtBilling
+        val present = sqm != null && sqm > 0.0
         return ValidationResult(
             ruleId = id,
-            severity = if (isPresent) ValidationSeverity.OK else ValidationSeverity.MISSING,
+            severity = if (present) ValidationSeverity.OK else ValidationSeverity.MISSING,
             whatWasChecked = "Angabe der Wohnfläche in der Abrechnung",
-            whatWasFound = if (isPresent) "Wohnfläche: $sqm m² angegeben." else "Keine Wohnfläche erfasst.",
-            whyRelevant = "Die Wohnfläche ist Grundlage für viele Verteilerschlüssel " +
-                    "und für den Kosten-pro-Quadratmeter-Vergleich.",
-            suggestedNextStep = if (isPresent) "Keine weitere Aktion nötig."
-            else "Trage die Wohnfläche laut Mietvertrag nach oder prüfe, ob sie auf der Originalabrechnung vermerkt ist."
+            whatWasFound = if (present && sqm != null) "Wohnfläche: ${sqm(sqm)} m² angegeben." else "Keine Wohnfläche erfasst.",
+            whyRelevant = "Die Wohnfläche ist Grundlage vieler Verteilerschlüssel und des Vergleichs der Kosten pro Quadratmeter.",
+            suggestedNextStep = if (present) NOTHING_TO_DO
+            else "Trage die Wohnfläche laut Abrechnung nach oder prüfe, ob sie dort vermerkt ist."
         )
     }
 }

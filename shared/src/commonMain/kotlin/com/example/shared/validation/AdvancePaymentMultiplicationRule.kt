@@ -12,27 +12,40 @@ import kotlin.math.abs
 object AdvancePaymentMultiplicationRule : ValidationRule {
     override val id = "advance_payment_multiplication"
 
-    override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
-        // Ende ist inklusive, deshalb +1 Tag, sonst fehlt beim 31.12. ein Monat
-        val months = current.billingPeriodStart
-            .monthsUntil(current.billingPeriodEnd.plus(1, DateTimeUnit.DAY))
-            .coerceAtLeast(1)
+    override fun evaluate(context: ValidationContext): ValidationResult {
+        val bill = context.current
+        val apartment = context.apartment
+        val monthly = if (apartment != null) apartment.monthlyUtilityAdvanceCents + apartment.monthlyHeatingAdvanceCents else 0L
 
-        val monthlyEstimate = current.advancePaymentsMadeCents / months
-        val expectedTotal = monthlyEstimate * months
-        val deviation = abs(current.advancePaymentsMadeCents - expectedTotal)
-        val isPlausible = deviation < 100 // Toleranz 1 Euro für Rundung
+        if (apartment == null || monthly <= 0L) {
+            return ValidationResult(
+                ruleId = id,
+                severity = ValidationSeverity.MISSING,
+                whatWasChecked = "Geleistete Vorauszahlungen gegenüber deinen Wohnungsdaten",
+                whatWasFound = "In deinen Wohnungsdaten ist keine monatliche Vorauszahlung hinterlegt, ein Vergleich ist nicht möglich.",
+                whyRelevant = "Nur mit der monatlichen Rate lässt sich nachrechnen, ob die Summe der Vorauszahlungen stimmt.",
+                suggestedNextStep = "Trage die Nebenkosten- und Heizkosten-Vorauszahlung in den Wohnungsdaten ein."
+            )
+        }
+
+        // Beginnt das Mietverhältnis im Zeitraum, zählen nur die Monate ab Mietbeginn
+        val start = if (apartment.tenancyStartDate > bill.billingPeriodStart) apartment.tenancyStartDate else bill.billingPeriodStart
+        val months = start.monthsUntil(bill.billingPeriodEnd.plus(1, DateTimeUnit.DAY)).coerceAtLeast(1)
+        val expected = monthly * months
+        val difference = bill.advancePaymentsMadeCents - expected
+        val ok = abs(difference) < TOLERANCE_CENTS
 
         return ValidationResult(
             ruleId = id,
-            severity = if (isPlausible) ValidationSeverity.OK else ValidationSeverity.REVIEW_RECOMMENDED,
-            whatWasChecked = "Rechnerische Konsistenz der geleisteten Vorauszahlungen über $months Monate",
-            whatWasFound = "Erfasste Vorauszahlungen: ${formatEuro(current.advancePaymentsMadeCents)}, " +
-                    "rechnerisch erwartet bei gleichbleibender Monatsrate: ${formatEuro(expectedTotal)}.",
-            whyRelevant = "Größere Abweichungen können auf geänderte Vorauszahlungen während des Zeitraums " +
-                    "oder auf einen Erfassungsfehler hindeuten.",
-            suggestedNextStep = if (isPlausible) "Keine weitere Aktion nötig."
-            else "Vergleiche mit deinen tatsächlichen Kontoauszügen oder dem Mietvertrag auf Änderungen der Vorauszahlung."
+            severity = if (ok) ValidationSeverity.OK else ValidationSeverity.REVIEW_RECOMMENDED,
+            whatWasChecked = "Geleistete Vorauszahlungen gegenüber deinen Wohnungsdaten",
+            whatWasFound = "In der Abrechnung: ${formatEuro(bill.advancePaymentsMadeCents)}. Nach deinen Wohnungsdaten: " +
+                    "${formatEuro(monthly)} × $months Monate = ${formatEuro(expected)}." +
+                    if (ok) "" else " Differenz: ${formatEuro(abs(difference))}.",
+            whyRelevant = "Eine Abweichung kann an geänderten Vorauszahlungen, einem anderen Zeitraum oder einem " +
+                    "Erfassungsfehler liegen. Die Heizkosten-Vorauszahlung zählt mit.",
+            suggestedNextStep = if (ok) NOTHING_TO_DO
+            else "Vergleiche mit deinen Kontoauszügen und dem Mietvertrag, ob sich die Vorauszahlung im Zeitraum geändert hat."
         )
     }
 }

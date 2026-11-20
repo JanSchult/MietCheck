@@ -12,5 +12,6 @@ data class ExportBill(
     val occupants: Int?,
     val advancePaymentsCents: Long,
     val totalCostsCents: Long,
-    val items: List<ExportCostItem>
+    val items: List<ExportCostItem>,
+    val statedBalanceCents: Long?
 )

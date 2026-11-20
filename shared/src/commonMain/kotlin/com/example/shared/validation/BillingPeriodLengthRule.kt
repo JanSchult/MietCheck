@@ -8,21 +8,29 @@ import kotlinx.datetime.daysUntil
 object BillingPeriodLengthRule : ValidationRule {
     override val id = "billing_period_length"
 
-    override fun evaluate(current: UtilityBill, previous: UtilityBill?): ValidationResult {
-        // Ende ist inklusive, deshalb +1 (1.1.–31.12. sind 365 Tage)
-        val days = current.billingPeriodStart.daysUntil(current.billingPeriodEnd) + 1
-        val isPlausible = days in 350..380 // ~12 Monate mit Toleranz
+    override fun evaluate(context: ValidationContext): ValidationResult {
+        val bill = context.current
+        val days = bill.billingPeriodStart.daysUntil(bill.billingPeriodEnd) + 1
+        val tenancy = context.apartment?.tenancyStartDate
+        val plausible = days in 350..380
+        val explainedByTenancy = !plausible && days in 1..349 && tenancy != null &&
+                tenancy > bill.billingPeriodStart && tenancy <= bill.billingPeriodEnd
+        val ok = plausible || explainedByTenancy
 
         return ValidationResult(
             ruleId = id,
-            severity = if (isPlausible) ValidationSeverity.OK else ValidationSeverity.DEVIATION,
+            severity = if (ok) ValidationSeverity.OK else ValidationSeverity.DEVIATION,
             whatWasChecked = "Länge des Abrechnungszeitraums",
-            whatWasFound = "Der Zeitraum umfasst $days Tage.",
-            whyRelevant = "Abrechnungszeiträume sollten in der Regel etwa zwölf Monate betragen, " +
-                    "sofern kein Mieterwechsel oder Sonderfall vorliegt.",
-            suggestedNextStep = if (isPlausible) "Keine weitere Aktion nötig."
-            else "Prüfe, ob ein Ein- oder Auszug während des Zeitraums stattgefunden hat, " +
-                    "der die abweichende Länge erklärt."
+            whatWasFound = buildString {
+                append("Der Zeitraum umfasst $days Tage.")
+                if (explainedByTenancy && tenancy != null) {
+                    append(" Dein Mietbeginn (${tenancy.de()}) liegt im Zeitraum, das erklärt den kürzeren Zeitraum.")
+                }
+            },
+            whyRelevant = "Abrechnungszeiträume betragen in der Regel etwa zwölf Monate, sofern kein " +
+                    "Mieterwechsel oder Sonderfall vorliegt.",
+            suggestedNextStep = if (ok) NOTHING_TO_DO
+            else "Prüfe, ob ein Ein- oder Auszug oder ein Wechsel des Abrechnungszeitraums die abweichende Länge erklärt."
         )
     }
 }

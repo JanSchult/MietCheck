@@ -57,11 +57,17 @@ import com.example.shared.domain.usecase.ShareDocumentUseCase
 import com.example.shared.domain.usecase.UpdateDefectStatusUseCase
 import com.example.shared.domain.usecase.UpdateDocumentUseCase
 import com.example.shared.validation.AdvancePaymentMultiplicationRule
+import com.example.shared.validation.ApartmentDataMatchesRule
+import com.example.shared.validation.BalanceMatchesStatementRule
 import com.example.shared.validation.BillingPeriodLengthRule
+import com.example.shared.validation.DistributionKeyPresentRule
 import com.example.shared.validation.DuplicateCostItemsRule
 import com.example.shared.validation.IssueDateAfterPeriodEndRule
+import com.example.shared.validation.ItemsSumMatchesTotalRule
 import com.example.shared.validation.LivingSpacePresentRule
+import com.example.shared.validation.RequiredFieldsRule
 import com.example.shared.validation.ValidationEngine
+import com.example.shared.validation.YearOverYearDeviationRule
 import com.example.shared.viewmodels.ApartmentFormViewModel
 import com.example.shared.viewmodels.ChecksViewModel
 import com.example.shared.viewmodels.DashboardViewModel
@@ -102,15 +108,21 @@ val validationModule = module {
     single {
         ValidationEngine(
             listOf(
+                RequiredFieldsRule,
                 BillingPeriodLengthRule,
                 IssueDateAfterPeriodEndRule,
                 AdvancePaymentMultiplicationRule,
-                LivingSpacePresentRule,
+                ItemsSumMatchesTotalRule,
+                BalanceMatchesStatementRule,
                 DuplicateCostItemsRule,
+                DistributionKeyPresentRule,
+                LivingSpacePresentRule,
+                ApartmentDataMatchesRule,
+                YearOverYearDeviationRule
             )
         )
     }
-    factory { RunValidationUseCase(get(), get()) }
+    factory { RunValidationUseCase(get(), get(), get()) }
 }
 
 val useCaseModule = module {

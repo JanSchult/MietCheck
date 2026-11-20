@@ -23,6 +23,7 @@ import com.example.shared.presentation.labels.displayName
 import com.example.shared.domain.model.enums.ItemField
 import com.example.shared.domain.model.enums.OcrField
 import com.example.shared.domain.model.OcrReview
+import com.example.shared.domain.model.enums.StatedKind
 import com.example.shared.domain.usecase.ImportDocumentUseCase
 import com.example.shared.domain.usecase.ImportResult
 import com.example.shared.domain.usecase.ReadBillDocumentUseCase
@@ -92,6 +93,9 @@ class UtilityBillFormViewModel(
                 pendingDocument = null
                 _state.update { it.copy(sourceDocumentName = null) }
             }
+            is UtilityBillFormIntent.StatedKindSelected -> _state.update {
+                it.copy(statedKind = intent.kind, fieldErrors = it.fieldErrors - BillFormField.STATED_AMOUNT)
+            }
         }
     }
 
@@ -133,6 +137,8 @@ class UtilityBillFormViewModel(
                             if (p.advancePaymentsCents != null && !p.advancePaymentsCents.uncertain) add(OcrField.ADVANCE)
                             if (p.totalCostsCents != null && !p.totalCostsCents.uncertain) add(OcrField.TOTAL)
                             if (p.items.isNotEmpty()) add(OcrField.ITEMS)
+                            if (p.resultCents != null && !p.resultCents.uncertain) add(OcrField.RESULT)
+
                         }
                         _state.update { it.copy(review = OcrReview(outcome, file, selected)) }
                     }
@@ -173,7 +179,10 @@ class UtilityBillFormViewModel(
                 items = newItems ?: s.items,
                 review = null,
                 sourceDocumentName = review.file.suggestedName,
-                ocrResultCents = p.resultCents?.value,
+                statedKind = p.resultCents?.takeIf { picked(OcrField.RESULT) }
+                    ?.let { if (it.value < 0) StatedKind.CREDIT else StatedKind.EXTRA_PAYMENT } ?: s.statedKind,
+                statedAmount = p.resultCents?.takeIf { picked(OcrField.RESULT) }
+                    ?.let { centsToInput(kotlin.math.abs(it.value)) } ?: s.statedAmount,
                 fieldErrors = emptyMap(),
                 itemErrors = emptyMap()
             )
@@ -190,6 +199,7 @@ class UtilityBillFormViewModel(
             BillFormField.ADVANCE -> it.copy(advancePayments = value, fieldErrors = errors)
             BillFormField.TOTAL -> it.copy(totalCosts = value, fieldErrors = errors)
             BillFormField.ITEMS -> it
+            BillFormField.STATED_AMOUNT -> it.copy(statedAmount = value, fieldErrors = errors)
         }
     }
 
@@ -293,7 +303,12 @@ class UtilityBillFormViewModel(
             _state.update { it.copy(fieldErrors = errors, itemErrors = itemErrors) }
             return
         }
-
+        var stated: Long? = null
+        if (s.statedKind != StatedKind.NONE) {
+            val cents = parseEuroToCents(s.statedAmount)
+            if (cents == null) errors[BillFormField.STATED_AMOUNT] = "Bitte den Betrag laut Abrechnung eingeben."
+            else stated = if (s.statedKind == StatedKind.CREDIT) -cents else cents
+        }
         val now = Clock.System.now()
         val bill = UtilityBill(
             id = UtilityBillId.new(),
@@ -309,7 +324,8 @@ class UtilityBillFormViewModel(
             distributionKeyNoted = items.any { it.distributionKey != null },
             items = items,
             createdAt = now,
-            updatedAt = now
+            updatedAt = now,
+            statedBalanceCents = stated
         )
 
         _state.update { it.copy(fieldErrors = emptyMap(), itemErrors = emptyMap(), isSaving = true) }

@@ -13,6 +13,7 @@ CREATE TABLE UtilityBillEntity (
     occupants INTEGER,
     advancePaymentsCents INTEGER NOT NULL,
     totalCostsCents INTEGER NOT NULL,
+        statedBalanceCents INTEGER,
     distributionKeyNoted INTEGER AS Boolean NOT NULL DEFAULT 0,
     createdAt INTEGER NOT NULL,
     updatedAt INTEGER NOT NULL

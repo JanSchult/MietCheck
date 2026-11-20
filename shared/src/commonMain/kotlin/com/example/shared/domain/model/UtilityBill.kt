@@ -21,7 +21,8 @@ data class UtilityBill @OptIn(ExperimentalTime::class) constructor(
     val distributionKeyNoted: Boolean,
     val items: List<UtilityCostItem>,
     val createdAt: Instant,
-    val updatedAt: Instant
+    val updatedAt: Instant,
+    val statedBalanceCents: Long? = null
 ) {
     val differenceCents: Long get() = totalCostsCents - advancePaymentsMadeCents
     // positiv = Nachzahlung, negativ = Guthaben

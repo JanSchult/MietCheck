@@ -44,11 +44,11 @@ fun LetterTemplateType.displayName(): String = when (this) {
 
 /** Welche Vorlage passt zu welchem Prüfergebnis? */
 fun suggestedTemplateFor(ruleId: String): LetterTemplateType = when (ruleId) {
-    "items_sum_matches_total",
-    "balance_calculation_basis",
-    "advance_payment_multiplication" -> LetterTemplateType.NOTE_CALCULATION_DISCREPANCY
-    "living_space_present" -> LetterTemplateType.REQUEST_CORRECTION_MISSING_DATA
-    "duplicate_cost_items" -> LetterTemplateType.REQUEST_EXPLANATION
+    "items_sum_matches_total", "balance_matches_statement", "advance_payment_multiplication" ->
+        LetterTemplateType.NOTE_CALCULATION_DISCREPANCY
+    "required_fields", "living_space_present" -> LetterTemplateType.REQUEST_CORRECTION_MISSING_DATA
+    "distribution_key_present" -> LetterTemplateType.REQUEST_DISTRIBUTION_KEY
+    "apartment_data_matches", "duplicate_cost_items" -> LetterTemplateType.REQUEST_EXPLANATION
     "year_over_year_deviation" -> LetterTemplateType.REQUEST_RECEIPT_ACCESS
     else -> LetterTemplateType.GENERAL_INQUIRY
 }

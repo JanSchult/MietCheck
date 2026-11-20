@@ -3,6 +3,7 @@ package com.example.shared.viewmodels.state
 import com.example.shared.domain.model.enums.BillFormField
 import com.example.shared.domain.model.CostItemInput
 import com.example.shared.domain.model.OcrReview
+import com.example.shared.domain.model.enums.StatedKind
 import com.example.shared.domain.usecase.parseEuroToCents
 
 data class UtilityBillFormState(
@@ -22,7 +23,9 @@ data class UtilityBillFormState(
     val isReading: Boolean = false,
     val review: OcrReview? = null,
     val sourceDocumentName: String? = null,
-    val ocrResultCents: Long? = null
+    val ocrResultCents: Long? = null,
+    val statedKind: StatedKind = StatedKind.NONE,
+    val statedAmount: String = "",
 ) {
     // Live-Werte für die Zusammenfassung (alles in Cent, kein Double)
     val itemsSumCents: Long get() = items.sumOf { parseEuroToCents(it.amount) ?: 0L }
@@ -34,4 +37,11 @@ data class UtilityBillFormState(
             val advance = parseEuroToCents(advancePayments)
             return if (total != null && advance != null) total - advance else null
         }
+    val statedCents: Long?
+        get() {
+            if (statedKind == StatedKind.NONE) return null
+            val cents = parseEuroToCents(statedAmount) ?: return null
+            return if (statedKind == StatedKind.CREDIT) -cents else cents
+        }
+
 }

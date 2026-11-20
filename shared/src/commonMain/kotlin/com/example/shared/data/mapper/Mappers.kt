@@ -120,7 +120,8 @@ internal fun UtilityBillEntity.toDomain(items: List<CostItemEntity>) = UtilityBi
     distributionKeyNoted = distributionKeyNoted,
     items = items.map { it.toDomain() },
     createdAt = Instant.fromEpochMilliseconds(createdAt),
-    updatedAt = Instant.fromEpochMilliseconds(updatedAt)
+    updatedAt = Instant.fromEpochMilliseconds(updatedAt),
+    statedBalanceCents = statedBalanceCents
 )
 
 @OptIn(ExperimentalTime::class)
@@ -137,7 +138,9 @@ internal fun UtilityBill.toEntity() = UtilityBillEntity(
     totalCostsCents = totalCostsCents,
     distributionKeyNoted = distributionKeyNoted,
     createdAt = createdAt.toEpochMilliseconds(),
-    updatedAt = updatedAt.toEpochMilliseconds()
+    updatedAt = updatedAt.toEpochMilliseconds(),
+    statedBalanceCents = statedBalanceCents
+
 )
 
 internal fun CostItemEntity.toDomain() = UtilityCostItem(

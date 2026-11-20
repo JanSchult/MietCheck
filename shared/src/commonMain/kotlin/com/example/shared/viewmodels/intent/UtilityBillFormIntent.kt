@@ -5,6 +5,7 @@ import com.example.shared.domain.model.enums.CostCategory
 import com.example.shared.domain.model.ImportedFile
 import com.example.shared.domain.model.enums.ItemField
 import com.example.shared.domain.model.enums.OcrField
+import com.example.shared.domain.model.enums.StatedKind
 
 sealed interface UtilityBillFormIntent {
     data class Init(val apartmentId: String) : UtilityBillFormIntent
@@ -20,4 +21,6 @@ sealed interface UtilityBillFormIntent {
     data object OcrApply : UtilityBillFormIntent
     data object OcrCancel : UtilityBillFormIntent
     data object RemoveSourceDocument : UtilityBillFormIntent
+    data class StatedKindSelected(val kind: StatedKind) : UtilityBillFormIntent
+
 }
